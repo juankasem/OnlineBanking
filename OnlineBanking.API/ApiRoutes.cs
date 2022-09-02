@@ -27,7 +27,7 @@ public static class ApiRoutes
     public static class Branches
     {
         public const string All = "all";
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "{id:int}";
         public const string GetByCountry = "{countryId}";
     }
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnlineBanking.Application.Features.Branch.Queries
+namespace OnlineBanking.Application.Models.Branch.Responses
 {
-    public class GetAllBranches
+    public class BranchResponse
     {
         
     }
