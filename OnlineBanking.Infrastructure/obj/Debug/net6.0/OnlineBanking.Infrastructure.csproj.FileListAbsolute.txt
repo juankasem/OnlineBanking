@@ -1,0 +1,15 @@
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Infrastructure.deps.json
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Infrastructure.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Infrastructure.pdb
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Core.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Core.pdb
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.csproj.AssemblyReference.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.AssemblyInfo.cs
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.csproj.CopyComplete
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\refint\OnlineBanking.Infrastructure.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.pdb
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\ref\OnlineBanking.Infrastructure.dll

@@ -1,0 +1,44 @@
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using MediatR;
+using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Features.BankAccounts;
+using OnlineBanking.Application.Features.BankAccounts.Queries;
+using OnlineBanking.Application.Mappings.BankAccounts;
+using OnlineBanking.Application.Models;
+using OnlineBanking.Application.Models.BankAccount.Responses;
+
+namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
+
+public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAccountByAccountNoRequest, ApiResult<BankAccountResponse>>
+{
+    private readonly IUnitOfWork _uow;
+    private readonly IBankAccountMapper _bankAccountMapper;
+
+    public GetBankAccountByAccountNoRequestHandler(IUnitOfWork uow, IBankAccountMapper bankAccountMapper)
+    {
+        _uow = uow;
+        _bankAccountMapper = bankAccountMapper;
+    }
+
+    public async Task<ApiResult<BankAccountResponse>> Handle(GetBankAccountByAccountNoRequest request, CancellationToken cancellationToken)
+    {
+        var result = new ApiResult<BankAccountResponse>();
+
+        var bankAccount = await _uow.BankAccounts.GetByAccountNoAsync(request.AccountNo);
+
+        if (bankAccount is null)
+        {
+            result.AddError(ErrorCode.NotFound,
+                string.Format(BankAccountErrorMessages.NotFound, "No.", request.AccountNo));
+
+            return result;
+        }
+
+        result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount);
+
+        return result;
+    }
+}

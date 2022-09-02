@@ -1,0 +1,12 @@
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\bin\Debug\net5.0\OnlineBanking.Domain.deps.json
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\bin\Debug\net5.0\OnlineBanking.Domain.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\bin\Debug\net5.0\OnlineBanking.Domain.pdb
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.csproj.AssemblyReference.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.AssemblyInfoInputs.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.AssemblyInfo.cs
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.csproj.CoreCompileInputs.cache
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\refint\OnlineBanking.Domain.dll
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\OnlineBanking.Domain.pdb
+C:\Users\HP\Source\Repos\OnlineBanking\OnlineBanking.Domain\obj\Debug\net5.0\ref\OnlineBanking.Domain.dll
