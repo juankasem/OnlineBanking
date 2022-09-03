@@ -24,6 +24,8 @@ public interface IUnitOfWork : IDisposable
 
     ICustomerRepository Customers { get; }
 
+    ICustomerAccountRepository CustomerAccounts { get; }
+
     ICreditCardsRepository CreditCards { get; }
 
     IDebitCardsRepository DebitCards { get; }

@@ -22,7 +22,6 @@ public class CashTransactionsController : BaseApiController
     public async Task<ActionResult<CashTransactionListResponse>> ListAllCashTransactions(CancellationToken cancellationToken = default)
     {
         var query = new GetAllCashTransactionsRequest();
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -37,7 +36,6 @@ public class CashTransactionsController : BaseApiController
                                                                                                 CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByAccountNoRequest() { AccountNo = accountNo };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -52,7 +50,6 @@ public class CashTransactionsController : BaseApiController
                                                                                             CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByIBANRequest() { IBAN = iban };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -119,7 +116,6 @@ public class CashTransactionsController : BaseApiController
                                                             CancellationToken cancellationToken = default)
     {
         var command = new DeleteCashTransactionCommand() { Id = Guid.Parse(id) };
-
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

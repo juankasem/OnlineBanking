@@ -21,6 +21,11 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
         return await _dbContext.BankAccounts.ToListAsync();
     }
 
+    public async Task<Customer> GetByAppUserIdAsync(string appUserId)
+    {
+        return await _dbContext.Customers.FirstOrDefaultAsync(c => c.AppUserId == appUserId);
+    }
+
     public async Task<Customer> GetByCustomerNoAsync(string customerNo)
     {
         return await _dbContext.Customers.FirstOrDefaultAsync(c => c.CustomerNo == customerNo);
@@ -28,10 +33,9 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
 
     public async Task<Customer> GetByIBANAsync(string iban)
     {
-        var bankAccount = await _dbContext.BankAccounts.FirstOrDefaultAsync(ba => ba.IBAN == iban);
-
-        return bankAccount.BankAccountOwners.FirstOrDefault(b => b.)
-    }
+        var customerAccounts =  _dbContext.CustomerBankAccounts.FirstOrDefault(b => b.BankAccount.IBAN == iban);
+        return customerAccounts.Customer;
+    } 
 
     public async Task<bool> ExistsAsync(string customerNo)
     {

@@ -80,7 +80,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             await _uow.SaveAsync();
 
             await _uow.CashTransactions.AddAsync(CreateCashTransaction(request, updatedFromBalance));
-
             await dbContextTransaction.CommitAsync();
 
             return result;

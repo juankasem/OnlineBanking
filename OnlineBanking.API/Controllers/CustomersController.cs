@@ -17,7 +17,6 @@ public class CustomersController : BaseApiController
     public async Task<ActionResult<CustomerListResponse>> ListAllCustomers(CancellationToken cancellationToken = default)
     {
         var query = new GetAllCustomersRequest();
-
         var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -31,7 +30,6 @@ public class CustomersController : BaseApiController
                                                                     CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerByIdRequest() { CustomerId = Guid.Parse(customerId) };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -45,7 +43,6 @@ public class CustomersController : BaseApiController
                                                                                     CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(customerId) };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -58,7 +55,6 @@ public class CustomersController : BaseApiController
                                                     CancellationToken cancellationToken = default)
     {
         var query = _mapper.Map<CreateCustomerCommand>(request);
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -71,7 +67,6 @@ public class CustomersController : BaseApiController
                                                     CancellationToken cancellationToken = default)
     {
         var query = new DeleteCustomerCommand() { CustomerId = Guid.Parse(customerId) };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

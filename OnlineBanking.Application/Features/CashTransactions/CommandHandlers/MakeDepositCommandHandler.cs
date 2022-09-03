@@ -76,7 +76,6 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             //Insert transaction to db
             await _uow.CashTransactions.AddAsync(CreateCashTransaction(request, updatedToBalance));
-
             await dbContextTransaction.CommitAsync();
 
             return result;

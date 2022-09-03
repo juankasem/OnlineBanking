@@ -29,6 +29,8 @@ public class UnitOfWork : IUnitOfWork
 
     public ICustomerRepository Customers { get; private set; }
 
+    public ICustomerAccountRepository CustomerAccounts { get; private set;}
+
     public ICreditCardsRepository CreditCards { get; private set; }
 
     public IDebitCardsRepository DebitCards { get; private set; }
@@ -54,6 +56,7 @@ public class UnitOfWork : IUnitOfWork
         Cities ??= new CityRepository(_dbContext);
         Countries ??= new CountryRepository(_dbContext);
         Customers ??= new CustomerRepository(_dbContext);
+        CustomerAccounts ??= new CustomerAccountRepository(_dbContext);
         CreditCards ??= new CreditCardsRepository(_dbContext);
         DebitCards ??= new DebitCardsRepository(_dbContext);
         FastTransactions ??= new FastTransactionsRepository(_dbContext);

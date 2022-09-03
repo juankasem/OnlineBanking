@@ -16,7 +16,6 @@ public class BankAccountsController : BaseApiController
     public async Task<ActionResult<BankAccountListResponse>> ListAllBankAccounts(CancellationToken cancellationToken = default)
     {
         var query = new GetAllBankAccountsRequest();
-
         var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -30,7 +29,6 @@ public class BankAccountsController : BaseApiController
                                                                                     CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountsByCustomerNoRequest() { CustomerNo = customerNo };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -44,7 +42,6 @@ public class BankAccountsController : BaseApiController
                                                                                     CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountByAccountNoRequest() { AccountNo = accountNo };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -57,7 +54,6 @@ public class BankAccountsController : BaseApiController
     public async Task<ActionResult<BankAccountResponse>> GetAccountByIBANWithTransactions(string iban, CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest() { IBAN = iban };
-
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -70,7 +66,6 @@ public class BankAccountsController : BaseApiController
                                                         CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBankAccountCommand>(request);
-
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -83,7 +78,6 @@ public class BankAccountsController : BaseApiController
                                                         CancellationToken cancellationToken = default)
     {
         var command = new DeleteBankAccountCommand { BankAccountId = Guid.Parse(id) };
-
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -96,7 +90,6 @@ public class BankAccountsController : BaseApiController
                                                         CancellationToken cancellationToken = default)
     {
         var command = new ActivateBankAccountCommand { BankAccountId = Guid.Parse(id) };
-
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
