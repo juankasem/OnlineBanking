@@ -12,7 +12,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 public class BankAccount : BaseDomainEntity
 {
     private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();
-    private readonly List<CashTransaction> _cashTransactions = new List<CashTransaction>();
+    private readonly List<AccountTransaction> _accountTransactions = new List<AccountTransaction>();
     private readonly List<FastTransaction> _fastTransactions = new List<FastTransaction>();
     private readonly List<CreditCard> _creditCards = new List<CreditCard>();
     private readonly List<DebitCard> _debitCards = new List<DebitCard>();
@@ -68,9 +68,9 @@ public class BankAccount : BaseDomainEntity
 
     // Many-to-many relationship
     public ICollection<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
-    
+    public ICollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+
     // One-to-Many relationship
-    public ICollection<CashTransaction> CashTransactions { get { return _cashTransactions; } }
     public ICollection<FastTransaction> FastTransactions { get { return _fastTransactions; } }
     public ICollection<CreditCard> CreditCards { get { return _creditCards; } }
     public ICollection<DebitCard> DebitCards { get { return _debitCards; } }
@@ -136,17 +136,17 @@ public class BankAccount : BaseDomainEntity
     public void AddOwnerToBankAccount(CustomerBankAccount customerBankAccount) =>
                                         _bankAccountOwners.Add(customerBankAccount);
 
-    public void AddCashTransaction(CashTransaction ct) => _cashTransactions.Add(ct);
+    public void AddCashTransaction(AccountTransaction at) => _accountTransactions.Add(at);
 
     public void UpdateCashTransaction(Guid id, CashTransactionStatus status)
     {
-        var cashTransaction = _cashTransactions.FirstOrDefault(ct => ct.Id == id);
+        var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
 
-        if (cashTransaction != null)
-            cashTransaction.Update(status);
+        if (accountTransaction != null)
+            accountTransaction.Transaction.Update(status);
     }
 
-    public void DeleteCashTransaction(CashTransaction ct) => _cashTransactions.Remove(ct);
+    public void DeleteCashTransaction(AccountTransaction at) => _accountTransactions.Remove(at);
 
     public void AddFastTransaction(FastTransaction ft) => _fastTransactions.Add(ft);
 

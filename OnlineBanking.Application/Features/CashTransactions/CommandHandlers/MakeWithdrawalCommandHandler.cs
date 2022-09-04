@@ -76,10 +76,16 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
                 return result;
             }
 
+           //Update account balance & Add transaction
             var updatedFromBalance = fromBankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
-            await _uow.SaveAsync();
+            var accountTransaction = new AccountTransaction(){
+                    Account = fromBankAccount,
+                    Transaction = CreateCashTransaction(request, updatedFromBalance)
+                };
+            
+            fromBankAccount.AddCashTransaction(accountTransaction);
 
-            await _uow.CashTransactions.AddAsync(CreateCashTransaction(request, updatedFromBalance));
+            await _uow.BankAccounts.UpdateAsync(fromBankAccount);
             await dbContextTransaction.CommitAsync();
 
             return result;
@@ -108,6 +114,13 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
                                     ct.Amount.Currency.Id, ct.Fees.Value, ct.Description, updatedBalance, 0,
                                     ct.PaymentType, ct.TransactionDate, ct.Status);
     }
+
+    private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account, CashTransaction transaction) =>
+        new()
+        {
+            Account = account,
+            Transaction = transaction
+        };
 
     private string GetInitiatorCode(BankAssetType initiatedBy)
     {

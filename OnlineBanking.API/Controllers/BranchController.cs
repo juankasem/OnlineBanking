@@ -2,7 +2,9 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Constants;
+using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
+using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.API.Controllers;
@@ -36,10 +38,22 @@ public class BranchController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountRequest request,
-                                                        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request,
+                                                    CancellationToken cancellationToken = default)
     {
-        var command = _mapper.Map<CreateBankAccountCommand>(request);
+        var command = _mapper.Map<CreateBranchCommand>(request);
+        var result = await _mediator.Send(command);
+
+        if (result.IsError) HandleErrorResponse(result.Errors);
+
+        return Ok();
+    }
+
+    [HttpDelete(ApiRoutes.Branches.IdRoute)]
+    public async Task<IActionResult> DeleteBranch([FromRoute] int id,
+                                                CancellationToken cancellationToken = default)
+    {
+        var command = new DeleteBranchCommand() { BranchId = id };
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

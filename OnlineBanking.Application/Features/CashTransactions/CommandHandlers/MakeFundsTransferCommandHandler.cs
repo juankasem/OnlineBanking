@@ -50,9 +50,9 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
         try
         {
             //Perform validations
-            var fromBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
+            var fromAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
 
-            if (fromBankAccount is null)
+            if (fromAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.From));
@@ -60,7 +60,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                 return result;
             }
 
-            if (!fromBankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+            if (!fromAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
                 string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.From));
@@ -68,9 +68,9 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                 return result;
             }
 
-            var toBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
+            var toAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
 
-            if (toBankAccount is null)
+            if (toAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.To));
@@ -80,24 +80,27 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
             var amountToTransfer = request.BaseCashTransaction.Amount.Value;
 
-            if (fromBankAccount.AllowedBalanceToUse < amountToTransfer)
+            if (fromAccount.AllowedBalanceToUse < amountToTransfer)
             {
                 result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-            
+
                 return result;
             }
-            
-            //Update sender's account
-            var updatedFromBalance = fromBankAccount.UpdateBalance(amountToTransfer, OperationType.Subtract);
-            await _uow.SaveAsync();
 
-            //Update recipient's account
-            var updatedToBalance = toBankAccount.UpdateBalance(amountToTransfer, OperationType.Add);
-            await _uow.SaveAsync();
+            //Update sender's & Recipient's account
+            var updatedFromBalance = fromAccount.UpdateBalance(amountToTransfer, OperationType.Subtract);
+            var updatedToBalance = toAccount.UpdateBalance(amountToTransfer, OperationType.Add);
 
-            var cashTransaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
+            var transaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
 
-            await _uow.CashTransactions.AddAsync(cashTransaction);
+            //Update Sender's account
+            fromAccount.AddCashTransaction(CreateAccountTransaction(fromAccount, transaction));
+            await _uow.BankAccounts.UpdateAsync(fromAccount);
+
+            //Update Recipient's account
+            toAccount.AddCashTransaction(CreateAccountTransaction(toAccount, transaction));
+            await _uow.BankAccounts.UpdateAsync(toAccount);
+
             await dbContextTransaction.CommitAsync();
 
             return result;
@@ -124,9 +127,15 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
         var ct = request.BaseCashTransaction;
 
         return CashTransaction.Create(ct.ReferenceNo, ct.Type, ct.InitiatedBy,
-                                    request.From, request.To, ct.Amount.Value, ct.Amount.Currency.Id, 
+                                    request.From, request.To, ct.Amount.Value, ct.Amount.Currency.Id,
                                     ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
                                     ct.PaymentType, ct.TransactionDate, ct.Status);
     }
+
+     private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account, CashTransaction transaction) =>
+        new(){
+                Account = account,
+                Transaction = transaction
+        };
     #endregion
 }

@@ -54,7 +54,7 @@ public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBan
 
         foreach (var accountOwner in accountOwners)
         {
-               var bankAccountOwner = new CustomerBankAccount()
+            var bankAccountOwner = new CustomerBankAccount()
                 {
                     Customer = accountOwner,
                     BankAccount = bankAccount,

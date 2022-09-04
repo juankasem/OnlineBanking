@@ -27,7 +27,7 @@ public class BankAccountMapper : IBankAccountMapper
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
                                         MapToAccountOwners(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountCashTransactions(bankAccount.CashTransactions.ToList(), currency),
+                                        MapToAccountCashTransactions(bankAccount.AccountTransactions.ToList(), currency),
                                         MapToAccountFastTransactions(bankAccount.FastTransactions.ToList(), currency),
                                         MapToAccountCreditCards(bankAccount.CreditCards.ToList(), currency),
                                         MapToAccountDebitCards(bankAccount.DebitCards.ToList(), currency));
@@ -43,7 +43,7 @@ public class BankAccountMapper : IBankAccountMapper
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
                                         MapToAccountOwners(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountCashTransactions(bankAccount.CashTransactions.ToList(), currency),
+                                        MapToAccountCashTransactions(bankAccount.AccountTransactions.ToList(), currency),
                                         MapToAccountFastTransactions(bankAccount.FastTransactions.ToList(), currency),
                                         MapToAccountCreditCards(bankAccount.CreditCards.ToList(), currency),
                                         MapToAccountDebitCards(bankAccount.DebitCards.ToList(), currency));
@@ -73,21 +73,22 @@ public class BankAccountMapper : IBankAccountMapper
         return bankAccountOwners;
     }
 
-    private List<AccountCashTransactionDto> MapToAccountCashTransactions(List<CashTransaction> cashTransactions, CurrencyDto currency)
+    private List<AccountCashTransactionDto> MapToAccountCashTransactions(List<AccountTransaction> cashTransactions, CurrencyDto currency)
     {
-        var accountCashTransactions = new List<AccountCashTransactionDto>();
+        var accountTransactions = new List<AccountCashTransactionDto>();
 
-        foreach (var ct in cashTransactions)
+        foreach (var cashTransaction in cashTransactions)
         {
-            var cashTransaction = new AccountCashTransactionDto(ct.Type, ct.InitiatedBy,
+            var ct = cashTransaction.Transaction;
+            var accountTransaction = new AccountCashTransactionDto(ct.Type, ct.InitiatedBy,
                                                                 CreateMoney(ct.Amount, currency), CreateMoney(ct.Fees, currency),
                                                                 ct.Description, ct.PaymentType, ct.TransactionDate, ct.Status,
                                                                 ct.From, ct.To, ct.Sender, ct.Recipient);
 
-            accountCashTransactions.Add(cashTransaction);
+            accountTransactions.Add(accountTransaction);
         }
 
-        return accountCashTransactions;
+        return accountTransactions;
     }
 
     private List<AccountFastTransactionDto> MapToAccountFastTransactions(List<FastTransaction> fastTransactions, CurrencyDto currency)

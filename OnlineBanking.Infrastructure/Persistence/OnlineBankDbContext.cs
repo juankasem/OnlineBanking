@@ -19,6 +19,7 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
 
     public DbSet<AppUser> AppUsers { get; set; }
     public DbSet<BankAccount> BankAccounts { get; set; }
+    public DbSet<AccountTransaction> AccountTransactions { get; set; }
     public DbSet<Branch> Branches { get; set; }
     public DbSet<CashTransaction> CashTransactions { get; set; }
     public DbSet<CreditCard> CreditCards { get; set; }
@@ -43,7 +44,17 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
                     .HasOne(b => b.BankAccount)
                     .WithMany(c => c.BankAccountOwners)
                     .HasForeignKey(c => c.BankAccountId);
-                    
+
+        modelBuilder.Entity<AccountTransaction>()
+                .HasOne(ac => ac.Account)
+                .WithMany(ac => ac.AccountTransactions)
+                .HasForeignKey(ac => ac.AccountId);
+
+        modelBuilder.Entity<AccountTransaction>()
+                    .HasOne(ac => ac.Transaction)
+                    .WithMany(c => c.AccountTransactions)
+                    .HasForeignKey(c => c.TransactionId);
+
         base.OnModelCreating(modelBuilder);
     }
 

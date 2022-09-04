@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Mappings.BankAccounts;
-using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
@@ -24,7 +22,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                                                 .Include(b => b.BankAccount)
                                                 .ThenInclude(c => c.Branch)
                                                 .Include(b => b.BankAccount)
-                                                .ThenInclude(c => c.CashTransactions)
+                                                .ThenInclude(c => c.AccountTransactions)
                                                 .Include(b => b.BankAccount)
                                                 .ThenInclude(c => c.FastTransactions)
                                                 .ToListAsync();
@@ -34,7 +32,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                                     .Include(b => b.Branch)
                                     .Include(b => b.Currency)
                                     .Include(b => b.BankAccountOwners)
-                                    .Include(b => b.CashTransactions)
+                                    .Include(b => b.AccountTransactions)
                                     .Include(b => b.CreditCards)
                                     .Include(b => b.DebitCards)
                                     .FirstOrDefaultAsync();
@@ -44,7 +42,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                                     .Include(b => b.Branch)
                                     .Include(b => b.Currency)
                                     .Include(b => b.BankAccountOwners)
-                                    .Include(b => b.CashTransactions)
+                                    .Include(b => b.AccountTransactions)
                                     .Include(b => b.CreditCards)
                                     .Include(b => b.DebitCards)
                                     .FirstOrDefaultAsync();
@@ -56,7 +54,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                         .ThenInclude(c => c.Customer)
                         .Include(c => c.Currency)
                         .Include(c => c.Branch)
-                        .Include(c => c.CashTransactions)
+                        .Include(c => c.AccountTransactions)
                         .Include(c => c.CreditCards)
                         .Include(c => c.DebitCards)
                         .FirstOrDefaultAsync();
