@@ -4,7 +4,8 @@ using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccount.Commands;
+using OnlineBanking.Application.Features.BankAccounts;
+using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
