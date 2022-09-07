@@ -94,11 +94,11 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             var transaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
 
             //Update Sender's account
-            fromAccount.AddCashTransaction(CreateAccountTransaction(fromAccount, transaction));
+            fromAccount.AddTransaction(CreateAccountTransaction(fromAccount, transaction));
             await _uow.BankAccounts.UpdateAsync(fromAccount);
 
             //Update Recipient's account
-            toAccount.AddCashTransaction(CreateAccountTransaction(toAccount, transaction));
+            toAccount.AddTransaction(CreateAccountTransaction(toAccount, transaction));
             await _uow.BankAccounts.UpdateAsync(toAccount);
 
             await dbContextTransaction.CommitAsync();
@@ -132,7 +132,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                                     ct.PaymentType, ct.TransactionDate, ct.Status);
     }
 
-     private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account, CashTransaction transaction) =>
+    private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account, CashTransaction transaction) =>
         new(){
                 Account = account,
                 Transaction = transaction

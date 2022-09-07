@@ -78,12 +78,13 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
 
            //Update account balance & Add transaction
             var updatedFromBalance = fromBankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
-            var accountTransaction = new AccountTransaction(){
-                    Account = fromBankAccount,
-                    Transaction = CreateCashTransaction(request, updatedFromBalance)
-                };
+            var accountTransaction = new AccountTransaction()
+            {
+                Account = fromBankAccount,
+                Transaction = CreateCashTransaction(request, updatedFromBalance)
+            };
             
-            fromBankAccount.AddCashTransaction(accountTransaction);
+            fromBankAccount.AddTransaction(accountTransaction);
 
             await _uow.BankAccounts.UpdateAsync(fromBankAccount);
             await dbContextTransaction.CommitAsync();

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {}
+    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "projectUniqueName": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
         "projectName": "OnlineBanking.Core",
-        "projectPath": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
+        "outputPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -26,7 +26,6 @@
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -52,6 +51,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[6.0.5, )"
             }
           },
           "imports": [

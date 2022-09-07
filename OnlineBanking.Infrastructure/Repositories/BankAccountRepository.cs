@@ -59,9 +59,6 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                         .Include(c => c.DebitCards)
                         .FirstOrDefaultAsync();
 
-
-    public async Task<bool> ExistsAsync(string iban)
-    {
-        return await _dbContext.BankAccounts.AnyAsync(b => b.IBAN == iban);
-    }
+    public async Task<bool> ExistsAsync(string iban) =>
+        await _dbContext.BankAccounts.AnyAsync(b => b.IBAN == iban);
 }

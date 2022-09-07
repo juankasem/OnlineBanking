@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Constants;
@@ -42,7 +43,7 @@ public class BankAccount : BaseDomainEntity
     /// Bank Account Balance
     /// </summary>
     public decimal Balance { get; private set; }
-    
+
     /// <summary>
     /// Bank Account allowed balance to use
     /// </summary>
@@ -67,7 +68,10 @@ public class BankAccount : BaseDomainEntity
     public bool IsActive { get; private set; }
 
     // Many-to-many relationship
+    [JsonIgnore]
     public ICollection<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
+    
+    [JsonIgnore]
     public ICollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
     // One-to-Many relationship
@@ -134,11 +138,11 @@ public class BankAccount : BaseDomainEntity
     }
 
     public void AddOwnerToBankAccount(CustomerBankAccount customerBankAccount) =>
-                                        _bankAccountOwners.Add(customerBankAccount);
+                                    _bankAccountOwners.Add(customerBankAccount);
 
-    public void AddCashTransaction(AccountTransaction at) => _accountTransactions.Add(at);
+    public void AddTransaction(AccountTransaction at) => _accountTransactions.Add(at);
 
-    public void UpdateCashTransaction(Guid id, CashTransactionStatus status)
+    public void UpdateTransaction(Guid id, CashTransactionStatus status)
     {
         var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
 
@@ -146,7 +150,7 @@ public class BankAccount : BaseDomainEntity
             accountTransaction.Transaction.Update(status);
     }
 
-    public void DeleteCashTransaction(AccountTransaction at) => _accountTransactions.Remove(at);
+    public void DeleteTransaction(AccountTransaction at) => _accountTransactions.Remove(at);
 
     public void AddFastTransaction(FastTransaction ft) => _fastTransactions.Add(ft);
 
@@ -155,7 +159,7 @@ public class BankAccount : BaseDomainEntity
         var index = _fastTransactions.FindIndex(ct => ct.Id == id);
 
         if (index >= 0)
-        _fastTransactions[index] = ft;
+            _fastTransactions[index] = ft;
     }
 
     public void DelteFastTransaction(FastTransaction ft) => _fastTransactions.Remove(ft);

@@ -71,13 +71,14 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
             var amountToDeposit = request.BaseCashTransaction.Amount.Value;
 
             //Update account balance & Add transaction
-            var updatedToBalance = toBankAccount.UpdateBalance(amountToDeposit, OperationType.Add);    
-            var accountTransaction = new AccountTransaction(){
-                    Account = toBankAccount,
-                    Transaction = CreateCashTransaction(request, updatedToBalance)
-                };
+            var updatedToBalance = toBankAccount.UpdateBalance(amountToDeposit, OperationType.Add);
+            var accountTransaction = new AccountTransaction()
+            {
+                Account = toBankAccount,
+                Transaction = CreateCashTransaction(request, updatedToBalance)
+            };
 
-            toBankAccount.AddCashTransaction(accountTransaction);
+            toBankAccount.AddTransaction(accountTransaction);
 
             await _uow.BankAccounts.UpdateAsync(toBankAccount);
             await dbContextTransaction.CommitAsync();
