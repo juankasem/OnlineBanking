@@ -1,12 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FluentValidation;
+using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
-namespace OnlineBanking.Core.Domain.Validators
+namespace OnlineBanking.Core.Domain.Validators;
+
+public class BranchValidator : AbstractValidator<Branch>
 {
-    public class BranchValidator
+    public BranchValidator()
     {
-        
+        RuleFor(b => b.Name)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
+
+        RuleFor(b => b.AddressId)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
     }
 }

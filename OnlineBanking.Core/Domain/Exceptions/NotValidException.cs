@@ -1,24 +1,23 @@
 using System;
 using System.Collections.Generic;
 
-namespace OnlineBanking.Core.Domain.Exceptions
+namespace OnlineBanking.Core.Domain.Exceptions;
+
+public class NotValidException : Exception
 {
-    public class NotValidException : Exception
+    internal NotValidException()
     {
-        internal NotValidException()
-        {
-            ValidationErrors = new List<string>();
-        }
-
-        internal NotValidException(string message) : base(message)
-        {
-            ValidationErrors = new List<string>();
-        }
-
-        internal NotValidException(string message, Exception inner) : base(message, inner)
-        {
-            ValidationErrors = new List<string>();
-        }
-        public List<string> ValidationErrors { get; }
+        ValidationErrors = new List<string>();
     }
+
+    internal NotValidException(string message) : base(message)
+    {
+        ValidationErrors = new List<string>();
+    }
+
+    internal NotValidException(string message, Exception inner) : base(message, inner)
+    {
+        ValidationErrors = new List<string>();
+    }
+    public List<string> ValidationErrors { get; }
 }

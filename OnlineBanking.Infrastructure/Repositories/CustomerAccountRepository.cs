@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
@@ -13,5 +14,5 @@ public class CustomerAccountRepository : GenericRepository<CustomerBankAccount>,
     }
 
     public async Task<CustomerBankAccount> GetCustomerAccountAsync(Guid customerId, Guid accountId) =>
-    await _dbContext.CustomerBankAccounts.FindAsync(customerId, accountId);
+    await _dbContext.CustomerBankAccounts.AsNoTracking().SingleOrDefaultAsync(x => x.CustomerId == customerId && x.BankAccountId == accountId);
 }

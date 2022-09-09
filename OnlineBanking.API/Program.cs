@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
+builder.Services.ConfigureIdentityServices(configuration);
 builder.Services.ConfigureApplicationServices(configuration);
 builder.Services.ConfigureInfrastructureServices(configuration);
 builder.Services.ConfigurePersistenceServices(configuration);
