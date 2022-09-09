@@ -13,6 +13,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
+using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
 
@@ -29,6 +30,8 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
+
+        var validaor = new BankAccountValidator();
 
         try
         {
@@ -82,7 +85,7 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
     #region Private helper methods
     private OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
-     OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.
+    OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.
                 BankAccount.Create(request.AccountNo, request.IBAN, request.Type,
                                     request.BranchId, request.AccountBalance.Balance,
                                     request.AccountBalance.AllowedBalanceToUse, request.AccountBalance.MinimumAllowedBalance,

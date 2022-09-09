@@ -7,5 +7,4 @@ namespace OnlineBanking.Application.Features.Branch.Queries;
 
 public class GetAllBranchesRequest : IRequest<ApiResult<BranchListResponse>>
 {
-
 }

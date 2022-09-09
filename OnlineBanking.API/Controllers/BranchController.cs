@@ -49,6 +49,18 @@ public class BranchController : BaseApiController
         return Ok();
     }
 
+    [HttpPut]
+    public async Task<IActionResult> UpdateBranch([FromRoute] int id, [FromBody] UpdateBranchRequest request,
+                                                    CancellationToken cancellationToken = default)
+    {
+        var command = _mapper.Map<CreateBranchCommand>(request);
+        var result = await _mediator.Send(command);
+
+        if (result.IsError) HandleErrorResponse(result.Errors);
+
+        return Ok();
+    }
+
     [HttpDelete(ApiRoutes.Branches.IdRoute)]
     public async Task<IActionResult> DeleteBranch([FromRoute] int id,
                                                 CancellationToken cancellationToken = default)

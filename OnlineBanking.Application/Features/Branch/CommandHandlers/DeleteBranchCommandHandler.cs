@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OnlineBanking.Application.Features.Branch.CommandHandlers
 {
-    public class CreateBranchHandler
+    public class DeleteBranchCommandHandler
     {
         
     }
