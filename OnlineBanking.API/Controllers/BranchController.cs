@@ -27,7 +27,7 @@ public class BranchController : BaseApiController
     [HttpGet(ApiRoutes.Branches.IdRoute)]
     [ProducesResponseType(typeof(BranchResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BranchResponse>> GetBranchById([FromRoute] int id,
-                                                                    CancellationToken cancellationToken = default)
+                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetBranchByIdRequest() { BranchId = id };
         var result = await _mediator.Send(query);
@@ -49,7 +49,7 @@ public class BranchController : BaseApiController
         return Ok();
     }
 
-    [HttpPut]
+    [HttpPut(ApiRoutes.Branches.IdRoute)]
     public async Task<IActionResult> UpdateBranch([FromRoute] int id, [FromBody] UpdateBranchRequest request,
                                                     CancellationToken cancellationToken = default)
     {

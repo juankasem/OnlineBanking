@@ -12,8 +12,9 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<OnlineBankDbContext>(options =>
-
-        options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        {
+            options.UseSqlServer(configuration.GetConnectionString("OnlineBankConnection"));
+        });
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IBankAccountRepository, BankAccountRepository>();
