@@ -1,63 +1,40 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32002.261
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{80D27A89-43CA-47BC-B29C-127C2FB3F8A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.API", "OnlineBanking.API\OnlineBanking.API.csproj", "{3563217A-F27F-4FB3-A6FE-1D634314E8B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{9A96AEC9-E1D1-4DF1-B5E9-16BFC69EFDAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Application", "OnlineBanking.Application\OnlineBanking.Application.csproj", "{E66AF41D-5FBC-4AAC-840C-29046C3F3802}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C5B63C28-46CD-4063-8398-4988CFCEAFBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Core", "OnlineBanking.Core\OnlineBanking.Core.csproj", "{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{0663A242-7772-4A64-8F84-E40515D8F086}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{16BAEC9A-FE06-46BA-8505-B2E44E41D6A8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Domain", "OnlineBanking.Domain\OnlineBanking.Domain.csproj", "{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Application", "OnlineBanking.Application\OnlineBanking.Application.csproj", "{C960E042-AC2A-4188-8F16-2D4FBEE5A70A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.API", "OnlineBanking.API\OnlineBanking.API.csproj", "{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Persistence", "OnlineBanking.Persistence\OnlineBanking.Persistence.csproj", "{6DFB2597-A95B-4050-9504-1F04122C3C71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineBanking.Infrastructure", "OnlineBanking.Infrastructure\OnlineBanking.Infrastructure.csproj", "{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C960E042-AC2A-4188-8F16-2D4FBEE5A70A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C960E042-AC2A-4188-8F16-2D4FBEE5A70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C960E042-AC2A-4188-8F16-2D4FBEE5A70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C960E042-AC2A-4188-8F16-2D4FBEE5A70A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DFB2597-A95B-4050-9504-1F04122C3C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DFB2597-A95B-4050-9504-1F04122C3C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DFB2597-A95B-4050-9504-1F04122C3C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DFB2597-A95B-4050-9504-1F04122C3C71}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{9A96AEC9-E1D1-4DF1-B5E9-16BFC69EFDAC} = {80D27A89-43CA-47BC-B29C-127C2FB3F8A0}
-		{C5B63C28-46CD-4063-8398-4988CFCEAFBA} = {80D27A89-43CA-47BC-B29C-127C2FB3F8A0}
-		{0663A242-7772-4A64-8F84-E40515D8F086} = {80D27A89-43CA-47BC-B29C-127C2FB3F8A0}
-		{16BAEC9A-FE06-46BA-8505-B2E44E41D6A8} = {80D27A89-43CA-47BC-B29C-127C2FB3F8A0}
-		{4A44C7B9-7C87-4AC5-81FD-1CF4B5395781} = {C5B63C28-46CD-4063-8398-4988CFCEAFBA}
-		{C960E042-AC2A-4188-8F16-2D4FBEE5A70A} = {C5B63C28-46CD-4063-8398-4988CFCEAFBA}
-		{2AA6EC0B-521E-4773-B3DA-60943CBDCE4D} = {9A96AEC9-E1D1-4DF1-B5E9-16BFC69EFDAC}
-		{6DFB2597-A95B-4050-9504-1F04122C3C71} = {0663A242-7772-4A64-8F84-E40515D8F086}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {05933821-9B6F-4395-B76C-4A1D71DD5E99}
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3563217A-F27F-4FB3-A6FE-1D634314E8B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3563217A-F27F-4FB3-A6FE-1D634314E8B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3563217A-F27F-4FB3-A6FE-1D634314E8B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3563217A-F27F-4FB3-A6FE-1D634314E8B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E66AF41D-5FBC-4AAC-840C-29046C3F3802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E66AF41D-5FBC-4AAC-840C-29046C3F3802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E66AF41D-5FBC-4AAC-840C-29046C3F3802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E66AF41D-5FBC-4AAC-840C-29046C3F3802}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

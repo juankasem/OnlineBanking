@@ -11,8 +11,5 @@ public class BranchValidator : AbstractValidator<Branch>
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
-        RuleFor(b => b.AddressId)
-        .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} can't be empty");
     }
 }

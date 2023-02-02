@@ -1,26 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj": {}
+    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj": {}
   },
   "projects": {
-    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj": {
+    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
+        "projectUniqueName": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
         "projectName": "OnlineBanking.API",
-        "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\obj\\",
+        "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
+        "packagesPath": "C:\\Users\\jkasem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jkasem\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -32,11 +26,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
-                "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj"
+              "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
+                "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj"
               },
-              "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj": {
-                "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj"
+              "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj"
               }
             }
           }
@@ -59,10 +53,6 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[6.0.8, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -74,7 +64,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -86,41 +77,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
+    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj",
+        "projectUniqueName": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj",
         "projectName": "OnlineBanking.Application",
-        "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\obj\\",
+        "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj",
+        "packagesPath": "C:\\Users\\jkasem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jkasem\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
-                "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
+              "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+                "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
               }
             }
           }
@@ -154,7 +138,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -163,33 +148,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "projectUniqueName": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
         "projectName": "OnlineBanking.Core",
-        "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
+        "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "packagesPath": "C:\\Users\\jkasem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jkasem\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -215,6 +193,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[6.0.5, )"
             }
           },
           "imports": [
@@ -223,7 +205,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -232,44 +215,37 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj": {
+    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj",
         "projectName": "OnlineBanking.Infrastructure",
-        "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\jkasem\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\jkasem\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
-                "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj"
+              "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj": {
+                "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Application\\OnlineBanking.Application.csproj"
               },
-              "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
-                "projectPath": "c:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
+              "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+                "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
               }
             }
           }
@@ -284,6 +260,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.8, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[6.0.8, )"
@@ -303,7 +283,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -312,7 +293,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
