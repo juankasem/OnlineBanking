@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnlineBanking.Application.Models.Loans.Base
+namespace OnlineBanking.Application.Models.Loans.Responses
 {
-    public class LoanDto
+    public class LoanDetailsResponse
     {
         
     }
