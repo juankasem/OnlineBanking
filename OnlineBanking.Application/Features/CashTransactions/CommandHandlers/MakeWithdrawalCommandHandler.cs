@@ -116,12 +116,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
                                     ct.PaymentType, ct.TransactionDate, ct.Status);
     }
 
-    private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account, CashTransaction transaction) =>
-        new()
-        {
-            Account = account,
-            Transaction = transaction
-        };
 
     private string GetInitiatorCode(BankAssetType initiatedBy)
     {

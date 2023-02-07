@@ -60,11 +60,11 @@ public class CashTransactionsController : BaseApiController
     // POST api/v1/cash-transactions
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> CreateCashTransaction([FromBody] CreateCashTransactionRequest request,
-                                                            CancellationToken cancellationToken = default)
+    public async Task<IActionResult> PostCashTransaction([FromBody] CreateCashTransactionRequest request,
+                                                        CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
-        
+
         switch (request.BaseCashTransaction.Type)
         {
             case CashTransactionType.Deposit:

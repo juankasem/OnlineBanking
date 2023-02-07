@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using OnlineBanking.Application;
 using OnlineBanking.Infrastructure;
 
@@ -24,7 +23,7 @@ builder.Services.AddCors(options =>
     );
 });
 
-
+   
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

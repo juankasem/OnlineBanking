@@ -19,48 +19,48 @@ public class BankAccountMapper : IBankAccountMapper
     
     public BankAccountDto MapToDtoModel(BankAccount bankAccount)
     {
-        var currency = MapToAccountCurrency(bankAccount.Currency);
+        var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
         return new(bankAccount.AccountNo, bankAccount.IBAN, bankAccount.Type,
-                                        MapToAccountBranch(bankAccount.Branch),
-                                        MapToAccountBalance(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
+                                        MapToAccountBranchDTO(bankAccount.Branch),
+                                        MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
-                                        MapToAccountOwners(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountCashTransactions(bankAccount.AccountTransactions.ToList(), currency),
-                                        MapToAccountFastTransactions(bankAccount.FastTransactions.ToList(), currency),
-                                        MapToAccountCreditCards(bankAccount.CreditCards.ToList(), currency),
-                                        MapToAccountDebitCards(bankAccount.DebitCards.ToList(), currency));
+                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners.ToList()),
+                                        MapToAccountTransactionsDTO(bankAccount.AccountTransactions.ToList(), currency),
+                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions.ToList(), currency),
+                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards.ToList(), currency),
+                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards.ToList(), currency));
     }
 
     public BankAccountResponse MapToResponseModel(BankAccount bankAccount)
     {
-        var currency = MapToAccountCurrency(bankAccount.Currency);
+        var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
         return new(bankAccount.AccountNo, bankAccount.IBAN, bankAccount.Type,
-                                        MapToAccountBranch(bankAccount.Branch),
-                                        MapToAccountBalance(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
+                                        MapToAccountBranchDTO(bankAccount.Branch),
+                                        MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
-                                        MapToAccountOwners(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountCashTransactions(bankAccount.AccountTransactions.ToList(), currency),
-                                        MapToAccountFastTransactions(bankAccount.FastTransactions.ToList(), currency),
-                                        MapToAccountCreditCards(bankAccount.CreditCards.ToList(), currency),
-                                        MapToAccountDebitCards(bankAccount.DebitCards.ToList(), currency));
+                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners.ToList()),
+                                        MapToAccountTransactionsDTO(bankAccount.AccountTransactions.ToList(), currency),
+                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions.ToList(), currency),
+                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards.ToList(), currency),
+                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards.ToList(), currency));
     }
 
     #region Private helper methods
-    private CurrencyDto MapToAccountCurrency(Currency currency) =>
+    private CurrencyDto MapToAccountCurrencyDTO(Currency currency) =>
         new(currency.Id, currency.Code, currency.Name, currency.Symbol);
     
-    private BranchDto MapToAccountBranch(Branch branch) =>
+    private BranchDto MapToAccountBranchDTO(Branch branch) =>
         new(branch.Id, branch.Name);
 
-    private AccountBalanceDto MapToAccountBalance(decimal balance, decimal allowedBalanceToUse,
+    private AccountBalanceDto MapToAccountBalanceDTO(decimal balance, decimal allowedBalanceToUse,
                                                     decimal minimumAllowedBalance, decimal debt ) =>
         new (balance, allowedBalanceToUse, minimumAllowedBalance, debt);
 
-    private List<AccountOwnerDto> MapToAccountOwners(List<CustomerBankAccount> customerBankAccounts)
+    private List<AccountOwnerDto> MapToAccountOwnersDTO(List<CustomerBankAccount> customerBankAccounts)
     {
         var bankAccountOwners = new List<AccountOwnerDto>();
 
@@ -73,39 +73,39 @@ public class BankAccountMapper : IBankAccountMapper
         return bankAccountOwners;
     }
 
-    private List<AccountCashTransactionDto> MapToAccountCashTransactions(List<AccountTransaction> cashTransactions, CurrencyDto currency)
+    private List<AccountCashTransactionDto> MapToAccountTransactionsDTO(List<AccountTransaction> accountTransactions, CurrencyDto currency)
     {
-        var accountTransactions = new List<AccountCashTransactionDto>();
+        var accountTransactionsDTO = new List<AccountCashTransactionDto>();
 
-        foreach (var cashTransaction in cashTransactions)
+        foreach (var accountTransaction in accountTransactions)
         {
-            var ct = cashTransaction.Transaction;
-            var accountTransaction = new AccountCashTransactionDto(ct.Type, ct.InitiatedBy,
-                                                                CreateMoney(ct.Amount, currency), CreateMoney(ct.Fees, currency),
-                                                                ct.Description, ct.PaymentType, ct.TransactionDate, ct.Status,
-                                                                ct.From, ct.To, ct.Sender, ct.Recipient);
+            var at = accountTransaction.Transaction;
+            var accountTransactionDTO = new AccountCashTransactionDto(at.Type, at.InitiatedBy,
+                                                                CreateMoney(at.Amount, currency), CreateMoney(at.Fees, currency),
+                                                                at.Description, at.PaymentType, at.TransactionDate, at.Status,
+                                                                at.From, at.To, at.Sender, at.Recipient);
 
-            accountTransactions.Add(accountTransaction);
+            accountTransactionsDTO.Add(accountTransactionDTO);
         }
 
-        return accountTransactions;
+        return accountTransactionsDTO;
     }
 
-    private List<AccountFastTransactionDto> MapToAccountFastTransactions(List<FastTransaction> fastTransactions, CurrencyDto currency)
+    private List<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(List<FastTransaction> fastTransactions, CurrencyDto currency)
     {
         var accountFastTransactions = new List<AccountFastTransactionDto>();
 
         return accountFastTransactions;
     }
 
-    private List<CreditCardDto> MapToAccountCreditCards(List<CreditCard> creditCards, CurrencyDto currency)
+    private List<CreditCardDto> MapToAccountCreditCardsDTO(List<CreditCard> creditCards, CurrencyDto currency)
     {
         var accountCreditCards = new List<CreditCardDto>();
 
         return accountCreditCards;
     }
 
-    private List<DebitCardDto> MapToAccountDebitCards(List<DebitCard> debitCards, CurrencyDto currency)
+    private List<DebitCardDto> MapToAccountDebitCardsDTO(List<DebitCard> debitCards, CurrencyDto currency)
     {
         var accountDebitCards = new List<DebitCardDto>();
 

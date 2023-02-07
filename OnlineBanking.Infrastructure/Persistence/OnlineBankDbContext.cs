@@ -44,14 +44,16 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
                     .HasOne(b => b.BankAccount)
                     .WithMany(c => c.BankAccountOwners)
                     .HasForeignKey(c => c.BankAccountId);
+        
+        modelBuilder.Entity<AccountTransaction>().HasKey(ac => new { ac.AccountId, ac.TransactionId });
 
         modelBuilder.Entity<AccountTransaction>()
-                .HasOne(ac => ac.Account)
+                .HasOne<BankAccount>(ac => ac.Account)
                 .WithMany(ac => ac.AccountTransactions)
                 .HasForeignKey(ac => ac.AccountId);
 
         modelBuilder.Entity<AccountTransaction>()
-                    .HasOne(ac => ac.Transaction)
+                    .HasOne<CashTransaction>(ac => ac.Transaction)
                     .WithMany(c => c.AccountTransactions)
                     .HasForeignKey(c => c.TransactionId);
 

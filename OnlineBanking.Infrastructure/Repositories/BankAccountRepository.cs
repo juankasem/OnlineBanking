@@ -15,17 +15,22 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
     {
     }
 
-    public async Task<IReadOnlyList<CustomerBankAccount>> GetAccountsByCustomerNoAsync(string customerNo) =>
-        await _dbContext.CustomerBankAccounts.Where(cba => cba.Customer.CustomerNo == customerNo)
-                                                .Include(cba => cba.BankAccount)
-                                                .ThenInclude(c => c.Currency)
-                                                .Include(b => b.BankAccount)
-                                                .ThenInclude(c => c.Branch)
-                                                .Include(b => b.BankAccount)
-                                                .ThenInclude(c => c.AccountTransactions)
-                                                .Include(b => b.BankAccount)
-                                                .ThenInclude(c => c.FastTransactions)
-                                                .ToListAsync();
+    public async Task<IReadOnlyList<CustomerBankAccount>> GetAccountsByCustomerNoAsync(string customerNo)
+    {
+        IQueryable<CustomerBankAccount> customerBankAccounts = _dbContext.CustomerBankAccounts.AsQueryable();
+
+        return await customerBankAccounts.Where(cba => cba.Customer.CustomerNo == customerNo)
+                                                     .Include(cba => cba.BankAccount)
+                                                     .ThenInclude(c => c.Currency)
+                                                     .Include(b => b.BankAccount)
+                                                     .ThenInclude(c => c.Branch)
+                                                     .Include(b => b.BankAccount)
+                                                     .ThenInclude(c => c.AccountTransactions)
+                                                     .Include(b => b.BankAccount)
+                                                     .ThenInclude(c => c.FastTransactions)
+                                                     .ToListAsync();
+    }
+     
 
     public async Task<BankAccount> GetByAccountNoAsync(string accountNo) =>
     await _dbContext.BankAccounts.Where(b => b.AccountNo == accountNo)
