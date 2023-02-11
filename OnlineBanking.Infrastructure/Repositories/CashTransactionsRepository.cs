@@ -18,6 +18,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
          return await _dbContext.CashTransactions.Where(c => c.From == accountNo || c.To == accountNo)
                                                     .OrderByDescending(c => c.CreatedOn)
+                                                    .AsNoTracking()
                                                     .ToListAsync();
     }
 
@@ -25,6 +26,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
          return await _dbContext.CashTransactions.Where(c => c.From == iban || c.To == iban)
                                                 .OrderByDescending(c => c.CreatedOn)
+                                                .AsNoTracking()
                                                 .ToListAsync();
     }
 }

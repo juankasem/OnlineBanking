@@ -95,7 +95,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
             //Update Sender's account
             fromAccount.AddTransaction(CreateAccountTransaction(fromAccount, transaction));
-            await _uow.BankAccounts.UpdateAsync(fromAccount);
+            await _uow.BankAccounts.UpdateAsync(fromAccount); 
 
             //Update Recipient's account
             toAccount.AddTransaction(CreateAccountTransaction(toAccount, transaction));

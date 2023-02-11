@@ -14,5 +14,7 @@ public class CustomerAccountRepository : GenericRepository<CustomerBankAccount>,
     }
 
     public async Task<CustomerBankAccount> GetCustomerAccountAsync(Guid customerId, Guid accountId) =>
-    await _dbContext.CustomerBankAccounts.AsNoTracking().SingleOrDefaultAsync(x => x.CustomerId == customerId && x.BankAccountId == accountId);
+    await _dbContext.CustomerBankAccounts
+                    .AsNoTracking()
+                    .SingleOrDefaultAsync(x => x.CustomerId == customerId && x.BankAccountId == accountId);
 }

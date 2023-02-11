@@ -10,6 +10,7 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpContextAccessor();
         services.AddScoped<IAppUserAccessor,AppUserAccessor>();
 
         return services;
