@@ -41,17 +41,17 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
             return result;
         }
 
-        var accountCashTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo);
+        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo);
 
-        if (!accountCashTransactions.Any())
+        if (!accountTransactions.Any())
         {
             return result;
         }
 
-        var mappedCashTransactions = accountCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNo))
+        var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNo))
                                                             .ToImmutableList();
 
-        result.Payload = new(mappedCashTransactions, mappedCashTransactions.Count);
+        result.Payload = new(mappedAccountTransactions, mappedAccountTransactions.Count);
 
         return result;
     }

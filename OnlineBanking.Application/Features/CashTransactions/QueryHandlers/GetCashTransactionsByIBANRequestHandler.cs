@@ -36,17 +36,17 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
             return result;
         }
 
-        var accountCashTransactions = await _uow.CashTransactions.GetByIBANAsync(request.IBAN);
+        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(request.IBAN);
 
-        if (!accountCashTransactions.Any())
+        if (!accountTransactions.Any())
         {
             return result;
         }
 
-        var mappedCashTransactions = accountCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.IBAN))
+        var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.IBAN))
                                                             .ToImmutableList();
 
-        result.Payload = new(mappedCashTransactions, mappedCashTransactions.Count);
+        result.Payload = new(mappedAccountTransactions, mappedAccountTransactions.Count);
 
         return result;
     }
