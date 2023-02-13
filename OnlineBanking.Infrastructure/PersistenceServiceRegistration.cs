@@ -4,6 +4,7 @@ using OnlineBanking.Infrastructure.Repositories;
 using OnlineBanking.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 
 namespace OnlineBanking.Infrastructure;
 
@@ -14,6 +15,11 @@ public static class PersistenceServiceRegistration
         services.AddDbContext<OnlineBankDbContext>(options =>
         {
             options.UseSqlServer(configuration.GetConnectionString("OnlineBankConnection"));
+        });
+
+        services.AddSingleton<IConnectionMultiplexer>(c => {
+            var  options = ConfigurationOptions.Parse(configuration.GetConnectionString("Redis"));
+            return ConnectionMultiplexer.Connect(options);
         });
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));

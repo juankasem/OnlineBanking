@@ -14,19 +14,22 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo)
-    {
-         return await _dbContext.CashTransactions.Where(c => c.From == accountNo || c.To == accountNo)
-                                                    .OrderByDescending(c => c.CreatedOn)
-                                                    .AsNoTracking()
-                                                    .ToListAsync();
-    }
+    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo) =>
+        await _dbContext.AccountTransactions.Include(at => at.Account)
+                                            .Where(at => at.Account.AccountNo == accountNo)
+                                            .Include(at => at.Transaction)
+                                            .OrderByDescending(at => at.Transaction.CreatedOn)
+                                            .Select(at => at.Transaction)
+                                            .AsNoTracking()
+                                            .ToListAsync();
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban)
-    {
-         return await _dbContext.CashTransactions.Where(c => c.From == iban || c.To == iban)
-                                                .OrderByDescending(c => c.CreatedOn)
-                                                .AsNoTracking()
-                                                .ToListAsync();
-    }
+
+    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban) => 
+        await _dbContext.AccountTransactions.Include(at => at.Account)
+                                                   .Where(at => at.Account.IBAN == iban)
+                                                   .Include(at => at.Transaction)
+                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
+                                                   .Select(at => at.Transaction)
+                                                   .AsNoTracking()
+                                                   .ToListAsync();
 }

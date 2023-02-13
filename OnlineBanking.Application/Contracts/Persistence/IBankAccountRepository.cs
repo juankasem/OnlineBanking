@@ -10,5 +10,6 @@ public interface IBankAccountRepository : IGenericRepository<BankAccount>
     Task<BankAccount> GetByAccountNoAsync(string accountNo);
     Task<BankAccount> GetByIBANAsync(string iban);
     Task<BankAccount> GetByIBANWithCashTransactionsAsync(string iban);
+
     Task<bool> ExistsAsync(string iban);
 }

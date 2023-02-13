@@ -93,12 +93,16 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
             var transaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
 
-            //Update Sender's account
+            //Add transaction to sender's account
             fromAccount.AddTransaction(CreateAccountTransaction(fromAccount, transaction));
+
+            //Update sender's account
             await _uow.BankAccounts.UpdateAsync(fromAccount); 
 
-            //Update Recipient's account
+            //Add transaction to recipient's account
             toAccount.AddTransaction(CreateAccountTransaction(toAccount, transaction));
+            
+            //Update recipient's account
             await _uow.BankAccounts.UpdateAsync(toAccount);
 
             await dbContextTransaction.CommitAsync();

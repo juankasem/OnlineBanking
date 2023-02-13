@@ -20,7 +20,7 @@ namespace OnlineBanking.Application.Common.Behaviors
             _validator = validator;
         }
 
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var result = new ApiResult<TResponse>();
 
@@ -44,5 +44,6 @@ namespace OnlineBanking.Application.Common.Behaviors
 
             return (dynamic) result;
         }
+
     }
 }

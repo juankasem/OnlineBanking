@@ -72,12 +72,12 @@ public class BankAccount : BaseDomainEntity
     public ICollection<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
     
     [JsonIgnore]
-    public ICollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+    public IReadOnlyCollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
     // One-to-Many relationship
-    public ICollection<FastTransaction> FastTransactions { get { return _fastTransactions; } }
-    public ICollection<CreditCard> CreditCards { get { return _creditCards; } }
-    public ICollection<DebitCard> DebitCards { get { return _debitCards; } }
+    public IReadOnlyCollection<FastTransaction> FastTransactions { get { return _fastTransactions; } }
+    public IReadOnlyCollection<CreditCard> CreditCards { get { return _creditCards; } }
+    public IReadOnlyCollection<DebitCard> DebitCards { get { return _debitCards; } }
 
     private BankAccount(Guid id, string accountNo, string iban, BankAccountType type,
                         int branchId, decimal balance, decimal allowedBalanceToUse,

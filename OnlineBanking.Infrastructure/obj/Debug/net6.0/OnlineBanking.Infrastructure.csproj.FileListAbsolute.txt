@@ -30,3 +30,5 @@ C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.csproj.CoreCompileInputs.cache
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.csproj.CopyComplete
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\ref\OnlineBanking.Infrastructure.dll
+C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net6.0\OnlineBanking.Infrastructure.runtimeconfig.json
+C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net6.0\OnlineBanking.Infrastructure.genruntimeconfig.cache
