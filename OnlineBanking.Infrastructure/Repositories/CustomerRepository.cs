@@ -33,7 +33,7 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
 
     public async Task<Customer> GetByIBANAsync(string iban)
     {
-        var customerAccounts =  _dbContext.CustomerBankAccounts.FirstOrDefault(b => b.BankAccount.IBAN == iban);
+        var customerAccounts = await _dbContext.CustomerBankAccounts.FirstOrDefaultAsync(b => b.BankAccount.IBAN == iban);
         return customerAccounts.Customer;
     } 
 

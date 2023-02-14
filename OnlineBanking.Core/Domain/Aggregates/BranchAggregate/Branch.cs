@@ -17,19 +17,18 @@ public class Branch : BaseDomainEntity
 
     public ICollection<BankAccount> BankAccounts { get { return _bankAccounts; } }
 
-    private Branch(string name, Address address)
+    private Branch(string name)
     {
         Name = name;
-        Address = address;
     }
 
     //factory methods
-    public static Branch Create(string name, Address address)
+    public static Branch Create(string name)
     {
         var validator = new BranchValidator();
 
         var objectToValidate = new Branch(
-            name, address
+            name
         );
 
         var validationResult = validator.Validate(objectToValidate);

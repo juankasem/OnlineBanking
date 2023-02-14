@@ -79,14 +79,14 @@ public class BankAccount : BaseDomainEntity
     public IReadOnlyCollection<CreditCard> CreditCards { get { return _creditCards; } }
     public IReadOnlyCollection<DebitCard> DebitCards { get { return _debitCards; } }
 
-    private BankAccount(Guid id, string accountNo, string iban, BankAccountType type,
+    private BankAccount(Guid id, string accountNo, string iBAN, BankAccountType type,
                         int branchId, decimal balance, decimal allowedBalanceToUse,
                         decimal minimumAllowedBalance, decimal debt,
                         int currencyId, bool isActive = false, bool isDeleted = false)
     {
         Id = id;
         AccountNo = accountNo;
-        IBAN = iban;
+        IBAN = iBAN;
         Type = type;
         BranchId = branchId;
         Balance = balance;

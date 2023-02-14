@@ -63,6 +63,6 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     #region Private helper methods
     private  OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Branch CreateBranch(CreateBranchCommand request, Address address) =>
         OnlineBanking.Core.Domain.Aggregates.BranchAggregate.
-            Branch.Create(request.Name, address);
+            Branch.Create(request.Name);
     #endregion
 }

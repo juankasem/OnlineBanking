@@ -11,7 +11,7 @@ using OnlineBanking.Infrastructure.Repositories.Base;
 
 namespace OnlineBanking.Infrastructure.Repositories;
 
-public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly OnlineBankDbContext _dbContext;
 

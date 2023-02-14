@@ -4558,6 +4558,7 @@
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 7.0.2",
       "Microsoft.AspNetCore.Mvc.Versioning >= 5.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.2",
+      "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.2",
       "OnlineBanking.Application >= 1.0.0",
       "OnlineBanking.Infrastructure >= 1.0.0",
@@ -4619,6 +4620,10 @@
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
+            "target": "Package",
+            "version": "[7.0.2, )"
+          },
+          "Microsoft.EntityFrameworkCore.SqlServer": {
             "target": "Package",
             "version": "[7.0.2, )"
           },

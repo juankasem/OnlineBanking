@@ -16,17 +16,17 @@ public class Customer : BaseDomainEntity
     /// <summary>
     /// ID number
     /// </summary>
-    public string IDNo { get; private set; }
+    public string IdentificationNo { get; private set; }
 
     // <summary>
-    /// ID type (passport, ID, SSN)
+    /// ID type (passport, ID, SSN, etc...)
     /// </summary>
-    public DocumentType IDType { get; private set; }
+    public IdentificationType IdentificationType { get; private set; }
 
     /// <summary>
     ///  Customer Number
     /// </summary>
-    public string CustomerNo { get; set; }
+    public string CustomerNo { get; private set; }
 
     /// <summary>
     /// App user Id
@@ -76,14 +76,15 @@ public class Customer : BaseDomainEntity
     //Many-to-many relationship
     public ICollection<CustomerBankAccount> CustomerBankAccounts { get { return _customerBankAccounts; } }
 
-    private Customer(Guid id, string idNo, DocumentType idType,
+    private Customer(Guid id, string identificationNo, IdentificationType identificationType,
                         string customerNo, string appUserId,
                         string firstName, string middleName, string lastName,
                         string nationality, Gender gender, DateTime birthDate,
-                        string taxNumber, Address address)
+                        string taxNumber)
     {
         Id = id;
-        IDNo = idNo;
+        IdentificationNo = identificationNo;
+        IdentificationType = identificationType;
         CustomerNo = customerNo;
         AppUserId = appUserId;
         FirstName = firstName;
@@ -93,21 +94,20 @@ public class Customer : BaseDomainEntity
         Gender = gender;
         BirthDate = birthDate;
         TaxNumber = taxNumber;
-        Address = address;
     }
 
-    public static Customer Create(string idNo, DocumentType idType,
+    public static Customer Create(string identificationNo, IdentificationType identificationType,
                                     string customerNo, string appUserId,
                                     string firstName, string middleName, string lastName,
                                     string nationality, Gender gender, DateTime birthDate,
-                                    string taxNumber, Address address, Guid? id = null)
+                                    string taxNumber, Guid? id = null)
     {
         var validator = new CustomerValidator();
 
         var objectToValidate = new Customer(
             id ?? Guid.NewGuid(),
-            idNo,
-            idType,
+            identificationNo,
+            identificationType,
             customerNo,
             appUserId,
             firstName,
@@ -116,8 +116,7 @@ public class Customer : BaseDomainEntity
             nationality,
             gender,
             birthDate,
-            taxNumber,
-            address);
+            taxNumber);
 
         var validationResult = validator.Validate(objectToValidate);
 

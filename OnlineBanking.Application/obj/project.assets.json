@@ -1038,8 +1038,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
-              "projectPath": "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
+            "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+              "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj"
             }
           }
         }

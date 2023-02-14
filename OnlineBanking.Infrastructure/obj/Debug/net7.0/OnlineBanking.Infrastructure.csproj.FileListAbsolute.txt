@@ -15,3 +15,5 @@ C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net7.
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net7.0\refint\OnlineBanking.Infrastructure.dll
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net7.0\OnlineBanking.Infrastructure.pdb
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net7.0\ref\OnlineBanking.Infrastructure.dll
+C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\bin\Debug\net7.0\OnlineBanking.Infrastructure.runtimeconfig.json
+C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Infrastructure\obj\Debug\net7.0\OnlineBanking.Infrastructure.genruntimeconfig.cache

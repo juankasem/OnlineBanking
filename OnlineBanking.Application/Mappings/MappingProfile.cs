@@ -7,7 +7,6 @@ using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.Customer.Requests;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 namespace OnlineBanking.Application.Mappings;
 
@@ -20,7 +19,7 @@ public class MappingProfile : Profile
                 .ForMember(d => d.AccountBalance.Balance, o => o.MapFrom(s => s.Balance))
                 .ForMember(d => d.AccountBalance.AllowedBalanceToUse, o => o.MapFrom(s => s.AllowedBalanceToUse))
                 .ForMember(d => d.AccountBalance.MinimumAllowedBalance, o => o.MapFrom(s => s.MinimumAllowedBalance))
-                .ForMember(d => d.AccountBalance.Debt, o => o.MapFrom(s => s.Debt));
+                .ForMember(d => d.AccountBalance.Debt, o => o.MapFrom(s => s.Debt)).ReverseMap();
         
 
         CreateMap<BankAccountDto,BankAccountResponse>().ReverseMap();

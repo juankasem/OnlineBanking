@@ -5,7 +5,7 @@ using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.BankAccount.Requests;
 
-public class CreateBankAccountRequest : IRequest<ApiResult<Unit>>
+public class CreateBankAccountRequest 
 {
     public string AccountNo { get; private set; }
     public string IBAN { get; private set; }

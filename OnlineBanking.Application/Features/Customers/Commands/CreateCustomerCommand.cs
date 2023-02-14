@@ -8,8 +8,8 @@ namespace OnlineBanking.Application.Features.Customers.Commands;
 
 public class CreateCustomerCommand : IRequest<ApiResult<Unit>>
 {
-    public string IDNo { get; set; }
-    public DocumentType IDType { get; set; }
+    public string IdentificationNo { get; set; }
+    public IdentificationType IdentificationType { get; set; }
     public string CustomerNo { get; set; }
     public string AppUserId { get; set; }
     public string FirstName { get; set; }

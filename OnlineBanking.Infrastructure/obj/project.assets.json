@@ -125,6 +125,19 @@
           }
         }
       },
+      "Humanizer.Core/2.14.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/_._": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Humanizer.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "MediatR/11.0.0": {
         "type": "package",
         "dependencies": {
@@ -360,6 +373,28 @@
           "lib/netstandard2.0/_._": {}
         }
       },
+      "Microsoft.EntityFrameworkCore.Design/7.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Humanizer.Core": "2.14.1",
+          "Microsoft.EntityFrameworkCore.Relational": "7.0.2",
+          "Microsoft.Extensions.DependencyModel": "7.0.0",
+          "Mono.TextTemplating": "2.2.1"
+        },
+        "compile": {
+          "lib/net6.0/_._": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.EntityFrameworkCore.Design.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/net6.0/Microsoft.EntityFrameworkCore.Design.props": {}
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational/7.0.2": {
         "type": "package",
         "dependencies": {
@@ -483,6 +518,26 @@
         },
         "runtime": {
           "lib/net7.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        }
+      },
+      "Microsoft.Extensions.DependencyModel/7.0.0": {
+        "type": "package",
+        "dependencies": {
+          "System.Text.Encodings.Web": "7.0.0",
+          "System.Text.Json": "7.0.0"
+        },
+        "compile": {
+          "lib/net7.0/_._": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Microsoft.Extensions.DependencyModel.dll": {
             "related": ".xml"
           }
         },
@@ -806,6 +861,18 @@
           }
         }
       },
+      "Mono.TextTemplating/2.2.1": {
+        "type": "package",
+        "dependencies": {
+          "System.CodeDom": "4.4.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Mono.TextTemplating.dll": {}
+        }
+      },
       "Pipelines.Sockets.Unofficial/2.2.2": {
         "type": "package",
         "dependencies": {
@@ -845,6 +912,17 @@
         },
         "runtime": {
           "lib/netcoreapp2.0/_._": {}
+        }
+      },
+      "System.CodeDom/4.4.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/_._": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {}
         }
       },
       "System.Configuration.ConfigurationManager/5.0.0": {
@@ -1470,6 +1548,24 @@
         "lib/netstandard2.1/FluentValidation.DependencyInjectionExtensions.xml"
       ]
     },
+    "Humanizer.Core/2.14.1": {
+      "sha512": "lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
+      "type": "package",
+      "path": "humanizer.core/2.14.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "humanizer.core.2.14.1.nupkg.sha512",
+        "humanizer.core.nuspec",
+        "lib/net6.0/Humanizer.dll",
+        "lib/net6.0/Humanizer.xml",
+        "lib/netstandard1.0/Humanizer.dll",
+        "lib/netstandard1.0/Humanizer.xml",
+        "lib/netstandard2.0/Humanizer.dll",
+        "lib/netstandard2.0/Humanizer.xml",
+        "logo.png"
+      ]
+    },
     "MediatR/11.0.0": {
       "sha512": "8klzVGZQiA2oxZRzQFBZbdPD/IQUm9RYtfiyTDKhxDQ99Gi93+GXt1ZJjH2D7Lh7ZFHCv5XdkwbmfHEQBCatPg==",
       "type": "package",
@@ -1795,6 +1891,21 @@
         "microsoft.entityframeworkcore.analyzers.nuspec"
       ]
     },
+    "Microsoft.EntityFrameworkCore.Design/7.0.2": {
+      "sha512": "gUUucCoJci8BBxOcU/XuuldUZpCo5Od8lwFEzZ5WywnvDfSmARnXNe97BpjL+JiBhSrnuTxW/wCJjWqPonXXHQ==",
+      "type": "package",
+      "path": "microsoft.entityframeworkcore.design/7.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "build/net6.0/Microsoft.EntityFrameworkCore.Design.props",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.Design.dll",
+        "lib/net6.0/Microsoft.EntityFrameworkCore.Design.xml",
+        "microsoft.entityframeworkcore.design.7.0.2.nupkg.sha512",
+        "microsoft.entityframeworkcore.design.nuspec"
+      ]
+    },
     "Microsoft.EntityFrameworkCore.Relational/7.0.2": {
       "sha512": "TbTGOdaGtjps3GP7rLWXEXzmP+EXhV8AwPE/ov0QYhs5i5vKZX5ZpVLMnco2MeMtiPgLyxE7DhQT8s1wlu190g==",
       "type": "package",
@@ -1959,6 +2070,34 @@
         "lib/netstandard2.1/Microsoft.Extensions.DependencyInjection.Abstractions.xml",
         "microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
         "microsoft.extensions.dependencyinjection.abstractions.nuspec",
+        "useSharedDesignerContext.txt"
+      ]
+    },
+    "Microsoft.Extensions.DependencyModel/7.0.0": {
+      "sha512": "oONNYd71J3LzkWc4fUHl3SvMfiQMYUCo/mDHDEu76hYYxdhdrPYv6fvGv9nnKVyhE9P0h20AU8RZB5OOWQcAXg==",
+      "type": "package",
+      "path": "microsoft.extensions.dependencymodel/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "README.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Extensions.DependencyModel.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Extensions.DependencyModel.targets",
+        "lib/net462/Microsoft.Extensions.DependencyModel.dll",
+        "lib/net462/Microsoft.Extensions.DependencyModel.xml",
+        "lib/net6.0/Microsoft.Extensions.DependencyModel.dll",
+        "lib/net6.0/Microsoft.Extensions.DependencyModel.xml",
+        "lib/net7.0/Microsoft.Extensions.DependencyModel.dll",
+        "lib/net7.0/Microsoft.Extensions.DependencyModel.xml",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.dll",
+        "lib/netstandard2.0/Microsoft.Extensions.DependencyModel.xml",
+        "microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512",
+        "microsoft.extensions.dependencymodel.nuspec",
         "useSharedDesignerContext.txt"
       ]
     },
@@ -2453,6 +2592,19 @@
         "version.txt"
       ]
     },
+    "Mono.TextTemplating/2.2.1": {
+      "sha512": "KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
+      "type": "package",
+      "path": "mono.texttemplating/2.2.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net472/Mono.TextTemplating.dll",
+        "lib/netstandard2.0/Mono.TextTemplating.dll",
+        "mono.texttemplating.2.2.1.nupkg.sha512",
+        "mono.texttemplating.nuspec"
+      ]
+    },
     "Pipelines.Sockets.Unofficial/2.2.2": {
       "sha512": "Bhk0FWxH1paI+18zr1g5cTL+ebeuDcBCR+rRFO+fKEhretgjs7MF2Mc1P64FGLecWp4zKCUOPzngBNrqVyY7Zg==",
       "type": "package",
@@ -2524,6 +2676,27 @@
         "ref/uap10.0.16299/_._",
         "system.buffers.4.5.1.nupkg.sha512",
         "system.buffers.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.CodeDom/4.4.0": {
+      "sha512": "2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA==",
+      "type": "package",
+      "path": "system.codedom/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.CodeDom.dll",
+        "lib/netstandard2.0/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.dll",
+        "ref/net461/System.CodeDom.xml",
+        "ref/netstandard2.0/System.CodeDom.dll",
+        "ref/netstandard2.0/System.CodeDom.xml",
+        "system.codedom.4.4.0.nupkg.sha512",
+        "system.codedom.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
@@ -3865,6 +4038,7 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.2",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 7.0.2",
       "Microsoft.EntityFrameworkCore >= 7.0.2",
+      "Microsoft.EntityFrameworkCore.Design >= 7.0.2",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.2",
       "OnlineBanking.Application >= 1.0.0",
       "StackExchange.Redis >= 2.6.90"
@@ -3920,6 +4094,12 @@
             "version": "[7.0.2, )"
           },
           "Microsoft.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[7.0.2, )"
+          },
+          "Microsoft.EntityFrameworkCore.Design": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
             "target": "Package",
             "version": "[7.0.2, )"
           },

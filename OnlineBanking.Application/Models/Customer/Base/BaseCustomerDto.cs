@@ -7,8 +7,8 @@ using OnlineBanking.Core.Domain.Enums;
 namespace OnlineBanking.Application.Models.Customer.Base;
 public class BaseCustomerDto
 {
-    public string IDNo { get; private set; }
-    public DocumentType IDType { get; private set; }
+    public string IdentificationNo { get; private set; }
+    public IdentificationType IdentificationType { get; private set; }
     public string CustomerNo { get; set; }
     public int AppUserId { get; set; }
     public string FirstName { get; set; }

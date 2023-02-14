@@ -23,6 +23,7 @@ public static class PersistenceServiceRegistration
         });
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IBankAccountRepository, BankAccountRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<ICashTransactionsRepository, CashTransactionsRepository>();

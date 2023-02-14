@@ -31,7 +31,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         {
             var address = _mapper.Map<Address>(request.Address);
             
-            await _uow.Customers.AddAsync(CreateCustomer(request, address));
+            await _uow.Customers.AddAsync(CreateCustomer(request));
 
             return result;
         }
@@ -48,13 +48,13 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     }
 
     #region Private methods
-    private Customer CreateCustomer(CreateCustomerCommand request, Address address)
+    private Customer CreateCustomer(CreateCustomerCommand request)
     {
-        return Customer.Create(request.IDNo, request.IDType,
+        return Customer.Create(request.IdentificationNo, request.IdentificationType,
                                 request.CustomerNo, request.AppUserId,
                                 request.FirstName, request.MiddleName, request.LastName,
                                 request.Nationality, request.Gender,
-                                request.BirthDate, request.TaxNumber, address);
+                                request.BirthDate, request.TaxNumber);
     }
     #endregion
 }

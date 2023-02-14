@@ -8,8 +8,8 @@ namespace OnlineBanking.Application.Models.Customer.Responses;
 
 public class CustomerResponse
 {
-    public string IDNo { get; private set; }
-    public DocumentType IDType { get; private set; }
+    public string IdentificationNo { get; private set; }
+    public IdentificationType IdentificationType { get; private set; }
     public string CustomerNo { get; set; }
     public int AppUserId { get; set; }
     public string FirstName { get; private set; }
