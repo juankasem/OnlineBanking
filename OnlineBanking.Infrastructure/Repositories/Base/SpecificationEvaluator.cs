@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Specifications.Base;
+using OnlineBanking.Application.Specifications;
 
 namespace OnlineBanking.Infrastructure.Repositories.Base;
 

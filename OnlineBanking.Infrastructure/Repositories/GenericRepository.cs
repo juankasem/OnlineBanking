@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Specifications.Base;
+using OnlineBanking.Application.Specifications;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Repositories.Base;
 
@@ -62,6 +62,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public async Task<IReadOnlyList<T>> GetAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).ToListAsync();
+    }
+
+    public async Task<T> GetEntityWithSpecAsync(ISpecification<T> spec)
+    {
+        return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
     public async Task<T> GetByIdAsync(int id)

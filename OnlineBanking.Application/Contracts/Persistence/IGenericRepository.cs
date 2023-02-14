@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using OnlineBanking.Application.Specifications.Base;
+using OnlineBanking.Application.Specifications;
 
 namespace OnlineBanking.Application.Contracts.Persistence
 {
@@ -20,6 +20,8 @@ namespace OnlineBanking.Application.Contracts.Persistence
         List<Expression<Func<T, object>>> includes = null,
         bool disableTracking = true);      
         Task<IReadOnlyList<T>> GetAsync(ISpecification<T> spec);
+        
+        Task<T> GetEntityWithSpecAsync(ISpecification<T> spec);
 
         Task<T> GetByIdAsync(int id);
         Task<T> GetByIdAsync(Guid id);

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace OnlineBanking.Application.Specifications.Base;
+namespace OnlineBanking.Application.Specifications;
 
 public interface ISpecification<T>
 {
