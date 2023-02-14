@@ -43,6 +43,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
             var address = _mapper.Map<Address>(request.Address);
 
             var branch = CreateBranch(request, address);
+            branch.SetAddress(address);
 
             await _uow.Branches.AddAsync(branch);
 

@@ -127,8 +127,7 @@ public class Customer : BaseDomainEntity
         throw exception;
     }
 
-    public void AddBankAccountToCustomer(CustomerBankAccount customerBankAccount)
-    {
-        _customerBankAccounts.Add(customerBankAccount);
-    }
+    public void AddBankAccountToCustomer(CustomerBankAccount customerBankAccount) => _customerBankAccounts.Add(customerBankAccount);
+
+    public void SetAddress(Address address) => Address = address;
 }

@@ -14,22 +14,29 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo) =>
-        await _dbContext.AccountTransactions.Include(at => at.Account)
-                                            .Where(at => at.Account.AccountNo == accountNo)
-                                            .Include(at => at.Transaction)
-                                            .OrderByDescending(at => at.Transaction.CreatedOn)
-                                            .Select(at => at.Transaction)
-                                            .AsNoTracking()
-                                            .ToListAsync();
+    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo) 
+    {
+        var query = _dbContext.AccountTransactions.Include(at => at.Account)
+                                                  .Where(at => at.Account.AccountNo == accountNo)
+                                                  .Include(at => at.Transaction)
+                                                  .OrderByDescending(at => at.Transaction.CreatedOn)
+                                                  .Select(at => at.Transaction)
+                                                  .AsQueryable();
+
+        return await query.AsNoTracking().ToListAsync();
+    }
 
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban) => 
-        await _dbContext.AccountTransactions.Include(at => at.Account)
-                                                   .Where(at => at.Account.IBAN == iban)
-                                                   .Include(at => at.Transaction)
-                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
-                                                   .Select(at => at.Transaction)
-                                                   .AsNoTracking()
-                                                   .ToListAsync();
+    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban)
+    {
+        var query = _dbContext.AccountTransactions.Include(at => at.Account)
+                                                  .Where(at => at.Account.IBAN == iban)
+                                                  .Include(at => at.Transaction)
+                                                  .OrderByDescending(at => at.Transaction.CreatedOn)
+                                                  .Select(at => at.Transaction)
+                                                  .AsQueryable();
+        
+        return await query.AsNoTracking().ToListAsync();
+    }
 }
+ 

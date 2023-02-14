@@ -29,7 +29,8 @@ public class SpecificationEvaluator<T> where T : class
         {
             query = query.OrderBy(specification.OrderBy);
         }
-        else if (specification.OrderByDescending != null)
+        
+        if (specification.OrderByDescending != null)
         {
             query = query.OrderByDescending(specification.OrderByDescending);
         }
@@ -38,7 +39,7 @@ public class SpecificationEvaluator<T> where T : class
         if (specification.IsPagingEnabled)
         {
             query = query.Skip(specification.Skip)
-                        .Take(specification.Take);
+                         .Take(specification.Take);
         }
         return query;
     }

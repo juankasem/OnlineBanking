@@ -6,6 +6,7 @@ using OnlineBanking.Application.Features.Customers.Queries;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.Customer.Responses;
+using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -14,7 +15,8 @@ public class CustomersController : BaseApiController
 {
     [HttpGet(ApiRoutes.Customers.All)]
     [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CustomerListResponse>> ListAllCustomers(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CustomerListResponse>> ListAllCustomers([FromQuery] CustomerParams customerParams,
+                                                                            CancellationToken cancellationToken = default)
     {
         var query = new GetAllCustomersRequest();
         var result = await _mediator.Send(query, cancellationToken);
@@ -27,7 +29,8 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.IdRoute)]
     [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerResponse>> GetCustomerById([FromRoute] string customerId,
-                                                                    CancellationToken cancellationToken = default)
+                                                                      [FromQuery] CustomerParams customerParams,
+                                                                      CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerByIdRequest() { CustomerId = Guid.Parse(customerId) };
         var result = await _mediator.Send(query);
@@ -40,7 +43,8 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
     [ProducesResponseType(typeof(List<BankAccountDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<BankAccountDto>>> GetCustomerBankAccounts([FromRoute] string customerId,
-                                                                                    CancellationToken cancellationToken = default)
+                                                                                  [FromQuery] CustomerParams customerParams,
+                                                                                  CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(customerId) };
         var result = await _mediator.Send(query);

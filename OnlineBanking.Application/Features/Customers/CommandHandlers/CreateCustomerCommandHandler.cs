@@ -30,8 +30,11 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         try
         {
             var address = _mapper.Map<Address>(request.Address);
-            
-            await _uow.Customers.AddAsync(CreateCustomer(request));
+
+            var customer = CreateCustomer(request);
+            customer.SetAddress(address);
+  
+            await _uow.Customers.AddAsync(customer);
 
             return result;
         }

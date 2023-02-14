@@ -9,6 +9,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 using OnlineBanking.Core.Domain.Enums;
+using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -19,7 +20,8 @@ public class CashTransactionsController : BaseApiController
     [Authorize(Roles = "Admin")]
     [HttpGet(ApiRoutes.CashTransactions.All)]
     [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> ListAllCashTransactions(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CashTransactionListResponse>> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                         CancellationToken cancellationToken = default)
     {
         var query = new GetAllCashTransactionsRequest();
         var result = await _mediator.Send(query);
@@ -32,7 +34,8 @@ public class CashTransactionsController : BaseApiController
     // GET api/v1/cash-transactions/12345678
     [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
     [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByAccountNo([FromQuery] string accountNo,
+    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByAccountNo([FromRoute] string accountNo,
+                                                                                                [FromQuery] CashTransactionParams cashTransactionParams,
                                                                                                 CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByAccountNoRequest() { AccountNo = accountNo };
@@ -46,8 +49,9 @@ public class CashTransactionsController : BaseApiController
     // GET api/v1/cash-transactions/TR12345678 
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByIBAN([FromQuery] string iban,
-                                                                                            CancellationToken cancellationToken = default)
+    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByIBAN([FromRoute] string iban,
+                                                                                           [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                           CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByIBANRequest() { IBAN = iban };
         var result = await _mediator.Send(query);
@@ -61,7 +65,7 @@ public class CashTransactionsController : BaseApiController
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> PostCashTransaction([FromBody] CreateCashTransactionRequest request,
-                                                        CancellationToken cancellationToken = default)
+                                                         CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
 

@@ -41,4 +41,6 @@ public class Branch : BaseDomainEntity
     }
 
     public void AddBankAccount(BankAccount bankAccount) => _bankAccounts.Add(bankAccount);
+   
+    public void SetAddress(Address address) => Address = address;
 }
