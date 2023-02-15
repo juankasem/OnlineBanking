@@ -12,10 +12,11 @@ using OnlineBanking.Application.Features.CashTransactions.Queries;
 using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
+using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 
-public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetCashTransactionsByAccountNoRequest, ApiResult<CashTransactionListResponse>>
+public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetCashTransactionsByAccountNoRequest, ApiResult<PagedList<CashTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -29,9 +30,9 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
         _cashTransactionsMapper = cashTransactionsMapper;
     }
 
-    public async Task<ApiResult<CashTransactionListResponse>> Handle(GetCashTransactionsByAccountNoRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetCashTransactionsByAccountNoRequest request, CancellationToken cancellationToken)
     {
-        var result = new ApiResult<CashTransactionListResponse>();
+        var result = new ApiResult<PagedList<CashTransactionResponse>>();
 
         if (!await _uow.BankAccounts.ExistsAsync(request.AccountNo))
         {
@@ -40,8 +41,8 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
 
             return result;
         }
-
-        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo);
+        var requestParams = request.CashTransactionParams;
+        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo, requestParams);
 
         if (!accountTransactions.Any())
         {
@@ -49,9 +50,9 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNo))
-                                                            .ToImmutableList();
+                                                           .ToImmutableList();
 
-        result.Payload = new(mappedAccountTransactions, mappedAccountTransactions.Count);
+        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, requestParams.PageNumber, requestParams.PageSize);
 
         return result;
     }

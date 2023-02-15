@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {}
+    "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
+    "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "projectUniqueName": "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
         "projectName": "OnlineBanking.Core",
-        "projectPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+        "projectPath": "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
         "packagesPath": "C:\\Users\\jkasem\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
+        "outputPath": "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jkasem\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -45,6 +45,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.3, )"
             },
             "System.Text.Json": {
               "target": "Package",

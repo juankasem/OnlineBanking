@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -6,10 +7,11 @@ using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Features.Customers.Queries;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Customer.Responses;
+using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.Customers.QueryHandlers;
 
-public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequest,ApiResult<CustomerListResponse>>
+public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequest,ApiResult<PagedList<CustomerResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -20,13 +22,16 @@ public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequ
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<CustomerListResponse>> Handle(GetAllCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CustomerResponse>>> Handle(GetAllCustomersRequest request, CancellationToken cancellationToken)
     {
-        var result = new ApiResult<CustomerListResponse>();
+        var result = new ApiResult<PagedList<CustomerResponse>>();
+        var requestParams = request.CustomerParams;
 
-        var customers = await _uow.Customers.GetAllAsync();
+        var customers = await _uow.Customers.GetAllAsync(request.CustomerParams);
 
-        result.Payload = _mapper.Map<CustomerListResponse>(customers);
+        var mappedCustomers = _mapper.Map<IReadOnlyList<CustomerResponse>>(customers);
+
+        result.Payload = PagedList<CustomerResponse>.CreateAsync(mappedCustomers, requestParams.PageNumber, requestParams.PageSize);
 
         return result;   
     }

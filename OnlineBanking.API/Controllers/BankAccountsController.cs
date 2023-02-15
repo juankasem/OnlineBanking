@@ -1,10 +1,12 @@
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
 using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
+using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
@@ -13,13 +15,16 @@ namespace OnlineBanking.API.Controllers;
 public class BankAccountsController : BaseApiController
 {
     [HttpGet(ApiRoutes.BankAccounts.All)]
-    [ProducesResponseType(typeof(BankAccountListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BankAccountListResponse>> ListAllBankAccounts(BankAccountParams bankAccountParams, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<BankAccountResponse>>> ListAllBankAccounts(BankAccountParams bankAccountParams, CancellationToken cancellationToken = default)
     {
-        var query = new GetAllBankAccountsRequest();
+        var query = new GetAllBankAccountsRequest() { BankAccountParams = bankAccountParams };
         var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
+
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload);
     }
@@ -30,7 +35,10 @@ public class BankAccountsController : BaseApiController
                                                                                      [FromQuery] BankAccountParams bankAccountParams,                                                
                                                                                      CancellationToken cancellationToken = default)
     {
-        var query = new GetBankAccountsByCustomerNoRequest() { CustomerNo = customerNo };
+        var query = new GetBankAccountsByCustomerNoRequest() 
+                        { CustomerNo = customerNo,
+                         BankAccountParams = bankAccountParams 
+                        };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -55,10 +63,14 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.AccountTransactions)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetAccountByIBANWithTransactions([FromRoute] string iban,
-                                                                                          [FromQuery] BankAccountParams bankAccountParams,                                                
+                                                                                          [FromQuery] CashTransactionParams accountTransactionParams,                                                
                                                                                           CancellationToken cancellationToken = default)
     {
-        var query = new GetBankAccountWithTransactionsRequest() { IBAN = iban };
+        var query = new GetBankAccountWithTransactionsRequest()
+                        { IBAN = iban,
+                          AccountTransactionsParams = accountTransactionParams
+                        };
+
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

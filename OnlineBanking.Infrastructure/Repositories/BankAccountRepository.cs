@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
 
 namespace OnlineBanking.Infrastructure.Repositories;
@@ -47,7 +48,6 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                                     .Include(b => b.Branch)
                                     .Include(b => b.Currency)
                                     .Include(b => b.BankAccountOwners)
-                                    .Include(b => b.AccountTransactions)
                                     .Include(b => b.CreditCards)
                                     .Include(b => b.DebitCards)
                                     .FirstOrDefaultAsync();
@@ -59,7 +59,6 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                         .ThenInclude(c => c.Customer)
                         .Include(c => c.Currency)
                         .Include(c => c.Branch)
-                        .Include(c => c.AccountTransactions)
                         .Include(c => c.CreditCards)
                         .Include(c => c.DebitCards)
                         .FirstOrDefaultAsync();

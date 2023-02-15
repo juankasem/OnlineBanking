@@ -9,10 +9,11 @@ using OnlineBanking.Application.Features.CashTransactions.Queries;
 using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
+using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 
-public class GetAllCashTransactionsRequestHandler : IRequestHandler<GetAllCashTransactionsRequest, ApiResult<CashTransactionListResponse>>
+public class GetAllCashTransactionsRequestHandler : IRequestHandler<GetAllCashTransactionsRequest, ApiResult<PagedList<CashTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -24,16 +25,16 @@ public class GetAllCashTransactionsRequestHandler : IRequestHandler<GetAllCashTr
         _mapper = mapper;
         _cashTransactionsMapper = cashTransactionsMapper;
     }
-    public async Task<ApiResult<CashTransactionListResponse>> Handle(GetAllCashTransactionsRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetAllCashTransactionsRequest request, CancellationToken cancellationToken)
     {
-        var result = new ApiResult<CashTransactionListResponse>();
+        var result = new ApiResult<PagedList<CashTransactionResponse>>();
+        var requestParams = request.CashTransactionParams;
 
-        var accountCashTransactions = await _uow.CashTransactions.GetAllAsync();
+        var allCashTransactions = await _uow.CashTransactions.GetAllAsync(request.CashTransactionParams);
 
-        var mappedCashTransactions = accountCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, act.From))
-                                                            .ToImmutableList();
+        var mappedCashTransactions = allCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, act.From)).ToImmutableList();
 
-        result.Payload = new(mappedCashTransactions, mappedCashTransactions.Count);
+        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedCashTransactions, requestParams.PageNumber, requestParams.PageSize); 
 
         return result;
     }

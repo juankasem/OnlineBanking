@@ -9,6 +9,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 using OnlineBanking.Core.Domain.Enums;
+using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
@@ -19,11 +20,11 @@ public class CashTransactionsController : BaseApiController
     // GET api/v1/cash-transactions/all?pageNumber=1&pageSize=50
     [Authorize(Roles = "Admin")]
     [HttpGet(ApiRoutes.CashTransactions.All)]
-    [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                         CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                                 CancellationToken cancellationToken = default)
     {
-        var query = new GetAllCashTransactionsRequest();
+        var query = new GetAllCashTransactionsRequest() { CashTransactionParams = cashTransactionParams };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -33,12 +34,15 @@ public class CashTransactionsController : BaseApiController
 
     // GET api/v1/cash-transactions/12345678
     [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
-    [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByAccountNo([FromRoute] string accountNo,
+    [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByAccountNo([FromRoute] string accountNo,
                                                                                                 [FromQuery] CashTransactionParams cashTransactionParams,
                                                                                                 CancellationToken cancellationToken = default)
     {
-        var query = new GetCashTransactionsByAccountNoRequest() { AccountNo = accountNo };
+        var query = new GetCashTransactionsByAccountNoRequest() 
+                        { AccountNo = accountNo,
+                          CashTransactionParams = cashTransactionParams
+                        };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
@@ -48,12 +52,15 @@ public class CashTransactionsController : BaseApiController
 
     // GET api/v1/cash-transactions/TR12345678 
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
-    [ProducesResponseType(typeof(CashTransactionListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CashTransactionListResponse>> GetCashTransactionsByIBAN([FromRoute] string iban,
+    [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByIBAN([FromRoute] string iban,
                                                                                            [FromQuery] CashTransactionParams cashTransactionParams,
                                                                                            CancellationToken cancellationToken = default)
     {
-        var query = new GetCashTransactionsByIBANRequest() { IBAN = iban };
+        var query = new GetCashTransactionsByIBANRequest() 
+                        { IBAN = iban,
+                          CashTransactionParams = cashTransactionParams
+                        };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

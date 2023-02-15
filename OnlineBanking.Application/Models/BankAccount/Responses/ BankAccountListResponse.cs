@@ -5,11 +5,9 @@ namespace OnlineBanking.Application.Models.BankAccount.Responses;
 public class BankAccountListResponse
 {
     public ImmutableList<BankAccountResponse> BankAccounts { get; set; }
-    public int Count { get; set; }
 
-    public  BankAccountListResponse(ImmutableList<BankAccountResponse> bankAccounts, int count)
+    public  BankAccountListResponse(ImmutableList<BankAccountResponse> bankAccounts)
     {
         BankAccounts = bankAccounts;
-        Count = count;
     }
 }

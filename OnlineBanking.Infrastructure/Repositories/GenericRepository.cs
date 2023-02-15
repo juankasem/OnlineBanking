@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Specifications;
+using OnlineBanking.Core.Helpers;
+using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Repositories.Base;
 
@@ -19,16 +21,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
-    public async Task<IReadOnlyList<T>> GetAllAsync()
+    public async Task<IReadOnlyList<T>> GetAllAsync(PaginationParams paginationParams)
     {
-        return await _dbContext.Set<T>().AsNoTracking().ToListAsync();
+        var query = _dbContext.Set<T>().AsNoTracking();
+        
+         return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
 
-    public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams)
     {
-        return await _dbContext.Set<T>().AsNoTracking()
-                                        .Where(predicate)
-                                        .ToListAsync();
+        var query = _dbContext.Set<T>().AsNoTracking()
+                                        .Where(predicate);
+
+        return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+
     }
 
     public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeString = null, bool disableTracking = true)
@@ -105,5 +111,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
+    }
+
+    private async Task<IReadOnlyList<T>> ApplyPagination(IQueryable<T> query, int pageNumber, int pageSize)
+    {
+        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
     }
 }

@@ -6,6 +6,7 @@ using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
 using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
+using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -14,9 +15,9 @@ public class BranchController : BaseApiController
 {
     [HttpGet(ApiRoutes.Branches.All)]
     [ProducesResponseType(typeof(BranchListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BranchListResponse>> ListAllBranches(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<BranchListResponse>> ListAllBranches([FromQuery] BranchParams branchParams ,CancellationToken cancellationToken = default)
     {
-        var query = new GetAllBranchesRequest();
+        var query = new GetAllBranchesRequest() { BranchParams = branchParams };
         var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

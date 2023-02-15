@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OnlineBanking.Core
-build_property.ProjectDir = C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Core\
+build_property.ProjectDir = c:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.Core\

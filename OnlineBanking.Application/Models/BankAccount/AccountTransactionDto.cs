@@ -4,7 +4,7 @@ using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.BankAccount;
 
-public class AccountCashTransactionDto
+public class AccountTransactionDto
 {
     public CashTransactionType Type { get; set; }
     public BankAssetType InitiatedBy { get; set; }
@@ -18,7 +18,7 @@ public class AccountCashTransactionDto
     public string Recipient { get; set; }
     public string? From { get; private set; }
     public string? To { get; private set; }
-    public AccountCashTransactionDto(CashTransactionType type, BankAssetType initiatedBy,
+    public AccountTransactionDto(CashTransactionType type, BankAssetType initiatedBy,
                                     Money amount, Money fees,
                                     string description, PaymentType paymentType,
                                     DateTime transactionDate, CashTransactionStatus status,

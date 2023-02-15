@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
+using OnlineBanking.Infrastructure.Repositories.Base;
 
 namespace OnlineBanking.Infrastructure.Repositories;
 
@@ -14,7 +16,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo) 
+    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, PaginationParams paginationParams) 
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
                                                   .Where(at => at.Account.AccountNo == accountNo)
@@ -22,12 +24,13 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
                                                   .Select(at => at.Transaction)
                                                   .AsQueryable();
-
-        return await query.AsNoTracking().ToListAsync();
+        
+        return await DBHelpers<CashTransaction>.ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+                              
     }
 
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban)
+    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban, PaginationParams paginationParams)
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
                                                   .Where(at => at.Account.IBAN == iban)
@@ -36,7 +39,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
                                                   .Select(at => at.Transaction)
                                                   .AsQueryable();
         
-        return await query.AsNoTracking().ToListAsync();
+        return await DBHelpers<CashTransaction>.ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
 }
  

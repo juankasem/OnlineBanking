@@ -46,7 +46,7 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         var mappedAccounts = customerAccounts.Select(ca => _bankAccountMapper.MapToResponseModel(ca.BankAccount))
                                             .ToImmutableList();
 
-        result.Payload = new(mappedAccounts, mappedAccounts.Count());
+        result.Payload = new(mappedAccounts);
 
         return result;
     }

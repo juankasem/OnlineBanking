@@ -25,7 +25,7 @@ public class GetBankAccountWithTransactionsRequestHandler : IRequestHandler<GetB
     {
         var result = new ApiResult<BankAccountResponse>();
 
-        var bankAccount = await _uow.BankAccounts.GetByIBANWithCashTransactionsAsync(request.IBAN);
+        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.IBAN);
 
         if (bankAccount is null)
         {
@@ -34,6 +34,9 @@ public class GetBankAccountWithTransactionsRequestHandler : IRequestHandler<GetB
 
             return result;
         }
+
+        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+        
 
         result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount);
 
