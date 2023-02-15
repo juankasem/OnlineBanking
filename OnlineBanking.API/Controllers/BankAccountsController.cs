@@ -30,18 +30,21 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.BankAccounts.GetByCustomerNo)]
-    [ProducesResponseType(typeof(BankAccountListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BankAccountListResponse>> GetCustomerBankAccounts([FromRoute] string customerNo,
-                                                                                     [FromQuery] BankAccountParams bankAccountParams,                                                
+    [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<BankAccountResponse>>> GetCustomerBankAccounts([FromRoute] string customerNo,
+                                                                                     [FromQuery] CashTransactionParams accountTransactionsParams,                                                
                                                                                      CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountsByCustomerNoRequest() 
                         { CustomerNo = customerNo,
-                         BankAccountParams = bankAccountParams 
+                         AccountTransactionsParams = accountTransactionsParams 
                         };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
+
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload);
     }
@@ -49,7 +52,7 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.GetByAccountNo)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetBankAccountByAccountNo([FromRoute] string accountNo,
-                                                                                   [FromQuery] BankAccountParams bankAccountParams,                                                
+                                                                                   [FromQuery] CashTransactionParams accountTransactionsParams,                                                
                                                                                    CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountByAccountNoRequest() { AccountNo = accountNo };
@@ -62,7 +65,7 @@ public class BankAccountsController : BaseApiController
 
     [HttpGet(ApiRoutes.BankAccounts.AccountTransactions)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BankAccountResponse>> GetAccountByIBANWithTransactions([FromRoute] string iban,
+    public async Task<ActionResult<BankAccountResponse>> GetBankAccountByIBANWithTransactions([FromRoute] string iban,
                                                                                           [FromQuery] CashTransactionParams accountTransactionParams,                                                
                                                                                           CancellationToken cancellationToken = default)
     {

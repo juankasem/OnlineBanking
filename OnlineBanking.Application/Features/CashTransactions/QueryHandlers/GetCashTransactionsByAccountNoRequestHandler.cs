@@ -41,8 +41,8 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
 
             return result;
         }
-        var requestParams = request.CashTransactionParams;
-        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo, requestParams);
+        var reqParams = request.CashTransactionParams;
+        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo, reqParams);
 
         if (!accountTransactions.Any())
         {
@@ -52,7 +52,7 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNo))
                                                            .ToImmutableList();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, requestParams.PageNumber, requestParams.PageSize);
+        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

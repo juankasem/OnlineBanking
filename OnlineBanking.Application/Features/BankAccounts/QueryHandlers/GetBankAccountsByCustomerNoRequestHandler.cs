@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -11,10 +11,12 @@ using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
+using OnlineBanking.Core.Helpers;
+using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
 
-public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBankAccountsByCustomerNoRequest, ApiResult<BankAccountListResponse>>
+public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBankAccountsByCustomerNoRequest, ApiResult<PagedList<BankAccountResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -29,9 +31,9 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         _bankAccountMapper = bankAccountMapper;
     }
 
-    public async Task<ApiResult<BankAccountListResponse>> Handle(GetBankAccountsByCustomerNoRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<BankAccountResponse>>> Handle(GetBankAccountsByCustomerNoRequest request, CancellationToken cancellationToken)
     {
-        var result = new ApiResult<BankAccountListResponse>();
+        var result = new ApiResult<PagedList<BankAccountResponse>>();
 
         if (!await _uow.Customers.ExistsAsync(request.CustomerNo))
         {
@@ -40,13 +42,21 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
 
             return result;
         }
+         
+        var reqParams = request.BankAccountParams;
+        var customerBankAccouns = new List<BankAccountResponse>();
 
-        var customerAccounts = await _uow.BankAccounts.GetAccountsByCustomerNoAsync(request.CustomerNo);
+        var bankAccounts = await _uow.BankAccounts.GetAccountsByCustomerNoAsync(request.CustomerNo);
 
-        var mappedAccounts = customerAccounts.Select(ca => _bankAccountMapper.MapToResponseModel(ca.BankAccount))
-                                            .ToImmutableList();
+        foreach (var bankAccount in bankAccounts)
+        {
+            var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, accountTransactions);
 
-        result.Payload = new(mappedAccounts);
+            customerBankAccouns.Add(customerBankAccount);
+        }
+
+        result.Payload = PagedList<BankAccountResponse>.CreateAsync(customerBankAccouns, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

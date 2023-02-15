@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OnlineBanking.Core.Helpers;
 
-public class PagedList<T> : List<T>
+public
+ class PagedList<T> : List<T>
 {
     public PagedList(IReadOnlyList<T> items, int count, int pageNumber, int pageSize)
     {
@@ -21,12 +22,11 @@ public class PagedList<T> : List<T>
     public int TotalPages { get; set; }
     public int PageSize { get; set; }
     public int TotalCount { get; set; }
-
     public IReadOnlyList<T> Data { get; set; }
 
     public static PagedList<T> CreateAsync(IReadOnlyList<T> items, int pageNumber, int pageSize)
     {
-        var count =  items.Count();
+        var count = items.Count();
         // var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 
         return new PagedList<T>(items, count, pageNumber, pageSize);

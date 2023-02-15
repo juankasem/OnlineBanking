@@ -8,6 +8,6 @@ namespace OnlineBanking.Application.Contracts.Persistence;
 
 public interface ICashTransactionsRepository : IGenericRepository<CashTransaction>
 {
-    Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, PaginationParams paginationParams);
-    Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban, PaginationParams paginationParams);
+    Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, CashTransactionParams ctParams);
+    Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban, CashTransactionParams ctParams);
 }

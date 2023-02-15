@@ -16,20 +16,18 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
     {
     }
 
-    public async Task<IReadOnlyList<CustomerBankAccount>> GetAccountsByCustomerNoAsync(string customerNo)
+    public async Task<IReadOnlyList<BankAccount>> GetAccountsByCustomerNoAsync(string customerNo)
     {
-        IQueryable<CustomerBankAccount> customerBankAccounts = _dbContext.CustomerBankAccounts.AsQueryable();
+        IQueryable<CustomerBankAccount> query = _dbContext.CustomerBankAccounts.AsQueryable();
 
-        return await customerBankAccounts.Where(cba => cba.Customer.CustomerNo == customerNo)
-                                                     .Include(cba => cba.BankAccount)
-                                                     .ThenInclude(c => c.Currency)
-                                                     .Include(b => b.BankAccount)
-                                                     .ThenInclude(c => c.Branch)
-                                                     .Include(b => b.BankAccount)
-                                                     .ThenInclude(c => c.AccountTransactions)
-                                                     .Include(b => b.BankAccount)
-                                                     .ThenInclude(c => c.FastTransactions)
-                                                     .ToListAsync();
+        return await query.Where(cba => cba.Customer.CustomerNo == customerNo)
+                                .Include(cba => cba.BankAccount)
+                                .ThenInclude(c => c.Currency)
+                                .Include(b => b.BankAccount)
+                                .ThenInclude(c => c.Branch)
+                                .Select(cba => cba.BankAccount)
+                                .AsNoTracking()
+                                .ToListAsync();
     }
      
 

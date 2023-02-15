@@ -34,7 +34,7 @@ public class GetAllBankAccountsRequestHandler : IRequestHandler<GetAllBankAccoun
         if (!allBankAccounts.Any())
             return result;
 
-        var mappedBankAccounts = allBankAccounts.Select(ba => _bankAccountMapper.MapToResponseModel(ba));
+        var mappedBankAccounts = allBankAccounts.Select(ba => _bankAccountMapper.MapToDtoModel(ba));
 
         result.Payload = (PagedList<BankAccountDto>)mappedBankAccounts;
 

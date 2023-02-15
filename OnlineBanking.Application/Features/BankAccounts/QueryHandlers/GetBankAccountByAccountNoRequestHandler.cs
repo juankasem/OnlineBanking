@@ -37,7 +37,9 @@ public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAc
             return result;
         }
 
-        result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount);
+        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+
+        result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount, accountTransactions);
 
         return result;
     }

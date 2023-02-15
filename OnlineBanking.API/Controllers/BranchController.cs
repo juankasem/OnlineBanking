@@ -2,10 +2,12 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Constants;
+using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
 using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
+using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
@@ -14,13 +16,16 @@ namespace OnlineBanking.API.Controllers;
 public class BranchController : BaseApiController
 {
     [HttpGet(ApiRoutes.Branches.All)]
-    [ProducesResponseType(typeof(BranchListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<BranchListResponse>> ListAllBranches([FromQuery] BranchParams branchParams ,CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedList<BranchResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<BranchResponse>>> ListAllBranches([FromQuery] BranchParams branchParams ,CancellationToken cancellationToken = default)
     {
         var query = new GetAllBranchesRequest() { BranchParams = branchParams };
         var result = await _mediator.Send(query, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
+
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload);
     }

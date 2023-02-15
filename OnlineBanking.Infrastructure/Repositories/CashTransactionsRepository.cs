@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,30 +17,32 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, PaginationParams paginationParams) 
+    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, CashTransactionParams ctParams) 
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
                                                   .Where(at => at.Account.AccountNo == accountNo)
                                                   .Include(at => at.Transaction)
                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
+                                                  .Where(t => (t.Transaction.TransactionDate - DateTime.Now).TotalDays <= ctParams.TimeScope)
                                                   .Select(at => at.Transaction)
                                                   .AsQueryable();
         
-        return await DBHelpers<CashTransaction>.ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        return await DBHelpers<CashTransaction>.ApplyPagination(query, ctParams.PageNumber, ctParams.PageSize);
                               
     }
 
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban, PaginationParams paginationParams)
+    public async Task<IReadOnlyList<CashTransaction>> GetByIBANAsync(string iban, CashTransactionParams ctParams)
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
                                                   .Where(at => at.Account.IBAN == iban)
                                                   .Include(at => at.Transaction)
                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
+                                                  .Where(t => (t.Transaction.TransactionDate - DateTime.Now).TotalDays <= ctParams.TimeScope)
                                                   .Select(at => at.Transaction)
                                                   .AsQueryable();
         
-        return await DBHelpers<CashTransaction>.ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        return await DBHelpers<CashTransaction>.ApplyPagination(query, ctParams.PageNumber, ctParams.PageSize);
     }
 }
  

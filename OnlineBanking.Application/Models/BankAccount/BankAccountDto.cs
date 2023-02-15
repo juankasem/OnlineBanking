@@ -16,17 +16,9 @@ public class BankAccountDto
     public BranchDto Branch { get; set; }
     public AccountBalanceDto AccountBalance { get; set; }
     public CurrencyDto Currency { get; set; }
-    public List<AccountOwnerDto> AccountOwners { get; set; }
-    public List<AccountTransactionDto> AccountTransactions { get; set; }
-    public List<AccountFastTransactionDto> AccountFastTransactions { get; set; }
-    public List<CreditCardDto> AccountCreditCards { get; set; }
-    public List<DebitCardDto> AccountDebitCards { get; set; }
 
     public BankAccountDto(string accountNo, string iban, BankAccountType type,
-                                BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency,
-                                List<AccountOwnerDto> accountOwners, List<AccountTransactionDto> accountTransactions,
-                                List<AccountFastTransactionDto> accountFastTransactions,
-                                List<CreditCardDto> accountCreditCards, List<DebitCardDto> accountDebitCards)
+                                BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
     {
         AccountNo = accountNo;
         IBAN = iban;
@@ -34,10 +26,5 @@ public class BankAccountDto
         Branch = branch;
         AccountBalance = accountBalance;
         Currency = currency;
-        AccountOwners = accountOwners;
-        AccountTransactions = accountTransactions;
-        AccountFastTransactions = accountFastTransactions;
-        AccountCreditCards = accountCreditCards;
-        AccountDebitCards = accountDebitCards;
     }
 }

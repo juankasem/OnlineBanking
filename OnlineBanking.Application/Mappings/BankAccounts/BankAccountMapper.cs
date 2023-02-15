@@ -25,15 +25,10 @@ public class BankAccountMapper : IBankAccountMapper
                                         MapToAccountBranchDTO(bankAccount.Branch),
                                         MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
-                                        currency,
-                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountTransactionsDTO(bankAccount.AccountTransactions.ToList(), currency),
-                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions.ToList(), currency),
-                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards.ToList(), currency),
-                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards.ToList(), currency));
+                                        currency);
     }
 
-    public BankAccountResponse MapToResponseModel(BankAccount bankAccount, List<AccountTransaction> accountTransactions)
+    public BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> accountTransactions)
     {
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
@@ -73,17 +68,16 @@ public class BankAccountMapper : IBankAccountMapper
         return bankAccountOwners;
     }
 
-    private List<AccountTransactionDto> MapToAccountTransactionsDTO(List<AccountTransaction> accountTransactions, CurrencyDto currency)
+    private List<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> accountTransactions, CurrencyDto currency)
     {
         var accountTransactionsDTO = new List<AccountTransactionDto>();
 
-        foreach (var accountTransaction in accountTransactions)
+        foreach (var tx in accountTransactions)
         {
-            var at = accountTransaction.Transaction;
-            var accountTransactionDTO = new AccountTransactionDto(at.Type, at.InitiatedBy,
-                                                                CreateMoney(at.Amount, currency), CreateMoney(at.Fees, currency),
-                                                                at.Description, at.PaymentType, at.TransactionDate, at.Status,
-                                                                at.From, at.To, at.Sender, at.Recipient);
+            var accountTransactionDTO = new AccountTransactionDto(tx.Type, tx.InitiatedBy,
+                                                                CreateMoney(tx.Amount, currency), CreateMoney(tx.Fees, currency),
+                                                                tx.Description, tx.PaymentType, tx.TransactionDate, tx.Status,
+                                                                tx.From, tx.To, tx.Sender, tx.Recipient);
 
             accountTransactionsDTO.Add(accountTransactionDTO);
         }

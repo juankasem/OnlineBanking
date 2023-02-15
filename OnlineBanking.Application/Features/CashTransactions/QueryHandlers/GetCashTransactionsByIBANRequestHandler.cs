@@ -36,8 +36,8 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
 
             return result;
         }
-        var requestParams = request.CashTransactionParams;
-        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(request.IBAN, requestParams);
+        var reqParams = request.CashTransactionParams;
+        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(request.IBAN, reqParams);
 
         if (!accountTransactions.Any())
         {
@@ -45,9 +45,9 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.IBAN))
-                                                            .ToImmutableList();
+                                                           .ToImmutableList();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, requestParams.PageNumber, requestParams.PageSize);
+        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
        
         return result;
     }
