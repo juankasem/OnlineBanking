@@ -22,7 +22,6 @@ builder.Services.ConfigureIdentityServices(configuration);
 builder.Services.ConfigureApplicationServices(configuration);
 builder.Services.ConfigureInfrastructureServices(configuration);
 builder.Services.ConfigurePersistenceServices(configuration);
-
    
 var app = builder.Build();
 

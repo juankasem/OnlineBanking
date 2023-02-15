@@ -17,10 +17,10 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoAsync(string accountNo, CashTransactionParams ctParams) 
+    public async Task<IReadOnlyList<CashTransaction>> GetByAccountNoOrIBANAsync(string accountNoOrIBAN, CashTransactionParams ctParams) 
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
-                                                  .Where(at => at.Account.AccountNo == accountNo)
+                                                  .Where(at => at.Account.AccountNo == accountNoOrIBAN || at.Account.IBAN == accountNoOrIBAN)
                                                   .Include(at => at.Transaction)
                                                   .OrderByDescending(at => at.Transaction.CreatedOn)
                                                   .Where(t => (t.Transaction.TransactionDate - DateTime.Now).TotalDays <= ctParams.TimeScope)

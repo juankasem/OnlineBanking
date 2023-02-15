@@ -2,6 +2,7 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Filters;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.CashTransactions.Queries;
@@ -28,26 +29,32 @@ public class CashTransactionsController : BaseApiController
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
+        
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
 
-        return Ok(result.Payload);
+        return Ok(result.Payload.Data);
     }
 
     // GET api/v1/cash-transactions/12345678
     [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByAccountNo([FromRoute] string accountNo,
-                                                                                                [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                                CancellationToken cancellationToken = default)
+    public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAccountTransactions([FromRoute] string accountNoOrIBAN,
+                                                                                                 [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                                  CancellationToken cancellationToken = default)
     {
-        var query = new GetCashTransactionsByAccountNoRequest() 
-                        { AccountNo = accountNo,
+        var query = new GetAccountTransactionsRequest() 
+                        { AccountNoOrIBAN = accountNoOrIBAN,
                           CashTransactionParams = cashTransactionParams
                         };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
-        return Ok(result.Payload);
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                result.Payload.TotalCount, result.Payload.TotalPages);
+
+        return Ok(result.Payload.Data);
     }
 
     // GET api/v1/cash-transactions/TR12345678 
@@ -65,7 +72,10 @@ public class CashTransactionsController : BaseApiController
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
-        return Ok(result.Payload);
+        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
+
+        return Ok(result.Payload.Data);
     }
 
     // POST api/v1/cash-transactions

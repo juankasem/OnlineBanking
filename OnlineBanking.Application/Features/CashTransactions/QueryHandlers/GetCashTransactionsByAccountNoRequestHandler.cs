@@ -16,12 +16,12 @@ using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 
-public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetCashTransactionsByAccountNoRequest, ApiResult<PagedList<CashTransactionResponse>>>
+public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTransactionsRequest, ApiResult<PagedList<CashTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
     private readonly ICashTransactionsMapper _cashTransactionsMapper;
-    public GetCashTransactionsByAccountNoRequestHandler(IUnitOfWork uow, 
+    public GetAccountTransactionsRequestHandler(IUnitOfWork uow, 
                                                         IMapper mapper,
                                                         ICashTransactionsMapper cashTransactionsMapper)
     {
@@ -30,26 +30,26 @@ public class GetCashTransactionsByAccountNoRequestHandler : IRequestHandler<GetC
         _cashTransactionsMapper = cashTransactionsMapper;
     }
 
-    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetCashTransactionsByAccountNoRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetAccountTransactionsRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CashTransactionResponse>>();
 
-        if (!await _uow.BankAccounts.ExistsAsync(request.AccountNo))
+        if (!await _uow.BankAccounts.ExistsAsync(request.AccountNoOrIBAN))
         {
             result.AddError(ErrorCode.NotFound,
-            string.Format(BankAccountErrorMessages.NotFound, "No.", request.AccountNo));
+            string.Format(BankAccountErrorMessages.NotFound, "No.", request.AccountNoOrIBAN));
 
             return result;
         }
         var reqParams = request.CashTransactionParams;
-        var accountTransactions = await _uow.CashTransactions.GetByAccountNoAsync(request.AccountNo, reqParams);
+        var accountTransactions = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(request.AccountNoOrIBAN, reqParams);
 
         if (!accountTransactions.Any())
         {
             return result;
         }
 
-        var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNo))
+        var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
                                                            .ToImmutableList();
 
         result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);

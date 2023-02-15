@@ -19,8 +19,8 @@ public class BranchController : BaseApiController
     [ProducesResponseType(typeof(PagedList<BranchResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<BranchResponse>>> ListAllBranches([FromQuery] BranchParams branchParams ,CancellationToken cancellationToken = default)
     {
-        var query = new GetAllBranchesRequest() { BranchParams = branchParams };
-        var result = await _mediator.Send(query, cancellationToken);
+        var request = new GetAllBranchesRequest() { BranchParams = branchParams };
+        var result = await _mediator.Send(request, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
@@ -35,8 +35,8 @@ public class BranchController : BaseApiController
     public async Task<ActionResult<BranchResponse>> GetBranchById([FromRoute] int id,
                                                                 CancellationToken cancellationToken = default)
     {
-        var query = new GetBranchByIdRequest() { BranchId = id };
-        var result = await _mediator.Send(query);
+        var request = new GetBranchByIdRequest() { BranchId = id };
+        var result = await _mediator.Send(request);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
