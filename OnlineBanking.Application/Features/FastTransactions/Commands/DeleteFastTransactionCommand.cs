@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OnlineBanking.Application.Features.FastTransactions.Commands
+using System;
+using MediatR;
+using OnlineBanking.Application.Models;
+
+namespace OnlineBanking.Application.Features.FastTransactions.Commands;
+
+public class DeleteFastTransactionCommand : IRequest<ApiResult<uint>>
 {
-    public class DeleteFastTransactionCommand
-    {
-        
-    }
+    public Guid Id { get; set; }
 }

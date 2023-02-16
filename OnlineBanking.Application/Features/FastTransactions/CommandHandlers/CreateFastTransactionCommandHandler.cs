@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +10,6 @@ using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
-using OnlineBanking.Application.Features.FastTransactions.Validators;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -22,11 +20,13 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
 {
 
     private readonly IUnitOfWork _uow;
+    private readonly IMapper _mapper;
     private readonly IAppUserAccessor _appUserAccessor;
 
     public CreateFastTransactionCommandHandler(IUnitOfWork uow, IMapper mapper, IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
+        _mapper  = mapper;
         _appUserAccessor = appUserAccessor;
     }
 
@@ -34,21 +34,11 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        var validator = new CreateFastTransactionCommandValidator();
-
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            validationResult.Errors.ForEach(er => result.AddError(ErrorCode.ValidationError, er.ErrorMessage));
-
-            return result;
-        }
-
+ 
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-        //Start database transaction
+        //Start db transaction
         using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try

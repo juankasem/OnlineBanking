@@ -2,14 +2,11 @@ using System.Collections.Immutable;
 using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Extensions;
+using OnlineBanking.API.Filters;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Queries;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
-using OnlineBanking.Application.Models.FastTransaction.Responses;
-using OnlineBanking.Core.Helpers;
-using OnlineBanking.Core.Helpers.Params;
+
 
 namespace OnlineBanking.API.Controllers;
 
@@ -40,7 +37,7 @@ public class FastTransactionsController : BaseApiController
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
-        var result = _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
