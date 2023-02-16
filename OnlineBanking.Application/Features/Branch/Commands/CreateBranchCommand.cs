@@ -7,6 +7,5 @@ namespace OnlineBanking.Application.Features.Branch.Commands;
 public class CreateBranchCommand : IRequest<ApiResult<Unit>>
 {
     public string Name { get; set; }
-    public int AddressId { get; set; }
     public BaseAddressDto Address { get; set; }
 }

@@ -29,7 +29,6 @@ namespace OnlineBanking.Application.Common.Behaviors
 
             var validationResult = await _validator.ValidateAsync(request, cancellationToken);
 
-
             if (validationResult.IsValid)
             {
                 return await next();

@@ -8,6 +8,7 @@ using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
+using OnlineBanking.Application.Features.BankAccounts.Validators;
 using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
@@ -30,8 +31,6 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-
-        var validaor = new BankAccountValidator();
 
         try
         {

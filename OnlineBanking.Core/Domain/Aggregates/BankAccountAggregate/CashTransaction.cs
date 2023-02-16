@@ -135,7 +135,7 @@ public class CashTransaction : BaseDomainEntity
         DebitCardNo = debitCardNo;
     }
 
-    //Factory
+    //Factory Method
     public static CashTransaction Create(string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
                                         string from, string to, decimal amount, int currencyId,
                                         decimal fees, string description, decimal senderAvailableBalance, decimal recipientAvailableBalance,

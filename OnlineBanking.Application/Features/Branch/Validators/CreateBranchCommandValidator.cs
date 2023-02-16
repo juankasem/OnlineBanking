@@ -12,12 +12,10 @@ public class CreateBranchCommandValidator : AbstractValidator<CreateBranchComman
 {
     public CreateBranchCommandValidator()
     {
-
         RuleFor(c => c.Name)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
         RuleFor(c => c.Address).SetValidator(new BaseAddressValidator());
-
     }
 }

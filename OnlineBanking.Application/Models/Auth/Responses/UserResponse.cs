@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OnlineBanking.Application.Models.Auth.Responses
-{
-    public class UserResponse
-    {
-        
-    }
+namespace OnlineBanking.Application.Models.Auth.Responses;
+
+public class UserResponse
+{    
+    public string Username { get; set; }
+    public string Email { get; set; }
+    public string Token { get; set; }
 }

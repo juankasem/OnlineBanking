@@ -17,18 +17,19 @@ public static class IdentityServiceRegistration
     {
         services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<OnlineBankDbContext>();
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecretKey"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecretKey"]));
         var tokenValidationParameters = new TokenValidationParameters(){
-            ValidateIssuerSigningKey =true,
+            ValidateIssuerSigningKey = true,
             IssuerSigningKey = key,
-            ValidateIssuer = false,
+            ValidIssuer = configuration["Token:Issuer"],
+            ValidateIssuer = true,
             ValidateAudience = false
         };
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(opt => 
+                .AddJwtBearer(options => 
                 {
-                    opt.TokenValidationParameters = tokenValidationParameters;
+                    options.TokenValidationParameters = tokenValidationParameters;
                 });
 
         services.AddAuthorization(opt => {

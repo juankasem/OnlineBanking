@@ -19,7 +19,6 @@ public class BaseAddressValidator : AbstractValidator<BaseAddressDto>
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
-        
         RuleFor(c => c.CountryId)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");

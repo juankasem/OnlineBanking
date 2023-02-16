@@ -1,4 +1,4 @@
-namespace OnlineBanking.Application.Features.Branch;
+namespace OnlineBanking.Application.Features.Branch.Messages;
 
 public class BranchErrorMessages
 {

@@ -68,6 +68,7 @@ public class CashTransactionsController : BaseApiController
                         { IBAN = iban,
                           CashTransactionParams = cashTransactionParams
                         };
+                        
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

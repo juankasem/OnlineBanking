@@ -30,17 +30,6 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-
-        var validator = new MakeDepositCommandValidator(_uow);
-
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            validationResult.Errors.ForEach(er => result.AddError(ErrorCode.ValidationError, er.ErrorMessage));
-
-            return result;
-        }
         
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);

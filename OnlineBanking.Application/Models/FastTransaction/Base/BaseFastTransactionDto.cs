@@ -4,6 +4,5 @@ public class BaseFastTransactionDto
 {
     public string RecipientIBAN { get; set; }
     public string RecipientName { get; set; }
-    public string RecipientBankName { get; set; }
     public decimal Amount { get; set; }
 }

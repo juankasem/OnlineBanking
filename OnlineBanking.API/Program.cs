@@ -1,3 +1,4 @@
+using OnlineBanking.API.Extensions;
 using OnlineBanking.Application;
 using OnlineBanking.Infrastructure;
 
@@ -6,9 +7,8 @@ var configuration = builder.Configuration;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddCors(options => 
+builder.Services.AddSwaggerDocumentation();
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
     builder => builder.AllowAnyOrigin()
@@ -22,15 +22,12 @@ builder.Services.ConfigureIdentityServices(configuration);
 builder.Services.ConfigureApplicationServices(configuration);
 builder.Services.ConfigureInfrastructureServices(configuration);
 builder.Services.ConfigurePersistenceServices(configuration);
-   
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
-}
+    app.UseSwaggerDocumentation();
 
 app.UseHttpsRedirection();
 

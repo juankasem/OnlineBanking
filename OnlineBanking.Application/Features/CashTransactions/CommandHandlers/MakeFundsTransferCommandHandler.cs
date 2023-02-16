@@ -30,16 +30,6 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        var validator = new MakeFundsTransferCommandValidator(_uow);
-
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            validationResult.Errors.ForEach(er => result.AddError(ErrorCode.ValidationError, er.ErrorMessage));
-
-            return result;
-        }
 
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
@@ -49,7 +39,6 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
         try
         {
-            //Perform validations
             var fromAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
 
             if (fromAccount is null)

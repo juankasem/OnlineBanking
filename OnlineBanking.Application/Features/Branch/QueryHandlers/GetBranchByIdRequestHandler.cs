@@ -4,6 +4,7 @@ using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Features.Branch.Messages;
 using OnlineBanking.Application.Features.Branch.Queries;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Branch.Responses;
