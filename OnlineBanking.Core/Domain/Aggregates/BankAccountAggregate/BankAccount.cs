@@ -69,15 +69,15 @@ public class BankAccount : BaseDomainEntity
 
     // Many-to-many relationship
     [JsonIgnore]
-    public ICollection<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
+    public IReadOnlyList<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
     
     [JsonIgnore]
-    public IReadOnlyCollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+    public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
     // One-to-Many relationship
-    public IReadOnlyCollection<FastTransaction> FastTransactions { get { return _fastTransactions; } }
-    public IReadOnlyCollection<CreditCard> CreditCards { get { return _creditCards; } }
-    public IReadOnlyCollection<DebitCard> DebitCards { get { return _debitCards; } }
+    public IReadOnlyList<FastTransaction> FastTransactions { get { return _fastTransactions; } }
+    public IReadOnlyList<CreditCard> CreditCards { get { return _creditCards; } }
+    public IReadOnlyList<DebitCard> DebitCards { get { return _debitCards; } }
 
     private BankAccount(Guid id, string accountNo, string iBAN, BankAccountType type,
                         int branchId, decimal balance, decimal allowedBalanceToUse,
@@ -142,12 +142,11 @@ public class BankAccount : BaseDomainEntity
 
     public void AddTransaction(AccountTransaction at) => _accountTransactions.Add(at);
 
-    public void UpdateTransaction(Guid id, CashTransactionStatus status)
+    public void UpdateTransaction(Guid id, CashTransaction cashTransaction)
     {
         var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
 
-        if (accountTransaction != null)
-            accountTransaction.Transaction.Update(status);
+        accountTransaction.Transaction = cashTransaction;
     }
 
     public void DeleteTransaction(AccountTransaction at) => _accountTransactions.Remove(at);

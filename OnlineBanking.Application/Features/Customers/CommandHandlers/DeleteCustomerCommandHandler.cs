@@ -37,7 +37,8 @@ public class DeleteCustomerCommandHandler : IRequestHandler<DeleteCustomerComman
                 return result;
             }
 
-            await _uow.Customers.DeleteAsync(customer);
+            _uow.Customers.Delete(customer);
+            await _uow.SaveAsync();
         }
 
         catch (Exception e)

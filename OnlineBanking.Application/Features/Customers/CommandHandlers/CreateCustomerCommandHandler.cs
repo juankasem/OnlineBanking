@@ -34,7 +34,8 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
             var customer = CreateCustomer(request);
             customer.SetAddress(address);
   
-            await _uow.Customers.AddAsync(customer);
+            _uow.Customers.Add(customer);
+            await _uow.SaveAsync();
 
             return result;
         }

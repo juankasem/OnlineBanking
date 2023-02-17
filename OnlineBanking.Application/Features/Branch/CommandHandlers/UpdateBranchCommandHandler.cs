@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,9 +7,8 @@ using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Messages;
-using OnlineBanking.Application.Features.Branch.Validators;
 using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
+using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
 
 namespace OnlineBanking.Application.Features.Branch.CommandHandlers;
@@ -30,16 +27,6 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, A
     public async Task<ApiResult<Unit>> Handle(UpdateBranchCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        var validator = new UpdateBranchCommandValidator();
-
-        var validationResult = await validator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            validationResult.Errors.ForEach(er => result.AddError(ErrorCode.ValidationError, er.ErrorMessage));
-
-            return result;
-        }
 
         try
         {
@@ -57,7 +44,7 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, A
 
             branch.SetAddress(address);
 
-            await _uow.Branches.UpdateAsync(branch);
+            _uow.Branches.Update(branch);
 
             return result;
         }

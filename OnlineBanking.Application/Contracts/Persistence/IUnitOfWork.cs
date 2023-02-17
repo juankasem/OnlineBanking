@@ -41,5 +41,5 @@ public interface IUnitOfWork : IDisposable
     IDbContextTransaction CreateDbTransaction();
     Task<IDbContextTransaction> CreateDbTransactionAsync();
     Task<int> SaveAsync();
-    Task<int> CompleteTransactionAsync();
+    Task<int> CompleteDbTransactionAsync();
 }

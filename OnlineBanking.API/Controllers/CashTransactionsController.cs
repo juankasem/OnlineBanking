@@ -39,9 +39,9 @@ public class CashTransactionsController : BaseApiController
     // GET api/v1/cash-transactions/12345678
     [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAccountTransactions([FromRoute] string accountNoOrIBAN,
-                                                                                                 [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                                  CancellationToken cancellationToken = default)
+    public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAccountCashTransactions([FromRoute] string accountNoOrIBAN,
+                                                                                                    [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                                    CancellationToken cancellationToken = default)
     {
         var query = new GetAccountTransactionsRequest() 
                         { AccountNoOrIBAN = accountNoOrIBAN,
@@ -52,7 +52,7 @@ public class CashTransactionsController : BaseApiController
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                result.Payload.TotalCount, result.Payload.TotalPages);
+                                     result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -61,14 +61,14 @@ public class CashTransactionsController : BaseApiController
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByIBAN([FromRoute] string iban,
-                                                                                           [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                           CancellationToken cancellationToken = default)
+                                                                                                  [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                                  CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByIBANRequest() 
                         { IBAN = iban,
                           CashTransactionParams = cashTransactionParams
                         };
-                        
+
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

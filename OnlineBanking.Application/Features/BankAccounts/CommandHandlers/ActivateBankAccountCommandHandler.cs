@@ -34,6 +34,9 @@ public class ActivateBankAccountCommandHandler : IRequestHandler<ActivateBankAcc
 
         bankAccount.Activate();
 
+        _uow.BankAccounts.Update(bankAccount);
+        await _uow.SaveAsync();
+
         return result;
     }
 }

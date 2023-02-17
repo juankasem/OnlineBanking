@@ -30,11 +30,9 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        
+
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -68,19 +66,18 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             toBankAccount.AddTransaction(accountTransaction);
 
-            await _uow.BankAccounts.UpdateAsync(toBankAccount);
-            await dbContextTransaction.CommitAsync();
+             _uow.BankAccounts.Update(toBankAccount);
+
+            await _uow.CompleteDbTransactionAsync();
 
             return result;
         }
         catch (CashTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 
@@ -96,7 +93,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
                                         ct.InitiatedBy, GetInitiatorCode(ct.InitiatedBy),
                                         request.To, ct.Amount.Value, ct.Amount.Currency.Id, 
                                         ct.Fees.Value, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, ct.TransactionDate, ct.Status);
+                                        ct.PaymentType, ct.TransactionDate);
     }
 
     private string GetInitiatorCode(BankAssetType initiatedBy)

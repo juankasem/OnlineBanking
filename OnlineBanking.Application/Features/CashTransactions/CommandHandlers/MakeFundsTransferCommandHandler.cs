@@ -12,6 +12,7 @@ using OnlineBanking.Application.Features.CashTransactions.Validators;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
+using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
@@ -33,9 +34,6 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
-        //Start database transaction
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -86,26 +84,28 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             fromAccount.AddTransaction(CreateAccountTransaction(fromAccount, transaction));
 
             //Update sender's account
-            await _uow.BankAccounts.UpdateAsync(fromAccount); 
+             _uow.BankAccounts.Update(fromAccount); 
 
             //Add transaction to recipient's account
             toAccount.AddTransaction(CreateAccountTransaction(toAccount, transaction));
-            
-            //Update recipient's account
-            await _uow.BankAccounts.UpdateAsync(toAccount);
 
-            await dbContextTransaction.CommitAsync();
+            //Update recipient's account
+            _uow.BankAccounts.Update(toAccount);
+
+            //Update transaction status to 'complete'
+            transaction.UpdateStatus(CashTransactionStatus.Completed);
+            _uow.CashTransactions.Update(transaction);
+
+            await _uow.CompleteDbTransactionAsync();
 
             return result;
         }
         catch (CashTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 
@@ -122,7 +122,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
         return CashTransaction.Create(ct.ReferenceNo, ct.Type, ct.InitiatedBy,
                                     request.From, request.To, ct.Amount.Value, ct.Amount.Currency.Id,
                                     ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
-                                    ct.PaymentType, ct.TransactionDate, ct.Status);
+                                    ct.PaymentType, ct.TransactionDate);
     }
 
     private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account,

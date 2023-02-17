@@ -34,7 +34,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -75,19 +74,19 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             
             fromBankAccount.AddTransaction(accountTransaction);
 
-            await _uow.BankAccounts.UpdateAsync(fromBankAccount);
-            await dbContextTransaction.CommitAsync();
+            _uow.BankAccounts.Update(fromBankAccount);
+
+            await _uow.CompleteDbTransactionAsync();
 
             return result;
         }
+
         catch (CashTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 
@@ -102,7 +101,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         return CashTransaction.Create(ct.ReferenceNo, ct.Type,
                                     ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), ct.Amount.Value,
                                     ct.Amount.Currency.Id, ct.Fees.Value, ct.Description, updatedBalance, 0,
-                                    ct.PaymentType, ct.TransactionDate, ct.Status);
+                                    ct.PaymentType, ct.TransactionDate);
     }
 
 

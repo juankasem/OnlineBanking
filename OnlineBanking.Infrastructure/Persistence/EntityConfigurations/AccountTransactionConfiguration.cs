@@ -12,13 +12,14 @@ namespace OnlineBanking.Infrastructure.Persistence.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<AccountTransaction> builder)
         {
-    //          builder.Property(ac => ac.Account)
-    //             .HasForeignKey(ac => ac.AccountId);
+            //  builder.Property(ac => ac.Account)
+            //         .WithMany(ac => ac.AccountTransactions)
+            //     .HasForeignKey(ac => ac.AccountId);
 
-    //    builder.Entity<AccountTransaction>()
-    //                 .HasOne(ac => ac.Transaction)
-    //                 .WithMany(c => c.AccountTransactions)
-    //                 .HasForeignKey(c => c.TransactionId);
+            // builder.Property(ac => ac.Transaction)
+            //         .HasOne(ac => ac.Transaction)
+            //         .WithMany(c => c.AccountTransactions)
+            //         .HasForeignKey(c => c.TransactionId);
         }
     }
 }

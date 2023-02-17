@@ -22,7 +22,7 @@ public class BankAccountValidator : AbstractValidator<BankAccount>
             .GreaterThanOrEqualTo(0).WithMessage("Balance can't be less than zero");
 
         RuleFor(b => b.AllowedBalanceToUse)
-        .GreaterThanOrEqualTo(0).WithMessage("Allowed Balance to use can't be less than zero");
+            .GreaterThanOrEqualTo(0).WithMessage("Allowed Balance to use can't be less than zero");
 
         RuleFor(b => b.Debt)
             .GreaterThanOrEqualTo(0).WithMessage("Debt can't be less than zero");

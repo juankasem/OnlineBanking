@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using MediatR;
 using OnlineBanking.Application.Features.FastTransactions.Queries;
 using OnlineBanking.Application.Models;
+using OnlineBanking.Application.Models.FastTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.FastTransactions.QueryHandlers;
 
-public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTransactionsByIBANRequest, ApiResult<ImmutableList<FastTransactionDto>>>
+public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTransactionsByIBANRequest, ApiResult<ImmutableList<FastTransactionResponse>>>
     {
     public GetFastTransactionsByIBANRequestHandler()
     {
@@ -18,7 +19,7 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
     }
 
 
-    public Task<ApiResult<ImmutableList<FastTransactionDto>>> Handle(GetFastTransactionsByIBANRequest request, CancellationToken cancellationToken)
+    public Task<ApiResult<ImmutableList<FastTransactionResponse>>> Handle(GetFastTransactionsByIBANRequest request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }

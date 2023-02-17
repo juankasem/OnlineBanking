@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Specifications;
-using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Repositories.Base;
@@ -85,24 +84,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _dbContext.Set<T>().FindAsync(id);
     }
 
-    public async Task AddAsync(T entity)
+    public void Add(T entity) => _dbContext.Set<T>().Add(entity);
+    
+    public void Update(T entity)
     {
-        _dbContext.Set<T>().Add(entity);
-        await _dbContext.SaveChangesAsync();
+       _dbContext.Set<T>().Attach(entity);
+       _dbContext.Entry(entity).State = EntityState.Modified;
     }
 
-    public async Task UpdateAsync(T entity)
-    {
-        _dbContext.Entry(entity).State = EntityState.Modified;
-        await _dbContext.SaveChangesAsync();
-    }
-
-    public async Task DeleteAsync(T entity)
-    {
-        _dbContext.Set<T>().Remove(entity);
-        await _dbContext.SaveChangesAsync();
-    }
-
+    public void Delete(T entity) => _dbContext.Set<T>().Remove(entity);
+    
     public async Task<int> CountAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).CountAsync();
@@ -113,8 +104,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
     }
 
-    private async Task<IReadOnlyList<T>> ApplyPagination(IQueryable<T> query, int pageNumber, int pageSize)
-    {
-        return await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-    }
+    private async Task<IReadOnlyList<T>> ApplyPagination(IQueryable<T> query, int pageNumber, int pageSize) =>
+         await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 }

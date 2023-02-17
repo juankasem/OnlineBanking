@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -15,7 +14,7 @@ public class Branch : BaseDomainEntity
     public string Name { get; private set; }
     public Address Address { get; private set; }
 
-    public ICollection<BankAccount> BankAccounts { get { return _bankAccounts; } }
+    public IReadOnlyList<BankAccount> BankAccounts { get { return _bankAccounts; } }
 
     private Branch(string name)
     {

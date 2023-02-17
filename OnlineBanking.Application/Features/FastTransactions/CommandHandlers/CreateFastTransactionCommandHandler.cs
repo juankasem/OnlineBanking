@@ -67,7 +67,8 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
             bankAccount.AddFastTransaction(fastTransaction);
 
             //Update sender's account
-            await _uow.BankAccounts.UpdateAsync(bankAccount);
+             _uow.BankAccounts.Update(bankAccount);
+            await _uow.SaveAsync();
 
             await dbContextTransaction.CommitAsync();
 

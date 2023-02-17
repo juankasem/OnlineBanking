@@ -38,7 +38,8 @@ public class DeleteCashTransactionCommandHandler : IRequestHandler<DeleteCashTra
                 return result;
             }
 
-            await _uow.CashTransactions.DeleteAsync(cashTransaction);
+            _uow.CashTransactions.Delete(cashTransaction);
+            await _uow.SaveAsync();
 
             return result;
         }

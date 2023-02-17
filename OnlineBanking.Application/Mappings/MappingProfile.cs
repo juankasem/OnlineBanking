@@ -7,9 +7,12 @@ using OnlineBanking.Application.Models.Auth.Responses;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
+using OnlineBanking.Application.Models.Branch;
+using OnlineBanking.Application.Models.Branch.Responses;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
+using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Entities;
 
 namespace OnlineBanking.Application.Mappings;
@@ -19,7 +22,7 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         //Accounts
-        CreateMap<CreateBankAccountRequest,CreateBankAccountCommand>()
+        CreateMap<CreateBankAccountRequest, CreateBankAccountCommand>()
                 .ForMember(d => d.AccountBalance.Balance, o => o.MapFrom(s => s.Balance))
                 .ForMember(d => d.AccountBalance.AllowedBalanceToUse, o => o.MapFrom(s => s.AllowedBalanceToUse))
                 .ForMember(d => d.AccountBalance.MinimumAllowedBalance, o => o.MapFrom(s => s.MinimumAllowedBalance))
@@ -30,6 +33,12 @@ public class MappingProfile : Profile
 
         CreateMap<AppUser, UserResponse>().ReverseMap();
 
+        //Branches
+            CreateMap<Branch, BranchResponse>()
+                .ForMember(b => b.BranchName, o => o.MapFrom(b => b.Name))
+                .ForMember(b => b.BranchAddress, o => o.MapFrom(b => b.Address));
+                
+            CreateMap<Address, BranchAddressDto>();
 
         //Cash Transactions
         CreateMap<CreateCashTransactionRequest, MakeDepositCommand>().ReverseMap();
