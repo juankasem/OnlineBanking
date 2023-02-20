@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using OnlineBanking.Application.Enums;
@@ -7,12 +5,13 @@ using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Common.Behaviors
 {
+
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
        where TRequest : IRequest<TResponse>
     {
-        private readonly IValidator<TRequest>? _validator;
+        private readonly IValidator<TRequest> _validator;
 
-        public ValidationBehavior(IValidator<TRequest>? validator)
+        public ValidationBehavior(IValidator<TRequest> validator)
         {
             _validator = validator;
         }

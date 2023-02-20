@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -33,10 +29,10 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
 
         var allBranches = await _uow.Branches.GetAllAsync(request.BranchParams);
 
-        var mappedBranches = allBranches.Select(branch => _branchMapper.MapToResponseModel(branch))
-                                        .ToImmutableList();
+        var mappedBranches = allBranches.Select(branch => _mapper.Map<BranchResponse>(branch))
+                                        .ToList().AsReadOnly();
 
-        result.Payload = PagedList<BranchResponse>.CreateAsync(mappedBranches, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

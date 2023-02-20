@@ -50,9 +50,9 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
-                                                           .ToImmutableList();
+                                                           .ToList().AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

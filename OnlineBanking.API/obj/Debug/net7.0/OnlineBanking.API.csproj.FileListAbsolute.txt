@@ -96,3 +96,4 @@ C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.API\obj\Debug\net7.0\refint\On
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.API\obj\Debug\net7.0\OnlineBanking.API.pdb
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.API\obj\Debug\net7.0\OnlineBanking.API.genruntimeconfig.cache
 C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.API\obj\Debug\net7.0\ref\OnlineBanking.API.dll
+C:\Users\jkasem\Repos\OnlineBanking\OnlineBanking.API\bin\Debug\net7.0\Microsoft.Extensions.Options.dll

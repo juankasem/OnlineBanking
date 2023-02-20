@@ -31,7 +31,7 @@ public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequ
 
         var mappedCustomers = _mapper.Map<IReadOnlyList<CustomerResponse>>(customers);
 
-        result.Payload = PagedList<CustomerResponse>.CreateAsync(mappedCustomers, requestParams.PageNumber, requestParams.PageSize);
+        result.Payload = PagedList<CustomerResponse>.Create(mappedCustomers, requestParams.PageNumber, requestParams.PageSize);
 
         return result;   
     }

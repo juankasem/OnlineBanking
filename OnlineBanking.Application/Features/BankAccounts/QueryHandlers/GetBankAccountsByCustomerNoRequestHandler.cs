@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -12,7 +8,6 @@ using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Core.Helpers;
-using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
 
@@ -56,7 +51,7 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
             customerBankAccouns.Add(customerBankAccount);
         }
 
-        result.Payload = PagedList<BankAccountResponse>.CreateAsync(customerBankAccouns, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccouns, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

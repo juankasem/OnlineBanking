@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BG4XTD7GkyneybrFCVR5Jh4p/AarxIZe9wQ2amoaNx6gmegY2is0HCXUi7gEusslJwRvn2jhaom9NlgC9exuUg==",
+  "dgSpecHash": "8hQNGwJFy7VbfDA7MCGOpyK9m3jlYg3jLUqSxL6sPXZMl+Ehph6K3AvvOcuIQdajjNS0JwCNht+LieyPJNbsuA==",
   "success": true,
-  "projectFilePath": "c:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
+  "projectFilePath": "C:\\Users\\jkasem\\Repos\\OnlineBanking\\OnlineBanking.Core\\OnlineBanking.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jkasem\\.nuget\\packages\\fluentvalidation\\11.5.0\\fluentvalidation.11.5.0.nupkg.sha512",
     "C:\\Users\\jkasem\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.2.1\\fluentvalidation.aspnetcore.11.2.1.nupkg.sha512",

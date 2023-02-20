@@ -52,7 +52,7 @@
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.2, )"
+              "version": "[7.0.3, )"
             }
           },
           "imports": [
@@ -116,6 +116,10 @@
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.2.1, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.3, )"
             },
             "System.Text.Json": {
               "target": "Package",

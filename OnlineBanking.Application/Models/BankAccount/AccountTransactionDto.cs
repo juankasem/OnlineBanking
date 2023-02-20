@@ -16,8 +16,8 @@ public class AccountTransactionDto
     public CashTransactionStatus Status { get; set; }
     public string Sender { get; set; }
     public string Recipient { get; set; }
-    public string? From { get; private set; }
-    public string? To { get; private set; }
+    public string From { get; private set; }
+    public string To { get; private set; }
     public AccountTransactionDto(CashTransactionType type, BankAssetType initiatedBy,
                                     Money amount, Money fees,
                                     string description, PaymentType paymentType,

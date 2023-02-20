@@ -24,7 +24,7 @@ public
     public int TotalCount { get; set; }
     public IReadOnlyList<T> Data { get; set; }
 
-    public static PagedList<T> CreateAsync(IReadOnlyList<T> items, int pageNumber, int pageSize)
+    public static PagedList<T> Create(IReadOnlyList<T> items, int pageNumber, int pageSize)
     {
         var count = items.Count();
         // var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();

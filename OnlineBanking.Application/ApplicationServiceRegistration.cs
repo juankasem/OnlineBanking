@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OnlineBanking.Application.Common.Behaviors;
 using OnlineBanking.Application.Features.BankAccount.Validators;
 using OnlineBanking.Application.Mappings.BankAccounts;
+using OnlineBanking.Application.Mappings.Branches;
 using OnlineBanking.Application.Mappings.CashTransactions;
 
 namespace OnlineBanking.Application;
@@ -21,6 +22,7 @@ public static class ApplicationServiceRegistration
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddScoped<IBankAccountMapper, BankAccountMapper>();
+        services.AddScoped<IBranchMapper, BranchMapper>();
         services.AddScoped<ICashTransactionsMapper, CashTransactionsMapper>();
 
 
