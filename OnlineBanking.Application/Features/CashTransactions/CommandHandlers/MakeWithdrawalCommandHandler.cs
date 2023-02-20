@@ -75,7 +75,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             fromBankAccount.AddTransaction(accountTransaction);
 
             _uow.BankAccounts.Update(fromBankAccount);
-
             await _uow.CompleteDbTransactionAsync();
 
             return result;

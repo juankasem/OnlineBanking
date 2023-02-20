@@ -66,8 +66,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             toBankAccount.AddTransaction(accountTransaction);
 
-             _uow.BankAccounts.Update(toBankAccount);
-
+            _uow.BankAccounts.Update(toBankAccount);
             await _uow.CompleteDbTransactionAsync();
 
             return result;

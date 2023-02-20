@@ -38,8 +38,6 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-        //Start db transaction
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -70,18 +68,14 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
              _uow.BankAccounts.Update(bankAccount);
             await _uow.SaveAsync();
 
-            await dbContextTransaction.CommitAsync();
-
             return result;
         }
         catch (FastTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 

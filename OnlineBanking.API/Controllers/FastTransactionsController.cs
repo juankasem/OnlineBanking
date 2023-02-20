@@ -13,8 +13,8 @@ public class FastTransactionsController : BaseApiController
 {
     // GET api/v1/Fast-transactions/TR12345678 
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
-    [ProducesResponseType(typeof(ImmutableList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<ImmutableList<FastTransactionResponse>>> GetFastTransactionsByIBAN([FromRoute] string iban,
+    [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> GetFastTransactionsByIBAN([FromRoute] string iban,
                                                                                                  CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()

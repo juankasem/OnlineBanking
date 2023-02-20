@@ -35,8 +35,8 @@ public class MappingProfile : Profile
 
         //Branches
             CreateMap<Branch, BranchResponse>()
-                .ForMember(b => b.BranchName, o => o.MapFrom(b => b.Name))
-                .ForMember(b => b.BranchAddress, o => o.MapFrom(b => b.Address));
+                .ForMember(d => d.BranchName, o => o.MapFrom(s => s.Name))
+                .ForMember(d => d.BranchAddress, o => o.MapFrom(s => s.Address));
                 
             CreateMap<Address, BranchAddressDto>();
 
