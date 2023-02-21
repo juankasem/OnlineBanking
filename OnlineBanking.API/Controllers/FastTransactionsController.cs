@@ -14,7 +14,7 @@ public class FastTransactionsController : BaseApiController
     // GET api/v1/Fast-transactions/TR12345678 
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> GetFastTransactionsByIBAN([FromRoute] string iban,
+    public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> ListFastTransactionsByIBAN([FromRoute] string iban,
                                                                                                  CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()
@@ -47,7 +47,7 @@ public class FastTransactionsController : BaseApiController
     [HttpPut(ApiRoutes.FastTransactions.IdRoute)]
     [ValidateGuid]
     public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
-                                                            CancellationToken cancellationToken = default)
+                                                           CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
 

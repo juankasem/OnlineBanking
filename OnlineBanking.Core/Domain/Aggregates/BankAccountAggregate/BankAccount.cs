@@ -146,6 +146,7 @@ public class BankAccount : BaseDomainEntity
     {
         var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
 
+      if (accountTransaction is not null)
         accountTransaction.Transaction = cashTransaction;
     }
 
