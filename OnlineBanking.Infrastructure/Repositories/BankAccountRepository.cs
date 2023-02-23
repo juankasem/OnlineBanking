@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
