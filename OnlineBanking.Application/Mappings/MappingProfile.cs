@@ -3,6 +3,7 @@ using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
+using OnlineBanking.Application.Models.Address;
 using OnlineBanking.Application.Models.Auth.Responses;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
@@ -12,6 +13,8 @@ using OnlineBanking.Application.Models.Branch.Responses;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
+using OnlineBanking.Application.Models.FastTransaction.Responses;
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Entities;
 
@@ -38,7 +41,7 @@ public class MappingProfile : Profile
                 .ForMember(d => d.BranchName, o => o.MapFrom(s => s.Name))
                 .ForMember(d => d.BranchAddress, o => o.MapFrom(s => s.Address));
                 
-            CreateMap<Address, BranchAddressDto>();
+            CreateMap<Address, BranchAddressDto>().ReverseMap();
 
         //Cash Transactions
         CreateMap<CreateCashTransactionRequest, MakeDepositCommand>().ReverseMap();
@@ -48,8 +51,12 @@ public class MappingProfile : Profile
         //Fast Transactions
         CreateMap<CreateFastTransactionRequest, CreateFastTransactionCommand>().ReverseMap();
         CreateMap<UpdateFastTransactionRequest, UpdateFastTransactionCommand>().ReverseMap();
+        CreateMap<FastTransaction, FastTransactionResponse>()
+         .ForMember(d => d.RecipientBankName, o => o.MapFrom(s => s.BankAccount.Branch.Name))
+         .ReverseMap();
 
         //Customers
+        CreateMap<Address, AddressDto>();
         CreateMap<CreateCustomerRequest, CreateCustomerCommand>();
     }
 }

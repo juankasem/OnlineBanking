@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineBanking.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using OnlineBanking.Infrastructure.Persistence;
 namespace OnlineBanking.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineBankDbContext))]
-    partial class OnlineBankDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230223150949_FinalAppUserIdTypeUpdate")]
+    partial class FinalAppUserIdTypeUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +164,10 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AppUserId")
+                    b.Property<Guid>("AppUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CityId")
@@ -199,7 +205,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.HasIndex("CityId");
 
@@ -906,7 +912,7 @@ namespace OnlineBanking.Infrastructure.Migrations
                 {
                     b.HasOne("OnlineBanking.Core.Domain.Entities.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
 
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", "City")
                         .WithMany()

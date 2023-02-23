@@ -18,11 +18,6 @@ public class Address
 
     public string Country { get; private set; }
 
-    public Address()
-    {
-        
-    }
-
     private Address(string name, string street, string zipCode, string district, string city, string country)
     {
         Name = name;

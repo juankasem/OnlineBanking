@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;

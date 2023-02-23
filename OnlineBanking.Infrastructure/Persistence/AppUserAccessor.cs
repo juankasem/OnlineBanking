@@ -1,4 +1,3 @@
-using System;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using OnlineBanking.Application.Contracts.Infrastructure;

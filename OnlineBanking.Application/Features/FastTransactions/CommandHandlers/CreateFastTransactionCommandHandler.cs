@@ -26,14 +26,12 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
         _appUserAccessor = appUserAccessor;
     }
 
-
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
  
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
 
         try
         {

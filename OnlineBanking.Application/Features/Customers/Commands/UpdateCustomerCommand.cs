@@ -1,14 +1,13 @@
-using System;
 using MediatR;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Address;
 using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Features.Customers.Commands;
 
-public class CreateCustomerCommand : IRequest<ApiResult<Unit>>
+public class UpdateCustomerCommand : IRequest<Unit>
 {
-    public string AppUserId { get; set; }
+    public Guid Id { get; set; }
+    public Guid AppUserId { get; set; }
     public string IdentificationNo { get; set; }
     public IdentificationType IdentificationType { get; set; }
     public string CustomerNo { get; set; }
