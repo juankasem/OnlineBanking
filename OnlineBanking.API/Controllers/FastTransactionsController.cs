@@ -1,7 +1,7 @@
-using System.Collections.Immutable;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Filters;
+using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Queries;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
@@ -12,6 +12,7 @@ namespace OnlineBanking.API.Controllers;
 public class FastTransactionsController : BaseApiController
 {
     // GET api/v1/Fast-transactions/TR12345678 
+    [Cached(600)]
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> ListFastTransactionsByIBAN([FromRoute] string iban,

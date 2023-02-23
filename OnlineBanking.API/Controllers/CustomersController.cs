@@ -1,6 +1,7 @@
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Features.Customers.Queries;
 using OnlineBanking.Application.Models.BankAccount;
@@ -13,6 +14,7 @@ namespace OnlineBanking.API.Controllers;
 [Authorize]
 public class CustomersController : BaseApiController
 {
+    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.All)]
     [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerListResponse>> ListAllCustomers([FromQuery] CustomerParams customerParams,
@@ -26,6 +28,7 @@ public class CustomersController : BaseApiController
         return Ok(result.Payload);
     }
     
+    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.IdRoute)]
     [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerResponse>> GetCustomerById([FromRoute] string customerId,
@@ -40,6 +43,7 @@ public class CustomersController : BaseApiController
         return Ok(result.Payload);
     }
 
+    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
     [ProducesResponseType(typeof(List<BankAccountDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<BankAccountDto>>> GetCustomerBankAccounts([FromRoute] string customerId,

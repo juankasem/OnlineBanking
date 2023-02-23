@@ -2,8 +2,10 @@ using System.Net;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Filters;
+using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.CashTransactions.Queries;
 using OnlineBanking.Application.Models;
@@ -19,7 +21,8 @@ namespace OnlineBanking.API.Controllers;
 public class CashTransactionsController : BaseApiController
 {
     // GET api/v1/cash-transactions/all?pageNumber=1&pageSize=50
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Administrator)]
+    [Cached(600)]
     [HttpGet(ApiRoutes.CashTransactions.All)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
@@ -37,6 +40,7 @@ public class CashTransactionsController : BaseApiController
     }
 
     // GET api/v1/cash-transactions/12345678
+    [Cached(600)]
     [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAccountCashTransactions([FromRoute] string accountNoOrIBAN,
@@ -58,6 +62,7 @@ public class CashTransactionsController : BaseApiController
     }
 
     // GET api/v1/cash-transactions/TR12345678 
+    [Cached(600)]
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByIBAN([FromRoute] string iban,
@@ -121,7 +126,7 @@ public class CashTransactionsController : BaseApiController
         var command = new UpdateCashTransactionCommand() 
         { 
             Id = Guid.Parse(request.Id), 
-            BaseCasTransaction = request.BaseCashTransaction
+            CashTransaction = request.CashTransaction
         };
         
         var result = await _mediator.Send(command);

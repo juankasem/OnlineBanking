@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
@@ -16,7 +15,7 @@ public class BankAccountResponse
     public BranchDto Branch { get; set; }
     public AccountBalanceDto AccountBalance { get; set; }
     public CurrencyDto Currency { get; set; }
-    public List<AccountOwnerDto> AccountOwners { get; set; }
+    public List<AccountOwnerDto> AccountOwners { get; set; } = new List<AccountOwnerDto>();
     public List<AccountTransactionDto> AccountTransactions { get; set; } = new List<AccountTransactionDto>();
     public List<AccountFastTransactionDto> AccountFastTransactions { get; set; } = new List<AccountFastTransactionDto>();
     public List<CreditCardDto> AccountCreditCards { get; set; } = new List<CreditCardDto>();

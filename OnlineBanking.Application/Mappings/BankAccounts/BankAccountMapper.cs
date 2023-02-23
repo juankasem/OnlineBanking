@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
+
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Application.Models.Branch;
@@ -68,22 +67,13 @@ public class BankAccountMapper : IBankAccountMapper
         return bankAccountOwners;
     }
 
-    private List<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> accountTransactions, CurrencyDto currency)
-    {
-        var accountTransactionsDTO = new List<AccountTransactionDto>();
-
-        foreach (var tx in accountTransactions)
-        {
-            var accountTransactionDTO = new AccountTransactionDto(tx.Type, tx.InitiatedBy,
+    private List<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> accountTransactions, CurrencyDto currency) =>
+           
+            accountTransactions.Select(tx => new AccountTransactionDto(tx.Type, tx.InitiatedBy,
                                                                 CreateMoney(tx.Amount, currency), CreateMoney(tx.Fees, currency),
                                                                 tx.Description, tx.PaymentType, tx.TransactionDate, tx.Status,
-                                                                tx.From, tx.To, tx.Sender, tx.Recipient);
-
-            accountTransactionsDTO.Add(accountTransactionDTO);
-        }
-
-        return accountTransactionsDTO;
-    }
+                                                                tx.From, tx.To, tx.Sender, tx.Recipient)).ToList();
+    
 
     private List<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(List<FastTransaction> fastTransactions, CurrencyDto currency)
     {

@@ -1,5 +1,3 @@
-
-
 namespace OnlineBanking.Application.Models.BankAccount;
 
 public class AccountFastTransactionDto

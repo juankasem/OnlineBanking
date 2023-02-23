@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -75,11 +71,18 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             fromBankAccount.AddTransaction(accountTransaction);
 
             _uow.BankAccounts.Update(fromBankAccount);
-            await _uow.CompleteDbTransactionAsync();
+
+           if (await _uow.CompleteDbTransactionAsync() >= 1)
+            {
+                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
+                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+                _uow.CashTransactions.Update(cashTransaction);
+                
+                await _uow.SaveAsync();
+            }
 
             return result;
         }
-
         catch (CashTransactionNotValidException e)
         {
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));

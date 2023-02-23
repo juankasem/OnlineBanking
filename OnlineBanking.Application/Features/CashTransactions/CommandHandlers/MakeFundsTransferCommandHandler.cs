@@ -84,7 +84,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             fromAccount.AddTransaction(CreateAccountTransaction(fromAccount, transaction));
 
             //Update sender's account
-             _uow.BankAccounts.Update(fromAccount); 
+            _uow.BankAccounts.Update(fromAccount);
 
             //Add transaction to recipient's account
             toAccount.AddTransaction(CreateAccountTransaction(toAccount, transaction));
@@ -96,7 +96,14 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             transaction.UpdateStatus(CashTransactionStatus.Completed);
             _uow.CashTransactions.Update(transaction);
 
-            await _uow.CompleteDbTransactionAsync();
+            if (await _uow.CompleteDbTransactionAsync() >= 1)
+            {
+                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(transaction.Id);
+                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+                _uow.CashTransactions.Update(cashTransaction);
+                
+                await _uow.SaveAsync();
+            }
 
             return result;
         }
@@ -127,9 +134,10 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
     private AccountTransaction CreateAccountTransaction(OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount account,
                                                         CashTransaction transaction) =>
-        new(){
-                Account = account,
-                Transaction = transaction
+        new()
+        {
+            Account = account,
+            Transaction = transaction
         };
     #endregion
 }
