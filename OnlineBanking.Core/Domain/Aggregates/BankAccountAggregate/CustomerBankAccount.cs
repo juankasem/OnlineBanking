@@ -1,5 +1,3 @@
-using System;
-
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Enums;
 

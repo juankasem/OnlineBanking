@@ -4,6 +4,7 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
 namespace OnlineBanking.Infrastructure.Repositories;
+
 public class FastTransactionsRepository : GenericRepository<FastTransaction>, IFastTransactionsRepository
 {
     public FastTransactionsRepository(OnlineBankDbContext dbContext) : base(dbContext)

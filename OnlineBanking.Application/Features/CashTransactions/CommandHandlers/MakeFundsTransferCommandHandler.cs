@@ -92,10 +92,6 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             //Update recipient's account
             _uow.BankAccounts.Update(toAccount);
 
-            //Update transaction status to 'complete'
-            transaction.UpdateStatus(CashTransactionStatus.Completed);
-            _uow.CashTransactions.Update(transaction);
-
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {
                 var cashTransaction = await _uow.CashTransactions.GetByIdAsync(transaction.Id);

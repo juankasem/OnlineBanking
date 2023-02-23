@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Common;
@@ -10,6 +7,7 @@ using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+
 public class BankAccount : BaseDomainEntity
 {
     private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();
@@ -70,7 +68,7 @@ public class BankAccount : BaseDomainEntity
     // Many-to-many relationship
     [JsonIgnore]
     public IReadOnlyList<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
-    
+
     [JsonIgnore]
     public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
@@ -146,8 +144,8 @@ public class BankAccount : BaseDomainEntity
     {
         var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
 
-      if (accountTransaction is not null)
-        accountTransaction.Transaction = cashTransaction;
+        if (accountTransaction is not null)
+            accountTransaction.Transaction = cashTransaction;
     }
 
     public void DeleteTransaction(AccountTransaction at) => _accountTransactions.Remove(at);
@@ -158,8 +156,7 @@ public class BankAccount : BaseDomainEntity
     {
         var index = _fastTransactions.FindIndex(ct => ct.Id == id);
 
-        if (index >= 0)
-            _fastTransactions[index] = ft;
+        if (index >= 0) _fastTransactions[index] = ft;
     }
 
     public void DelteFastTransaction(FastTransaction ft) => _fastTransactions.Remove(ft);

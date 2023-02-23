@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
