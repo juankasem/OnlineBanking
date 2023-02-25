@@ -1,9 +1,3 @@
-
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
@@ -19,14 +13,11 @@ namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTransactionsRequest, ApiResult<PagedList<CashTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
     private readonly ICashTransactionsMapper _cashTransactionsMapper;
     public GetAccountTransactionsRequestHandler(IUnitOfWork uow, 
-                                                        IMapper mapper,
-                                                        ICashTransactionsMapper cashTransactionsMapper)
+                                                ICashTransactionsMapper cashTransactionsMapper)
     {
         _uow = uow;
-        _mapper = mapper;
         _cashTransactionsMapper = cashTransactionsMapper;
     }
 
@@ -50,9 +41,10 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
-                                                           .ToImmutableList();
+                                                           .ToList()
+                                                           .AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
 
         return result;
     }

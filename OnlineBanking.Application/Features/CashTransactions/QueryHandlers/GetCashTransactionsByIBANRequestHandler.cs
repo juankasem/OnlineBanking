@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
@@ -45,9 +41,10 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.IBAN))
-                                                           .ToImmutableList();
+                                                           .ToList()
+                                                           .AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
        
         return result;
     }

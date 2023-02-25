@@ -1,4 +1,3 @@
-
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineBanking.Application.Contracts.Infrastructure;
@@ -11,6 +10,8 @@ public static class InfrastructureServiceRegistration
 {
     public static IServiceCollection ConfigureInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+
         services.AddHttpContextAccessor();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAppUserAccessor,AppUserAccessor>();

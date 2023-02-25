@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -81,7 +79,7 @@ public class CashTransaction : BaseDomainEntity
     /// <summary>
     /// transaction status
     /// </summary>
-    public CashTransactionStatus Status { get; private set; }
+    public CashTransactionStatus Status { get; private set; } = CashTransactionStatus.Pending;
 
 #nullable enable //Nullable props
 
@@ -105,13 +103,13 @@ public class CashTransaction : BaseDomainEntity
     /// </summary>
     public string? DebitCardNo { get; private set; }
 
-    public ICollection<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+    public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
     private CashTransaction(Guid id, string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
                             string from, string to, decimal amount, int currencyId, decimal fees, string description,
                             decimal senderAvailableBalance, decimal recipientAvailableBalance,
                             PaymentType paymentType, DateTime transactionDate,
-                            CashTransactionStatus status, string? sender = null, string? recipient = null,
+                             string? sender = null, string? recipient = null,
                             string? creditCardNo = null, string? debitCardNo = null)
     {
         Id = id;
@@ -130,7 +128,6 @@ public class CashTransaction : BaseDomainEntity
         RecipientAvailableBalance = recipientAvailableBalance;
         PaymentType = paymentType;
         TransactionDate = transactionDate;
-        Status = status;
         CreditCardNo = creditCardNo;
         DebitCardNo = debitCardNo;
     }
@@ -139,8 +136,7 @@ public class CashTransaction : BaseDomainEntity
     public static CashTransaction Create(string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
                                         string from, string to, decimal amount, int currencyId,
                                         decimal fees, string description, decimal senderAvailableBalance, decimal recipientAvailableBalance,
-                                        PaymentType paymentType, DateTime transactionDate,
-                                        CashTransactionStatus status, string? sender = null, string? recipient = null,
+                                        PaymentType paymentType, DateTime transactionDate, string? sender = null, string? recipient = null,
                                         string? creditCardNo = null, string? debitCardNo = null, Guid? id = null)
     {
         var validator = new CashTransactionValidator();
@@ -159,7 +155,6 @@ public class CashTransaction : BaseDomainEntity
         recipientAvailableBalance,
         paymentType,
         transactionDate,
-        status,
         sender,
         recipient,
         creditCardNo,
@@ -175,7 +170,7 @@ public class CashTransaction : BaseDomainEntity
         throw exception;
     }
 
-    public void Update(CashTransactionStatus status)
+    public void UpdateStatus(CashTransactionStatus status)
     {
         Status = status;
         LastModifiedOn = DateTime.UtcNow;

@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -34,7 +31,7 @@ public class IsAccountOwnerRequirementHandler : AuthorizationHandler<IsAccountOw
     
         var customerId = _uow.Customers.GetByAppUserIdAsync(appUserId).Result.Id;
 
-        if (customerId == null) return Task.CompletedTask;
+        if (customerId == Guid.Empty) return Task.CompletedTask;
 
         var accountOwner = _uow.CustomerAccounts.GetCustomerAccountAsync(customerId, accountId).Result;
 

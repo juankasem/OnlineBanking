@@ -4,7 +4,6 @@ using OnlineBanking.Application.Features.Branch.Commands;
 
 namespace OnlineBanking.Application.Features.Branch.Validators;
 
-
 public class UpdateBranchCommandValidator : AbstractValidator<UpdateBranchCommand>
 {
     public UpdateBranchCommandValidator()
@@ -18,6 +17,6 @@ public class UpdateBranchCommandValidator : AbstractValidator<UpdateBranchComman
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
-        RuleFor(c => c.Address).SetValidator(new BaseAddressValidator());
+        RuleFor(c => c.Address).SetValidator(new BranchAddressValidator());
     }
 }

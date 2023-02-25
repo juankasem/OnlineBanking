@@ -15,6 +15,6 @@ namespace OnlineBanking.Core.Models
         public Amount Add(Amount amount) => new (Value + amount);
         public Amount Subtract(Amount amount) => new (Value - amount);
 
-        public static implicit operator decimal(Amount? amount) => amount?.Value ?? 0;
+        public static implicit operator decimal(Amount amount) => amount?.Value ?? 0;
     }
 }

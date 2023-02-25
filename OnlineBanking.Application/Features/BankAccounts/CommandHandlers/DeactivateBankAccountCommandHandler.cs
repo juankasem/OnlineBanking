@@ -33,6 +33,9 @@ public class DeactivateBankAccountCommandHandler : IRequestHandler<DeactivateBan
 
         bankAccount.Deactivate();
 
+        _uow.BankAccounts.Add(bankAccount);    
+        await _uow.SaveAsync();
+
         return result;
     }
 }

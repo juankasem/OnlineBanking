@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using OnlineBanking.Application.Features.Addresses.Validators;
 using OnlineBanking.Application.Features.Branch.Commands;
+using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Application.Features.Branch.Validators;
 
@@ -16,6 +17,6 @@ public class CreateBranchCommandValidator : AbstractValidator<CreateBranchComman
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
-        RuleFor(c => c.Address).SetValidator(new BaseAddressValidator());
+        RuleFor(c => c.Address).SetValidator(new BranchAddressValidator());
     }
 }

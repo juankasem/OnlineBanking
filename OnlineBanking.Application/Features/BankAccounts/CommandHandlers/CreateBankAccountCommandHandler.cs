@@ -66,7 +66,8 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
                 }
             }
 
-            await _uow.BankAccounts.AddAsync(bankAccount);
+            _uow.BankAccounts.Add(bankAccount);    
+            await _uow.SaveAsync();
 
             return result;
         }

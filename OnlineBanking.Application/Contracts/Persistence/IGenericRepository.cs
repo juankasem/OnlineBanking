@@ -26,9 +26,9 @@ namespace OnlineBanking.Application.Contracts.Persistence
 
         Task<T> GetByIdAsync(int id);
         Task<T> GetByIdAsync(Guid id);
-        Task AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
         Task<int> CountAsync(ISpecification<T> spec);
     }
 }

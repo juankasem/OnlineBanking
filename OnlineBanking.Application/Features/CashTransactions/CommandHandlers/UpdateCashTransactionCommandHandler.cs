@@ -32,7 +32,8 @@ public class UpdateCashTransactionCommandHandler : IRequestHandler<UpdateCashTra
             return result;
         }
 
-        cashTransaction.Update(request.BaseCasTransaction.Status);
+        _uow.CashTransactions.Update(cashTransaction);
+        await _uow.SaveAsync();
 
         return result;
     }

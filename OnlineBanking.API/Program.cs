@@ -1,4 +1,5 @@
 using OnlineBanking.API.Extensions;
+using OnlineBanking.API.Middleware;
 using OnlineBanking.Application;
 using OnlineBanking.Infrastructure;
 
@@ -28,6 +29,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
     app.UseSwaggerDocumentation();
+
+app.UseMiddleware<ExceptionMiddleware>(); 
 
 app.UseHttpsRedirection();
 

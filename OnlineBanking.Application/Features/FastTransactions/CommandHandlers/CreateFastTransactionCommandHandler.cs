@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
@@ -30,16 +26,12 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
         _appUserAccessor = appUserAccessor;
     }
 
-
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
  
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
-        //Start db transaction
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -67,20 +59,17 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
             bankAccount.AddFastTransaction(fastTransaction);
 
             //Update sender's account
-            await _uow.BankAccounts.UpdateAsync(bankAccount);
-
-            await dbContextTransaction.CommitAsync();
+             _uow.BankAccounts.Update(bankAccount);
+            await _uow.SaveAsync();
 
             return result;
         }
         catch (FastTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 

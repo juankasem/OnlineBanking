@@ -1,7 +1,3 @@
-using System.Collections.Immutable;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -33,9 +29,10 @@ public class GetAllCashTransactionsRequestHandler : IRequestHandler<GetAllCashTr
         var allCashTransactions = await _uow.CashTransactions.GetAllAsync(request.CashTransactionParams);
 
         var mappedCashTransactions = allCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, act.From))
-                                                        .ToImmutableList();
+                                                        .ToList()
+                                                        .AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.CreateAsync(mappedCashTransactions, reqParams.PageNumber, reqParams.PageSize); 
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedCashTransactions, reqParams.PageNumber, reqParams.PageSize); 
 
         return result;
     }

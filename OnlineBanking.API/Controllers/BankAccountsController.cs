@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Extensions;
+using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
 using OnlineBanking.Application.Models.BankAccount.Requests;
@@ -26,9 +27,10 @@ public class BankAccountsController : BaseApiController
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
                                      result.Payload.TotalCount, result.Payload.TotalPages);
 
-        return Ok(result.Payload);
+        return Ok(result.Payload.Data);
     }
 
+    [Cached(600)]
     [HttpGet(ApiRoutes.BankAccounts.GetByCustomerNo)]
     [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<BankAccountResponse>>> GetCustomerBankAccounts([FromRoute] string customerNo,
@@ -46,9 +48,10 @@ public class BankAccountsController : BaseApiController
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
                                      result.Payload.TotalCount, result.Payload.TotalPages);
 
-        return Ok(result.Payload);
+        return Ok(result.Payload.Data);
     }
 
+    [Cached(600)]
     [HttpGet(ApiRoutes.BankAccounts.GetByAccountNo)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetBankAccountByAccountNo([FromRoute] string accountNo,
@@ -63,6 +66,7 @@ public class BankAccountsController : BaseApiController
         return Ok(result.Payload);
     }
 
+    [Cached(600)]
     [HttpGet(ApiRoutes.BankAccounts.AccountTransactions)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetBankAccountByIBANWithTransactions([FromRoute] string iban,

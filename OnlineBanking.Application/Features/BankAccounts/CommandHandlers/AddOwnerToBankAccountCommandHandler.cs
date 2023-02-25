@@ -64,6 +64,8 @@ public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBan
             bankAccount.AddOwnerToBankAccount(bankAccountOwner);
         }
 
+
+        _uow.BankAccounts.Update(bankAccount);
         await _uow.SaveAsync();
 
         return result;

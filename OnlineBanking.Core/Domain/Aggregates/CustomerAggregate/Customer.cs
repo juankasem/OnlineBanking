@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Common;

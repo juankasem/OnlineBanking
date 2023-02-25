@@ -71,7 +71,7 @@ public class UnitOfWork : IUnitOfWork
 
     public async Task DisposeAsync() => await _dbContext.DisposeAsync();
 
-    public async Task<int> CompleteTransactionAsync()
+    public async Task<int> CompleteDbTransactionAsync()
     {
         using (_dbContextTransaction = await _dbContext.Database.BeginTransactionAsync())
         {

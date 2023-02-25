@@ -1,14 +1,9 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Features.CashTransactions.Validators;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
@@ -30,11 +25,9 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        
+
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -68,19 +61,25 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             toBankAccount.AddTransaction(accountTransaction);
 
-            await _uow.BankAccounts.UpdateAsync(toBankAccount);
-            await dbContextTransaction.CommitAsync();
+            _uow.BankAccounts.Update(toBankAccount);
+          
+            if (await _uow.CompleteDbTransactionAsync() >= 1)
+            {
+                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
+                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+                _uow.CashTransactions.Update(cashTransaction);
+               
+                await _uow.SaveAsync();
+            }
 
             return result;
         }
         catch (CashTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 
@@ -96,7 +95,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
                                         ct.InitiatedBy, GetInitiatorCode(ct.InitiatedBy),
                                         request.To, ct.Amount.Value, ct.Amount.Currency.Id, 
                                         ct.Fees.Value, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, ct.TransactionDate, ct.Status);
+                                        ct.PaymentType, ct.TransactionDate);
     }
 
     private string GetInitiatorCode(BankAssetType initiatedBy)

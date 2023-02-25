@@ -29,7 +29,7 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     ct.InitiatedBy,
                     ct.From,
                     ct.To,
-                    ct.Sender ?? null,
+                    ct.Sender ?? null, 
                     ct.Recipient ?? null,
                     ct.From != iban
                     ?
@@ -37,7 +37,7 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     :
                     CreateMoney(-ct.Amount, currency),
                     CreateMoney(ct.Fees, currency),
-                    ct.Description,
+                    ct.Description, 
                     ct.PaymentType,
                     ct.TransactionDate,
                     ct.Status,

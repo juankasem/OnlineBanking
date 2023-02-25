@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -34,7 +30,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-        using var dbContextTransaction = await _uow.CreateDbTransactionAsync();
 
         try
         {
@@ -75,19 +70,25 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             
             fromBankAccount.AddTransaction(accountTransaction);
 
-            await _uow.BankAccounts.UpdateAsync(fromBankAccount);
-            await dbContextTransaction.CommitAsync();
+            _uow.BankAccounts.Update(fromBankAccount);
+
+           if (await _uow.CompleteDbTransactionAsync() >= 1)
+            {
+                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
+                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+                _uow.CashTransactions.Update(cashTransaction);
+                
+                await _uow.SaveAsync();
+            }
 
             return result;
         }
         catch (CashTransactionNotValidException e)
         {
-            await dbContextTransaction.RollbackAsync();
             e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
         }
         catch (Exception e)
         {
-            await dbContextTransaction.RollbackAsync();
             result.AddUnknownError(e.Message);
         }
 
@@ -102,7 +103,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         return CashTransaction.Create(ct.ReferenceNo, ct.Type,
                                     ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), ct.Amount.Value,
                                     ct.Amount.Currency.Id, ct.Fees.Value, ct.Description, updatedBalance, 0,
-                                    ct.PaymentType, ct.TransactionDate, ct.Status);
+                                    ct.PaymentType, ct.TransactionDate);
     }
 
 

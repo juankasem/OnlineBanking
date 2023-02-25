@@ -1,4 +1,3 @@
-using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Entities;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -26,17 +25,13 @@ public class Address : BaseDomainEntity
 
     public Country Country { get; set; }
 
-    public int? AppUserId { get; set; }
+    public string AppUserId { get; set; }
 
     public AppUser AppUser { get; set; }
 
-     public int? BranchId { get; set; }
-
-    public Branch Branch { get; set; }
-
     private Address(string name, string street, string zipCode,
                     int districtId, int cityId, int countryId, 
-                    int? appUserId, int? branchId, bool isDeleted = false)
+                    string appUserId, bool isDeleted = false)
     {
         Name = name;
         Street = street;
@@ -45,20 +40,18 @@ public class Address : BaseDomainEntity
         CityId = cityId;
         CountryId = CountryId;
         AppUserId = appUserId;
-        BranchId = branchId;
         IsDeleted = isDeleted;
     }
 
     public static Address Create(string name, string street, string zipCode,
                     int districtId, int cityId, int countryId, 
-                    int? appUserId, int? branchId, bool isDeleted = false)
+                    string appUserId, bool isDeleted = false)
     {
         var validator = new AddressValidator();
 
         var objectToValidate = new Address(
             name, street, zipCode, districtId, cityId, countryId, 
-            appUserId ?? null,
-            branchId ?? null,
+            appUserId,
             isDeleted
         );
 

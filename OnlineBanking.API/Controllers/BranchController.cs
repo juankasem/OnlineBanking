@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
+using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
 using OnlineBanking.Application.Models.Branch.Requests;
@@ -12,9 +13,10 @@ using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 
-[Authorize(Roles = Roles.Administrator)]
+[Authorize(Roles = UserRoles.Admin)]
 public class BranchController : BaseApiController
 {
+    [Cached(600)]
     [HttpGet(ApiRoutes.Branches.All)]
     [ProducesResponseType(typeof(PagedList<BranchResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<BranchResponse>>> ListAllBranches([FromQuery] BranchParams branchParams ,CancellationToken cancellationToken = default)
@@ -30,6 +32,7 @@ public class BranchController : BaseApiController
         return Ok(result.Payload);
     }
 
+    [Cached(600)]
     [HttpGet(ApiRoutes.Branches.IdRoute)]
     [ProducesResponseType(typeof(BranchResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BranchResponse>> GetBranchById([FromRoute] int id,
