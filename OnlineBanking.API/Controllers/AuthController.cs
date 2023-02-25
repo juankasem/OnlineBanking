@@ -76,6 +76,8 @@ public class AuthController : BaseApiController
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
     public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation($"Login attempt for {request.Username}");
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
@@ -113,8 +115,10 @@ public class AuthController : BaseApiController
     [HttpPost(ApiRoutes.AppUsers.Signup)]
     [ProducesResponseType((int)HttpStatusCode.Created)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult> Signup(SignupRequest request, CancellationToken cancellationToken = default)
+    public async Task<ActionResult> Signup([FromBody] SignupRequest request, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation($"Registration attempt for {request.Email}");
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
@@ -130,7 +134,6 @@ public class AuthController : BaseApiController
         if (!result.Succeeded)
             return BadRequest();
 
-      
         if (!await _roleManager.RoleExistsAsync(UserRoles.User))
             await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
@@ -164,6 +167,7 @@ public class AuthController : BaseApiController
         string username = principal.Identity?.Name;
 
         var user = await _userManager.FindByNameAsync(username);
+        _logger.LogInformation($"Refresh Token attempt for user: {user}");
 
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             return BadRequest("Invalid access token or refresh token");
