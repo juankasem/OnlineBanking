@@ -54,6 +54,9 @@ public static class ApiRoutes
         public const string IdRoute = "{id}";
         public const string Login = "login";
         public const string Signup = "signup";
+        public const string RefreshToken = "refresh-token";
+        public const string Revoke = "revoke/{username:string}";
+        public const string CurrentUser = "current-user";
         public const string EmailExists = "email-exists";
         public const string Address = "address";
         public const string Phone = "phone";

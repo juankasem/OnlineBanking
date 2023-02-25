@@ -46,6 +46,7 @@ public class FastTransactionsController : BaseApiController
 
     // PUT api/v1/Fast-transactions/1234
     [HttpPut(ApiRoutes.FastTransactions.IdRoute)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ValidateGuid]
     public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
                                                            CancellationToken cancellationToken = default)
@@ -61,6 +62,7 @@ public class FastTransactionsController : BaseApiController
 
     // DELETE api/v1/Fast-transactions/1234
     [HttpDelete(ApiRoutes.FastTransactions.IdRoute)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     [ValidateGuid]
     public async Task<IActionResult> DeleteFastTransaction([FromQuery] string id,
                                                             CancellationToken cancellationToken = default)

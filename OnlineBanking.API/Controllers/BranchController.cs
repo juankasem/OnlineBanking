@@ -13,7 +13,7 @@ using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 
-[Authorize(Roles = Roles.Administrator)]
+[Authorize(Roles = UserRoles.Admin)]
 public class BranchController : BaseApiController
 {
     [Cached(600)]

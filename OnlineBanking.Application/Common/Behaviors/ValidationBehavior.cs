@@ -20,7 +20,6 @@ namespace OnlineBanking.Application.Common.Behaviors
         {
             var result = new ApiResult<TResponse>();
 
-
             if (_validator is null)
             {
                 return await next();
@@ -39,6 +38,5 @@ namespace OnlineBanking.Application.Common.Behaviors
 
             return (dynamic) result;
         }
-
     }
 }

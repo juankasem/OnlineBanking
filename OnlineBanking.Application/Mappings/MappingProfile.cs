@@ -34,7 +34,7 @@ public class MappingProfile : Profile
 
         CreateMap<BankAccountDto,BankAccountResponse>().ReverseMap();
 
-        CreateMap<AppUser, UserResponse>().ReverseMap();
+        CreateMap<AppUser, AuthResponse>().ReverseMap();
 
         //Branches
             CreateMap<Branch, BranchResponse>()

@@ -21,7 +21,7 @@ namespace OnlineBanking.API.Controllers;
 public class CashTransactionsController : BaseApiController
 {
     // GET api/v1/cash-transactions/all?pageNumber=1&pageSize=50
-    [Authorize(Roles = Roles.Administrator)]
+    [Authorize(Roles = UserRoles.Admin)]
     [Cached(600)]
     [HttpGet(ApiRoutes.CashTransactions.All)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]

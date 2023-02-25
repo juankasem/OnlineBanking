@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using OnlineBanking.Core.Domain.Entities;
+using System.Security.Claims;
 
-namespace OnlineBanking.Application.Contracts.Infrastructure
+namespace OnlineBanking.Application.Contracts.Infrastructure;
+
+public interface ITokenService
 {
-    public interface ITokenService
-    {
-        string CreateToken(AppUser user);
-    }
+    string CreateToken(List<Claim> authClaims);
+    string GenerateRefreshToken();
+    ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 }

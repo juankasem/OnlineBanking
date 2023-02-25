@@ -1,10 +1,10 @@
-using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Common;
 using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Contracts.Infrastructure;
@@ -19,29 +19,39 @@ public class AuthController : BaseApiController
     private readonly ILogger<AuthController> _logger;
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly ITokenService _tokenService;
 
-    public AuthController(ILogger<AuthController> logger, 
+    public AuthController(ILogger<AuthController> logger,
                          UserManager<AppUser> userManager,
                          SignInManager<AppUser> signInManager,
+                         RoleManager<IdentityRole> roleManager,
                          ITokenService tokenService)
     {
 
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
-        _tokenService =  tokenService;
+        _tokenService = tokenService;
     }
 
     [Authorize]
-    [HttpGet]
-    [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<UserResponse>> GetCurrentUser(CancellationToken cancellationToken = default)
+    [HttpGet(ApiRoutes.AppUsers.CurrentUser)]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<AuthResponse>> GetCurrentUser(CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailFromClaimsPrincipalAsync(User);
-   
-        var userResponse = _mapper.Map<UserResponse>(user);
-        userResponse.Token = _tokenService.CreateToken(user);
+
+        var authClaims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.GivenName, user.DisplayName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        var userResponse = _mapper.Map<AuthResponse>(user);
+        userResponse.Token = _tokenService.CreateToken(authClaims);
 
         return Ok(userResponse);
     }
@@ -62,19 +72,42 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost(ApiRoutes.AppUsers.Login)]
-    [ProducesResponseType(typeof(UserResponse), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public async Task<ActionResult<UserResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
         var user = await _userManager.FindByNameAsync(request.Username);
 
-        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password)) 
-        return Unauthorized();
-        
-        var userResponse = _mapper.Map<UserResponse>(user);
-        userResponse.Token = _tokenService.CreateToken(user);
+        if (user != null && !await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-        return Ok(userResponse);
+            var authClaims = new List<Claim>()
+            {
+               new Claim(ClaimTypes.Name, user.UserName),
+               new Claim(ClaimTypes.Email, user.Email),
+               new Claim(ClaimTypes.GivenName, user.DisplayName),
+               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            foreach (var userRole in userRoles)
+            {
+                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+            }
+
+            var token = _tokenService.CreateToken(authClaims);
+            user.RefreshToken = _tokenService.GenerateRefreshToken();
+
+            var userResponse = _mapper.Map<AuthResponse>(user);
+            userResponse.Token = token;
+
+            return Ok(userResponse);
+        }
+
+        return Unauthorized();
     }
 
     [HttpPost(ApiRoutes.AppUsers.Signup)]
@@ -82,6 +115,9 @@ public class AuthController : BaseApiController
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult> Signup(SignupRequest request, CancellationToken cancellationToken = default)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
         var appUser = new AppUser()
         {
             UserName = request.Username,
@@ -92,13 +128,70 @@ public class AuthController : BaseApiController
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
         if (!result.Succeeded)
-         return BadRequest();
+            return BadRequest();
 
-        await _userManager.AddToRoleAsync(appUser, Roles.User);
+      
+        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-        var userResponse = _mapper.Map<UserResponse>(appUser);
-        userResponse.Token = _tokenService.CreateToken(appUser);
+            await _userManager.AddToRoleAsync(appUser, UserRoles.User);
 
-        return StatusCode(201, userResponse);
+        if (request.IsAdmin){
+              if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+
+            await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
+        }
+
+        var userResponse = _mapper.Map<AuthResponse>(appUser);
+
+        return StatusCode(201);
+    }
+
+    [HttpPost(ApiRoutes.AppUsers.RefreshToken)]
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+    {
+        var apiError = new ErrorResponse();
+
+        string accessToken = request?.AccessToken;
+        string refreshToken = request?.RefreshToken;
+
+        var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
+
+        if (principal == null)
+            return BadRequest("Invalid access token or refresh token");
+
+        string username = principal.Identity?.Name;
+
+        var user = await _userManager.FindByNameAsync(username);
+
+        if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            return BadRequest("Invalid access token or refresh token");
+        
+
+        var newAccessToken = _tokenService.CreateToken(principal.Claims.ToList());
+        var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+        user.RefreshToken = newRefreshToken;
+        await _userManager.UpdateAsync(user);
+
+        return new ObjectResult(new
+        {
+            accessToken = newAccessToken,
+            refreshToken = newRefreshToken
+        });
+    }
+
+    [Authorize]
+    [HttpPost(ApiRoutes.AppUsers.Revoke)]
+    public async Task<IActionResult> Revoke(string username)
+    {
+        var user = await _userManager.FindByNameAsync(username);
+        if (user == null) return BadRequest("Invalid user name");
+
+        user.RefreshToken = null;
+        await _userManager.UpdateAsync(user);
+
+        return NoContent();
     }
 }
