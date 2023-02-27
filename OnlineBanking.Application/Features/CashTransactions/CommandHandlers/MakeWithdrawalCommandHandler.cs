@@ -4,7 +4,6 @@ using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Features.CashTransactions.Validators;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
@@ -26,7 +25,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
     public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        
+
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
@@ -56,28 +55,28 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             if (fromBankAccount.AllowedBalanceToUse < amountToWithdraw)
             {
                 result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-                
+
                 return result;
             }
 
-           //Update account balance & Add transaction
+            //Update account balance & Add transaction
             var updatedFromBalance = fromBankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
             var accountTransaction = new AccountTransaction()
             {
                 Account = fromBankAccount,
                 Transaction = CreateCashTransaction(request, updatedFromBalance)
             };
-            
-            fromBankAccount.AddTransaction(accountTransaction);
 
+            fromBankAccount.AddTransaction(accountTransaction);
+            
             _uow.BankAccounts.Update(fromBankAccount);
 
-           if (await _uow.CompleteDbTransactionAsync() >= 1)
+            if (await _uow.CompleteDbTransactionAsync() >= 1)
             {
                 var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
                 cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
                 _uow.CashTransactions.Update(cashTransaction);
-                
+
                 await _uow.SaveAsync();
             }
 

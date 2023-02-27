@@ -1,6 +1,3 @@
-
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
@@ -32,7 +29,7 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
     public async Task<ApiResult<Unit>> Handle(UpdateFastTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
- 
+
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
@@ -81,6 +78,6 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
     
     #region  Private methods
     private FastTransaction CreateFastTransaction(string recipientIBAN, string recipientName, decimal amount, Guid bankAccountId) =>
-      FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
-   #endregion
+        FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
+#endregion
 }

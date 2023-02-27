@@ -37,8 +37,8 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.IdRoute)]
     [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CustomerResponse>> GetCustomerById([FromRoute] string customerId,
-                                                                      [FromQuery] CustomerParams customerParams,
-                                                                      CancellationToken cancellationToken = default)
+                                                                    [FromQuery] CustomerParams customerParams,
+                                                                    CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerByIdRequest() { CustomerId = Guid.Parse(customerId) };
         var result = await _mediator.Send(query);
@@ -52,8 +52,8 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
     [ProducesResponseType(typeof(List<BankAccountDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<List<BankAccountDto>>> GetCustomerBankAccounts([FromRoute] string customerId,
-                                                                                  [FromQuery] CustomerParams customerParams,
-                                                                                  CancellationToken cancellationToken = default)
+                                                                                [FromQuery] CustomerParams customerParams,
+                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(customerId) };
         var result = await _mediator.Send(query);

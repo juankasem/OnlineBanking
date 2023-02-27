@@ -22,14 +22,14 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
     public CreateFastTransactionCommandHandler(IUnitOfWork uow, IMapper mapper, IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
-        _mapper  = mapper;
+        _mapper = mapper;
         _appUserAccessor = appUserAccessor;
     }
 
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
- 
+
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
@@ -59,7 +59,7 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
             bankAccount.AddFastTransaction(fastTransaction);
 
             //Update sender's account
-             _uow.BankAccounts.Update(bankAccount);
+            _uow.BankAccounts.Update(bankAccount);
             await _uow.SaveAsync();
 
             return result;
@@ -75,9 +75,9 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
 
         return result;
     }
-    
+
     #region  Private methods
     private FastTransaction CreateFastTransaction(string recipientIBAN, string recipientName, decimal amount, Guid bankAccountId) =>
-      FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
-   #endregion
+        FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
+    #endregion
 }

@@ -7,7 +7,7 @@ public static class ApiRoutes
     public static class BankAccounts
     {
         public const string All = "all";
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "{id:guid}";
         public const string GetByCustomerNo = "{customerNo}";
         public const string GetByIBAN = "{iban}";
         public const string GetByAccountNo = "{accountNo}";
@@ -19,7 +19,7 @@ public static class ApiRoutes
     public static class CashTransactions
     {
         public const string All = "all";
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "{id:guid}";
         public const string GetByIBAN = "{iban:string}";
         public const string GetByAccountNo = "{accountNo:string}";
     }
@@ -34,7 +34,7 @@ public static class ApiRoutes
     public static class Customers
     {
         public const string All = "all";
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "{id:guid}";
         public const string GetByCustomerNo = "{customerNo}";
         public const string BankAccounts = "{id}/bank-accounts";
     }
@@ -43,7 +43,7 @@ public static class ApiRoutes
     public static class FastTransactions
     {
         public const string All = "all";
-        public const string IdRoute = "{id}";
+        public const string IdRoute = "{id:guid}";
         public const string GetByIBAN = "{iban:string}";
         public const string GetByAccountNo = "{accountNo:string}";
     }

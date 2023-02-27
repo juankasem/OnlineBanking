@@ -25,7 +25,7 @@ public class BankAccountsController : BaseApiController
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -34,19 +34,19 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.GetByCustomerNo)]
     [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<BankAccountResponse>>> GetCustomerBankAccounts([FromRoute] string customerNo,
-                                                                                     [FromQuery] CashTransactionParams accountTransactionsParams,                                                
-                                                                                     CancellationToken cancellationToken = default)
+                                                                                        [FromQuery] CashTransactionParams accountTransactionsParams,                                                
+                                                                                        CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountsByCustomerNoRequest() 
                         { CustomerNo = customerNo,
-                         AccountTransactionsParams = accountTransactionsParams 
+                        AccountTransactionsParams = accountTransactionsParams 
                         };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -55,8 +55,8 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.GetByAccountNo)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetBankAccountByAccountNo([FromRoute] string accountNo,
-                                                                                   [FromQuery] CashTransactionParams accountTransactionsParams,                                                
-                                                                                   CancellationToken cancellationToken = default)
+                                                                                [FromQuery] CashTransactionParams accountTransactionsParams,                                                
+                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountByAccountNoRequest() { AccountNo = accountNo };
         var result = await _mediator.Send(query);
@@ -70,12 +70,12 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.AccountTransactions)]
     [ProducesResponseType(typeof(BankAccountResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<BankAccountResponse>> GetBankAccountByIBANWithTransactions([FromRoute] string iban,
-                                                                                          [FromQuery] CashTransactionParams accountTransactionParams,                                                
-                                                                                          CancellationToken cancellationToken = default)
+                                                                                            [FromQuery] CashTransactionParams accountTransactionParams,                                                
+                                                                                            CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest()
                         { IBAN = iban,
-                          AccountTransactionsParams = accountTransactionParams
+                        AccountTransactionsParams = accountTransactionParams
                         };
 
         var result = await _mediator.Send(query);

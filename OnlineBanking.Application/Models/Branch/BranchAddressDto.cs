@@ -1,4 +1,3 @@
-
 namespace OnlineBanking.Application.Models.Branch;
 
 public class BranchAddressDto

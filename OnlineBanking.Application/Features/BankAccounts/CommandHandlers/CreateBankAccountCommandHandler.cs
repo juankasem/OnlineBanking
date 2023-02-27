@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
-using OnlineBanking.Application.Features.BankAccounts.Validators;
 using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
-using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
 

@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using MediatR;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Customer;

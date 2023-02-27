@@ -1,9 +1,5 @@
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.Branch;
-using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
-using OnlineBanking.Application.Models.Customer;
-using OnlineBanking.Application.Models.DebitCard;
 using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.BankAccount;

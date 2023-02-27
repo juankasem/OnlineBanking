@@ -16,7 +16,7 @@ public class FastTransactionsController : BaseApiController
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> ListFastTransactionsByIBAN([FromRoute] string iban,
-                                                                                                 CancellationToken cancellationToken = default)
+                                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()
         {
@@ -33,7 +33,7 @@ public class FastTransactionsController : BaseApiController
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request,
-                                                         CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
@@ -49,7 +49,7 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ValidateGuid]
     public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
-                                                           CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
 

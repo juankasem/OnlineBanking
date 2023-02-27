@@ -37,7 +37,7 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
 
             return result;
         }
-         
+        
         var reqParams = request.BankAccountParams;
         var customerBankAccouns = new List<BankAccountResponse>();
 

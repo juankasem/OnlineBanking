@@ -1,4 +1,3 @@
-using System;
 using FluentValidation;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Features.CashTransactions.Commands;

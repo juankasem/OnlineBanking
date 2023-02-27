@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
