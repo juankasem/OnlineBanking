@@ -15,7 +15,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
     {
         IQueryable<CustomerBankAccount> query = _dbContext.CustomerBankAccounts.AsQueryable();
 
-           return await query.Where(cba => cba.Customer.CustomerNo == customerNo)
+        return await query.Where(cba => cba.Customer.CustomerNo == customerNo)
                                 .Include(cba => cba.BankAccount)
                                 .ThenInclude(c => c.Currency)
                                 .Include(b => b.BankAccount)
@@ -32,7 +32,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
     }
 
     public async Task<BankAccount> GetByAccountNoAsync(string accountNo) =>
-               await _dbContext.BankAccounts.Where(b => b.AccountNo == accountNo)
+            await _dbContext.BankAccounts.Where(b => b.AccountNo == accountNo)
                                         .Include(b => b.Branch)
                                         .Include(b => b.Currency)
                                         .Include(b => b.BankAccountOwners)

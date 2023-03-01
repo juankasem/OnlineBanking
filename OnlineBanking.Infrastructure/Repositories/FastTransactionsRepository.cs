@@ -15,9 +15,9 @@ public class FastTransactionsRepository : GenericRepository<FastTransaction>, IF
         IQueryable<FastTransaction> query = _dbContext.FastTransactions.AsQueryable();
 
         return await query.Include(ft => ft.BankAccount)
-                          .ThenInclude(b => b.Branch)
-                          .Where(ft => ft.BankAccount.IBAN == iban)
-                          .AsNoTracking()
-                          .ToListAsync();
+                        .ThenInclude(b => b.Branch)
+                        .Where(ft => ft.BankAccount.IBAN == iban)
+                        .AsNoTracking()
+                        .ToListAsync();
     }
 }

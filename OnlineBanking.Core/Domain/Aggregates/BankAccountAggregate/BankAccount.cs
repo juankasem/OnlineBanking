@@ -8,6 +8,7 @@ using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
+
 public class BankAccount : BaseDomainEntity
 {
     private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();

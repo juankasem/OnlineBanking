@@ -41,11 +41,10 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.IBAN))
-                                                           .ToList()
-                                                           .AsReadOnly();
+                                                            .ToList().AsReadOnly();
 
         result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
-       
+    
         return result;
     }
 

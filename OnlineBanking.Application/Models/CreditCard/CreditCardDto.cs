@@ -4,4 +4,11 @@ namespace OnlineBanking.Application.Models.CreditCard;
 
 public class CreditCardDto : BaseCreditCardDto
 {
+    public string CreditCardHolder { get; set; }
+
+    public CreditCardDto(string creditCardHolder, string creditCardNo, string customerNo, DateTime validTo, 
+                        int securityCode)
+    {
+        
+    }
 }
