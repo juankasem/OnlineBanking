@@ -4,5 +4,4 @@ namespace OnlineBanking.Application.Models.FastTransaction.Requests;
 
 public class CreateFastTransactionRequest : BaseFastTransactionDto
 {
-
 }

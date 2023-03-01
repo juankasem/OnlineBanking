@@ -50,14 +50,11 @@ public class MappingProfile : Profile
         CreateMap<CreateCashTransactionRequest, MakeFundsTransferCommand>().ReverseMap();
         CreateMap<CreateCashTransactionRequest, MakeWithdrawalCommand>().ReverseMap();
 
-        //Credit cards
-        CreateMap<CreditCard, CreditCardDto>().ReverseMap();
-        // CreateMap<CreditCard, CreditCardDetailsResponse>()
-        // .ForMember(c => c.CreditCardHolderName, o => o.MapFrom(s => s.BankAccount.BankAccountOwners.Where(bao => bao.Customer.)))
 
         //Fast Transactions
         CreateMap<CreateFastTransactionRequest, CreateFastTransactionCommand>().ReverseMap();
         CreateMap<UpdateFastTransactionRequest, UpdateFastTransactionCommand>().ReverseMap();
+        CreateMap<DeleteFastTransactionRequest, DeleteFastTransactionCommand>().ReverseMap();
         CreateMap<FastTransaction, FastTransactionResponse>()
         .ForMember(d => d.RecipientBankName, o => o.MapFrom(s => s.BankAccount.Branch.Name))
         .ReverseMap();

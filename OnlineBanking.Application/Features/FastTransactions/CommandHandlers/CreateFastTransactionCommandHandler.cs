@@ -35,9 +35,20 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
 
         try
         {
-            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
-
+            var bankAccount = await _uow.BankAccounts.GetByIdAsync(request.BankAccountId);
+            
             if (bankAccount is null)
+            {
+                result.AddError(ErrorCode.NotFound,
+                string.Format(BankAccountErrorMessages.NotFound, "Id", request.BankAccountId));
+
+                return result;
+            }
+
+
+            var recipientBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
+
+            if (recipientBankAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.RecipientIBAN));
@@ -53,12 +64,12 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
                 return result;
             }
 
-            var fastTransaction = CreateFastTransaction(request.RecipientIBAN, request.RecipientName, request.Amount, bankAccount.Id);
+            var fastTransaction = CreateFastTransaction(bankAccount.Id, request.RecipientIBAN, request.RecipientName, request.Amount);
 
-            //Add transaction to sender's account
+            //Add fast transaction to sender's account
             bankAccount.AddFastTransaction(fastTransaction);
 
-            //Update sender's account
+            //Update bank account with new fast transaction
             _uow.BankAccounts.Update(bankAccount);
             await _uow.SaveAsync();
 
@@ -77,7 +88,7 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
     }
 
     #region  Private methods
-    private FastTransaction CreateFastTransaction(string recipientIBAN, string recipientName, decimal amount, Guid bankAccountId) =>
-        FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
+    private FastTransaction CreateFastTransaction(Guid bankAccountId, string recipientIBAN, string recipientName, decimal amount) =>
+        FastTransaction.Create(bankAccountId, recipientIBAN, recipientName, amount);
     #endregion
 }

@@ -1,13 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using MediatR;
 
-namespace OnlineBanking.Application.Features.CreditCards.Commands
+namespace OnlineBanking.Application.Features.CreditCards.Commands;
+
+public class UpdateCreditCardCommand : IRequest<Unit>
 {
-    public class UpdateCreditCardCommand : IRequest<Unit>
+    public Guid CreditCardId { get; set; }
+    public string CreditCardNo { get; set; }
+    public string CustomerNo { get; set; }
+    public DateTime ValidTo { get; set; }
+    public int SecurityCode { get; set; }
+    public Guid BankAccountId { get; set; }
+
+
+    public UpdateCreditCardCommand(Guid creditCardId, string creditCardNo, string customerNo,
+                                    DateTime validTo, int securityCode, Guid bankAccountId)
     {
-        
+        CreditCardId = creditCardId;
+        CreditCardNo = creditCardNo;
+        CustomerNo = customerNo;
+        ValidTo = validTo;
+        SecurityCode = securityCode;
+        BankAccountId = bankAccountId;
     }
 }

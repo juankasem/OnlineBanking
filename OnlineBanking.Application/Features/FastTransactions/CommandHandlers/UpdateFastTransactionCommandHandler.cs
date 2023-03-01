@@ -35,9 +35,19 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
 
         try
         {
-            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
-
+            var bankAccount = await _uow.BankAccounts.GetByIdAsync(request.BankAccountId);
+            
             if (bankAccount is null)
+            {
+                result.AddError(ErrorCode.NotFound,
+                string.Format(BankAccountErrorMessages.NotFound, "Id", request.BankAccountId));
+
+                return result;
+            }
+
+            var recipientBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
+
+            if (recipientBankAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.RecipientIBAN));
@@ -53,7 +63,8 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
                 return result;
             }
 
-            var fastTransaction = CreateFastTransaction(request.RecipientIBAN, request.RecipientName, request.Amount, bankAccount.Id);
+            var fastTransaction = CreateFastTransaction( request.Id, bankAccount.Id, request.RecipientIBAN,
+                                                        request.RecipientName, request.Amount);
 
             //Add transaction to sender's account
             bankAccount.UpdateFastTransaction(request.Id, fastTransaction);
@@ -77,7 +88,7 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
     }
     
     #region  Private methods
-    private FastTransaction CreateFastTransaction(string recipientIBAN, string recipientName, decimal amount, Guid bankAccountId) =>
-        FastTransaction.Create(recipientIBAN, recipientName, amount, bankAccountId);
+    private FastTransaction CreateFastTransaction(Guid id, Guid bankAccountId, string recipientIBAN, string recipientName, decimal amount) =>
+        FastTransaction.Create( bankAccountId, recipientIBAN, recipientName, amount, id);
 #endregion
 }

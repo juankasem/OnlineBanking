@@ -19,7 +19,6 @@ public class GetAllCreditCardsRequestHandler : IRequestHandler<GetAllCreditCards
         _mapper = mapper;
     }
 
-
     public async Task<ApiResult<PagedList<CreditCardDto>>> Handle(GetAllCreditCardsRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CreditCardDto>>();

@@ -28,7 +28,7 @@ public class CreditCard : BaseDomainEntity
     }
 
     public static CreditCard Create(string creditCardNo, string customerNo, DateTime validTo,
-                        int securityCode, Guid bankAccountId, bool isActive = false, Guid? id = null, string? pIN = null)
+                                    int securityCode, Guid bankAccountId, bool isActive = false, Guid? id = null, string? pIN = null)
     {
         var validator = new CreditCardValidator();
 
@@ -50,4 +50,9 @@ public class CreditCard : BaseDomainEntity
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
         throw exception;
     }
+
+    public void Activate() => IsActive = true;
+    public void Deactivate() => IsActive = false;
+
+    public void SetPIN(string pIN) => PIN = pIN;
 }

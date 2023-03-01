@@ -46,6 +46,7 @@ public static class ApiRoutes
         public const string IdRoute = "{id:guid}";
         public const string GetByIBAN = "{iban:string}";
         public const string GetByAccountNo = "{accountNo:string}";
+        public const string DeleteById = "account/{bankAccountId:guid}/fast-transactions/{id:guid}";
     }
 
     public static class AppUsers

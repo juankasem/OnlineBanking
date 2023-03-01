@@ -67,7 +67,7 @@ public class BankAccountMapper : IBankAccountMapper
     }
 
     private List<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> accountTransactions, CurrencyDto currency) =>
-          
+        
             accountTransactions.Select(tx => new AccountTransactionDto(tx.Type, tx.InitiatedBy,
                                                                 CreateMoney(tx.Amount, currency), CreateMoney(tx.Fees, currency),
                                                                 tx.Description, tx.PaymentType, tx.TransactionDate, tx.Status,

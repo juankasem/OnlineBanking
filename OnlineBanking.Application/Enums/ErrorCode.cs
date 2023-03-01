@@ -21,5 +21,7 @@ public enum ErrorCode
     IncorrectPassword = 305,
     UnauthorizedAccountRemoval = 306,
     InSufficintFunds = 307,
+
+    UnAuthorizedOperation = 308,
     UnknownError = 999
 }

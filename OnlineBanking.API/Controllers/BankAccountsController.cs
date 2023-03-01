@@ -34,8 +34,8 @@ public class BankAccountsController : BaseApiController
     [HttpGet(ApiRoutes.BankAccounts.GetByCustomerNo)]
     [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<BankAccountResponse>>> GetCustomerBankAccounts([FromRoute] string customerNo,
-                                                                                        [FromQuery] CashTransactionParams accountTransactionsParams,                                                
-                                                                                        CancellationToken cancellationToken = default)
+                                                                                            [FromQuery] CashTransactionParams accountTransactionsParams,                                                
+                                                                                            CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountsByCustomerNoRequest() 
                         { CustomerNo = customerNo,
