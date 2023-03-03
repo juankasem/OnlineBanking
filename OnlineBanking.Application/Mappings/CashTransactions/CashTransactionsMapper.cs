@@ -61,7 +61,7 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     ct.Description, ct.PaymentType, ct.TransactionDate,
                     ct.Status);
     }
-   
+
     private Money CreateMoney(decimal amount, CurrencyDto currency) =>
         new(amount, currency);
 

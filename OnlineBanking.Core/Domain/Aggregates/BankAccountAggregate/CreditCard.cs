@@ -28,7 +28,7 @@ public class CreditCard : BaseDomainEntity
     }
 
     public static CreditCard Create(string creditCardNo, string customerNo, DateTime validTo,
-                                    int securityCode, Guid bankAccountId, bool isActive = false, Guid? id = null, string? pIN = null)
+                                    int securityCode, Guid bankAccountId, Guid? id = null, string? pIN = null)
     {
         var validator = new CreditCardValidator();
 
@@ -39,8 +39,7 @@ public class CreditCard : BaseDomainEntity
             validTo,
             securityCode,
             bankAccountId,
-            pIN,
-            isActive
+            pIN
         );
         var validationResult = validator.Validate(objectToValidate);
 

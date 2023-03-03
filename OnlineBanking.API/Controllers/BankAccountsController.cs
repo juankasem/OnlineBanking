@@ -5,6 +5,7 @@ using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
+using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Core.Helpers;
@@ -16,8 +17,8 @@ namespace OnlineBanking.API.Controllers;
 public class BankAccountsController : BaseApiController
 {
     [HttpGet(ApiRoutes.BankAccounts.All)]
-    [ProducesResponseType(typeof(PagedList<BankAccountResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<BankAccountResponse>>> ListAllBankAccounts(BankAccountParams bankAccountParams, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedList<BankAccountDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PagedList<BankAccountDto>>> ListAllBankAccounts(BankAccountParams bankAccountParams, CancellationToken cancellationToken = default)
     {
         var query = new GetAllBankAccountsRequest() { BankAccountParams = bankAccountParams };
         var result = await _mediator.Send(query, cancellationToken);
@@ -86,6 +87,7 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpPost]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountRequest request,
                                                         CancellationToken cancellationToken = default)
     {
@@ -98,6 +100,7 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpDelete(ApiRoutes.BankAccounts.IdRoute)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteBankAccount([FromQuery] string id,
                                                         CancellationToken cancellationToken = default)
     {

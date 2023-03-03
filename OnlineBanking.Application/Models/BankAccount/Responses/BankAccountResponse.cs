@@ -15,17 +15,17 @@ public class BankAccountResponse
     public BranchDto Branch { get; set; }
     public AccountBalanceDto AccountBalance { get; set; }
     public CurrencyDto Currency { get; set; }
-    public List<AccountOwnerDto> AccountOwners { get; set; } = new List<AccountOwnerDto>();
-    public List<AccountTransactionDto> AccountTransactions { get; set; } = new List<AccountTransactionDto>();
-    public List<AccountFastTransactionDto> AccountFastTransactions { get; set; } = new List<AccountFastTransactionDto>();
-    public List<CreditCardDto> AccountCreditCards { get; set; } = new List<CreditCardDto>();
-    public List<DebitCardDto> AccountDebitCards { get; set; } = new List<DebitCardDto>();
+    public IReadOnlyList<AccountOwnerDto> AccountOwners { get; set; } 
+    public IReadOnlyList<AccountTransactionDto> AccountTransactions { get; set; }
+    public IReadOnlyList<AccountFastTransactionDto> AccountFastTransactions { get; set; }
+    public IReadOnlyList<CreditCardDto> AccountCreditCards { get; set; } 
+    public IReadOnlyList<DebitCardDto> AccountDebitCards { get; set; }
 
     public BankAccountResponse(string accountNo, string iban, BankAccountType type,
                                 BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency,
-                                List<AccountOwnerDto> accountOwners, List<AccountTransactionDto> accountTransactions,
-                                List<AccountFastTransactionDto> accountFastTransactions,
-                                List<CreditCardDto> accountCreditCards, List<DebitCardDto> accountDebitCards)
+                                IReadOnlyList<AccountOwnerDto> accountOwners, IReadOnlyList<AccountTransactionDto> accountTransactions,
+                                IReadOnlyList<AccountFastTransactionDto> accountFastTransactions,
+                                IReadOnlyList<CreditCardDto> accountCreditCards, IReadOnlyList<DebitCardDto> accountDebitCards)
     {
         AccountNo = accountNo;
         IBAN = iban;

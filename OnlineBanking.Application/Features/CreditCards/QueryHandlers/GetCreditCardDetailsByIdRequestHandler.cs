@@ -1,4 +1,3 @@
-
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -10,18 +9,18 @@ using OnlineBanking.Application.Models.CreditCard.Responses;
 
 namespace OnlineBanking.Application.Features.CreditCards.QueryHandlers;
 
-public class GetCreditCardDetailsByIdRequestHandler : IRequestHandler<GetCreditCardDetailsByIdRequest, ApiResult<CreditCardDetailsResponse>>
+public class GetCreditCardByIdRequestHandler : IRequestHandler<GetCreditCardByIdRequest, ApiResult<CreditCardDetailsResponse>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
 
-    public GetCreditCardDetailsByIdRequestHandler(IUnitOfWork uow, IMapper mapper)
+    public GetCreditCardByIdRequestHandler(IUnitOfWork uow, IMapper mapper)
     {
         _uow = uow;
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<CreditCardDetailsResponse>> Handle(GetCreditCardDetailsByIdRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<CreditCardDetailsResponse>> Handle(GetCreditCardByIdRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<CreditCardDetailsResponse>();
 

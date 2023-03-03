@@ -1,8 +1,9 @@
 using MediatR;
+using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Features.CreditCards.Commands;
 
-public class ActivateCreditCardCommand : IRequest<Unit>
+public class ActivateCreditCardCommand : IRequest<ApiResult<Unit>>
 {
-    public Guid CreditCardId { get; set; }
+    public string CreditCardNo { get; set; }
 }

@@ -26,7 +26,7 @@ public class BankAccountMapper : IBankAccountMapper
                                         currency);
     }
 
-    public BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> accountTransactions)
+    public BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> cashTransactions)
     {
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
@@ -35,11 +35,11 @@ public class BankAccountMapper : IBankAccountMapper
                                         MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
-                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners.ToList()),
-                                        MapToAccountTransactionsDTO(accountTransactions, currency),
-                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions.ToList(), currency),
-                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards.ToList(), currency),
-                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards.ToList(), currency));
+                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners),
+                                        MapToAccountTransactionsDTO(cashTransactions, currency),
+                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions, currency),
+                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards, currency),
+                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards, currency));
     }
 
     #region Private helper methods
@@ -53,9 +53,12 @@ public class BankAccountMapper : IBankAccountMapper
                                                     decimal minimumAllowedBalance, decimal debt ) =>
         new (balance, allowedBalanceToUse, minimumAllowedBalance, debt);
 
-    private List<AccountOwnerDto> MapToAccountOwnersDTO(List<CustomerBankAccount> customerBankAccounts)
+    private IReadOnlyList<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<CustomerBankAccount> customerBankAccounts)
     {
         var bankAccountOwners = new List<AccountOwnerDto>();
+        
+        if ( customerBankAccounts == null ||  customerBankAccounts.Count == 0)
+        return bankAccountOwners;
 
         foreach (var customerBankAccount in customerBankAccounts)
         {
@@ -63,32 +66,57 @@ public class BankAccountMapper : IBankAccountMapper
 
             bankAccountOwners.Add(bankAccountOwner);
         }
-        return bankAccountOwners;
+
+        return bankAccountOwners.AsReadOnly();
     }
 
-    private List<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> accountTransactions, CurrencyDto currency) =>
-        
-            accountTransactions.Select(tx => new AccountTransactionDto(tx.Type, tx.InitiatedBy,
-                                                                CreateMoney(tx.Amount, currency), CreateMoney(tx.Fees, currency),
-                                                                tx.Description, tx.PaymentType, tx.TransactionDate, tx.Status,
-                                                                tx.From, tx.To, tx.Sender, tx.Recipient)).ToList();
-    
+    private IReadOnlyList<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> cashTransactions, CurrencyDto currency)
+    {
+        var accountTransactions = new List<AccountTransactionDto>();
 
-    private List<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(List<FastTransaction> fastTransactions, CurrencyDto currency)
+        if (cashTransactions == null || cashTransactions.Count == 0)
+        return accountTransactions.AsReadOnly();
+
+        foreach (var ct in cashTransactions)
+        {
+            var accountTransaction = new AccountTransactionDto(ct.Type, ct.InitiatedBy,
+                                                                CreateMoney(ct.Amount, currency), CreateMoney(ct.Fees, currency),
+                                                                ct.Description, ct.PaymentType, ct.TransactionDate, ct.Status,
+                                                                ct.From, ct.To, ct.Sender, ct.Recipient);
+
+            accountTransactions.Add(accountTransaction);
+        }
+        
+        return accountTransactions.AsReadOnly();
+    }
+        
+
+    private IReadOnlyList<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(IReadOnlyList<FastTransaction> fastTransactions, CurrencyDto currency)
     {
         var accountFastTransactions = new List<AccountFastTransactionDto>();
 
-        return accountFastTransactions;
+        if (fastTransactions == null || fastTransactions.Count == 0)
+        return accountFastTransactions.AsReadOnly();
+
+        foreach (var ft in fastTransactions)
+        {
+            var accountFastTransaction = new AccountFastTransactionDto(ft.BankAccount.IBAN, ft.RecipientIBAN, ft.RecipientName, 
+                                                                        ft.BankAccount.Branch.Name, CreateMoney(ft.Amount, currency));
+
+            accountFastTransactions.Add(accountFastTransaction);
+        }
+
+        return accountFastTransactions.AsReadOnly();
     }
 
-    private List<CreditCardDto> MapToAccountCreditCardsDTO(List<CreditCard> creditCards, CurrencyDto currency)
+    private IReadOnlyList<CreditCardDto> MapToAccountCreditCardsDTO(IReadOnlyList<CreditCard> creditCards, CurrencyDto currency)
     {
         var accountCreditCards = new List<CreditCardDto>();
 
         return accountCreditCards;
     }
 
-    private List<DebitCardDto> MapToAccountDebitCardsDTO(List<DebitCard> debitCards, CurrencyDto currency)
+    private IReadOnlyList<DebitCardDto> MapToAccountDebitCardsDTO(IReadOnlyList<DebitCard> debitCards, CurrencyDto currency)
     {
         var accountDebitCards = new List<DebitCardDto>();
 

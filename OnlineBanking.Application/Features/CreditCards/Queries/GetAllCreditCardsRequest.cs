@@ -8,5 +8,5 @@ namespace OnlineBanking.Application.Features.CreditCards.Queries;
 
 public class GetAllCreditCardsRequest : IRequest<ApiResult<PagedList<CreditCardDto>>>
 {
-    public CreditCardParams  CreditCardParams { get; set; }
+    public CreditCardParams CreditCardParams { get; set; }
 }

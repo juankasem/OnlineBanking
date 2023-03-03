@@ -7,5 +7,5 @@ namespace OnlineBanking.Application.Mappings.BankAccounts;
 public interface IBankAccountMapper
 {
     BankAccountDto MapToDtoModel(BankAccount bankAccount);
-    BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> accountTransactions);
+    BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> cashTransactions);
 }

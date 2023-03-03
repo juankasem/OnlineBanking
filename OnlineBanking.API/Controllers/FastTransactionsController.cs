@@ -11,7 +11,7 @@ namespace OnlineBanking.API.Controllers;
 
 public class FastTransactionsController : BaseApiController
 {
-    // GET api/v1/Fast-transactions/TR12345678 
+    // GET api/v1/fast-transactions/TR12345678 
     [Cached(600)]
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
