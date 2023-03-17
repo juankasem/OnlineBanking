@@ -32,9 +32,9 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
 
         try
         {
-            var fromBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
+            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
 
-            if (fromBankAccount is null)
+            if (bankAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, request.From));
@@ -42,17 +42,17 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
                 return result;
             }
 
-            if (!fromBankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+            if (!bankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.From));
+                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
 
                 return result;
             }
 
             var amountToWithdraw = request.BaseCashTransaction.Amount.Value;
 
-            if (fromBankAccount.AllowedBalanceToUse < amountToWithdraw)
+            if (bankAccount.AllowedBalanceToUse < amountToWithdraw)
             {
                 result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
 
@@ -60,16 +60,16 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             }
 
             //Update account balance & Add transaction
-            var updatedFromBalance = fromBankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
+            var updatedBalance = bankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
             var accountTransaction = new AccountTransaction()
             {
-                Account = fromBankAccount,
-                Transaction = CreateCashTransaction(request, updatedFromBalance)
+                Account = bankAccount,
+                Transaction = CreateCashTransaction(request, updatedBalance)
             };
 
-            fromBankAccount.AddTransaction(accountTransaction);
+            bankAccount.AddTransaction(accountTransaction);
             
-            _uow.BankAccounts.Update(fromBankAccount);
+            _uow.BankAccounts.Update(bankAccount);
 
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {

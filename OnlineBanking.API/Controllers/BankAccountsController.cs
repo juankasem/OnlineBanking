@@ -1,13 +1,20 @@
 using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Helpers;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
+using OnlineBanking.Application.Features.CashTransactions.Commands;
+using OnlineBanking.Application.Features.FastTransactions.Commands;
+using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
+using OnlineBanking.Application.Models.CashTransaction.Requests;
+using OnlineBanking.Application.Models.FastTransaction.Requests;
+using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 
@@ -129,6 +136,60 @@ public class BankAccountsController : BaseApiController
                                                             CancellationToken cancellationToken = default)
     {
         var command = new DeactivateBankAccountCommand { BankAccountId = Guid.Parse(id) };
+
+        var result = await _mediator.Send(command);
+
+        if (result.IsError) HandleErrorResponse(result.Errors);
+
+        return Ok();
+    }
+
+    [HttpPost(ApiRoutes.BankAccounts.CashTransaction)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<IActionResult> AddCashTransaction([FromRoute] string iban,
+                                                            [FromBody] CreateCashTransactionRequest request,
+                                                            CancellationToken cancellationToken = default)
+    {
+        var result = new ApiResult<Unit>();
+
+        if (iban != request.BaseCashTransaction.IBAN)
+            result.IsError = true;
+        else
+        {
+            switch (request.BaseCashTransaction.Type)
+            {
+                case CashTransactionType.Deposit:
+                    var makeDepositCommand = _mapper.Map<MakeDepositCommand>(request);
+                    result = await _mediator.Send(makeDepositCommand);
+                    break;
+
+                case CashTransactionType.Withdrawal:
+                    var makeWithdrawalCommand = _mapper.Map<MakeWithdrawalCommand>(request);
+                    result = await _mediator.Send(makeWithdrawalCommand);
+                    break;
+
+                case CashTransactionType.Transfer or CashTransactionType.FAST:
+                    var makeFundsTransferCommand = _mapper.Map<MakeFundsTransferCommand>(request);
+                    result = await _mediator.Send(makeFundsTransferCommand);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        if (result.IsError) HandleErrorResponse(result.Errors);
+
+        return Ok();
+    }
+
+    [HttpPost(ApiRoutes.BankAccounts.FastTransaction)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    public async Task<IActionResult> AddFastTransaction([FromRoute] string iban,
+                                                            [FromBody] CreateFastTransactionRequest request,
+                                                            CancellationToken cancellationToken = default)
+    {
+        var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
         var result = await _mediator.Send(command);
 

@@ -14,6 +14,8 @@ public static class ApiRoutes
         public const string AccountTransactions = "{iban}/account-transactions";
         public const string Activate = "activate/{iban}";
         public const string Deactivate = "deactivate/{iban}";
+        public const string CashTransaction = "{iban:string}/cash-transaction";
+        public const string FastTransaction = "{iban:string}/fast-transaction";
     }
 
     public static class CashTransactions

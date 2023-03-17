@@ -56,7 +56,7 @@ public class CashTransactionsMapper : ICashTransactionsMapper
     {
         var ct = request.BaseCashTransaction;
 
-        return new(ct.ReferenceNo, ct.Type,
+        return new(ct.IBAN, ct.ReferenceNo, ct.Type,
                     ct.InitiatedBy, ct.Amount, ct.Fees,
                     ct.Description, ct.PaymentType, ct.TransactionDate,
                     ct.Status);
