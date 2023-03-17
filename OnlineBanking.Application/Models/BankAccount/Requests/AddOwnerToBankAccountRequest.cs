@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.Customer;
 
 namespace OnlineBanking.Application.Models.BankAccount.Requests;

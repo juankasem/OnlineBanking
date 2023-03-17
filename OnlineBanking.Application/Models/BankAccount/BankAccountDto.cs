@@ -1,9 +1,5 @@
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.Branch;
-using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
-using OnlineBanking.Application.Models.Customer;
-using OnlineBanking.Application.Models.DebitCard;
 using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.BankAccount;
@@ -18,7 +14,7 @@ public class BankAccountDto
     public CurrencyDto Currency { get; set; }
 
     public BankAccountDto(string accountNo, string iban, BankAccountType type,
-                                BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
+                        BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
     {
         AccountNo = accountNo;
         IBAN = iban;

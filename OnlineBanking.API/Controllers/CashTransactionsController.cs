@@ -26,7 +26,7 @@ public class CashTransactionsController : BaseApiController
     [HttpGet(ApiRoutes.CashTransactions.All)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                                 CancellationToken cancellationToken = default)
+                                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetAllCashTransactionsRequest() { CashTransactionParams = cashTransactionParams };
         var result = await _mediator.Send(query);
@@ -34,7 +34,7 @@ public class CashTransactionsController : BaseApiController
         if (result.IsError) HandleErrorResponse(result.Errors);
         
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -49,14 +49,14 @@ public class CashTransactionsController : BaseApiController
     {
         var query = new GetAccountTransactionsRequest() 
                         { AccountNoOrIBAN = accountNoOrIBAN,
-                          CashTransactionParams = cashTransactionParams
+                        CashTransactionParams = cashTransactionParams
                         };
         var result = await _mediator.Send(query);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -66,12 +66,12 @@ public class CashTransactionsController : BaseApiController
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CashTransactionResponse>>> GetCashTransactionsByIBAN([FromRoute] string iban,
-                                                                                                  [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                                                  CancellationToken cancellationToken = default)
+                                                                                                [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByIBANRequest() 
                         { IBAN = iban,
-                          CashTransactionParams = cashTransactionParams
+                        CashTransactionParams = cashTransactionParams
                         };
 
         var result = await _mediator.Send(query);
@@ -79,7 +79,7 @@ public class CashTransactionsController : BaseApiController
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload.Data);
     }
@@ -88,7 +88,7 @@ public class CashTransactionsController : BaseApiController
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> PostCashTransaction([FromBody] CreateCashTransactionRequest request,
-                                                         CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
 

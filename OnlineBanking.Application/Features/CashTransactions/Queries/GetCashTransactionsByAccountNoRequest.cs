@@ -9,5 +9,5 @@ namespace OnlineBanking.Application.Features.CashTransactions.Queries;
 public class GetAccountTransactionsRequest : IRequest<ApiResult<PagedList<CashTransactionResponse>>>
 {
     public string AccountNoOrIBAN { get; set; }
-     public CashTransactionParams CashTransactionParams { get; set; }
+    public CashTransactionParams CashTransactionParams { get; set; }
 }

@@ -8,6 +8,7 @@ using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
+
 public class BankAccount : BaseDomainEntity
 {
     private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();
@@ -65,14 +66,14 @@ public class BankAccount : BaseDomainEntity
 
     public bool IsActive { get; private set; }
 
-    // Many-to-many relationship
+    // Many-to-many relationships
     [JsonIgnore]
     public IReadOnlyList<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
 
     [JsonIgnore]
     public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
 
-    // One-to-Many relationship
+    // One-to-Many relationships
     public IReadOnlyList<FastTransaction> FastTransactions { get { return _fastTransactions; } }
     public IReadOnlyList<CreditCard> CreditCards { get { return _creditCards; } }
     public IReadOnlyList<DebitCard> DebitCards { get { return _debitCards; } }
@@ -159,11 +160,46 @@ public class BankAccount : BaseDomainEntity
         if (index >= 0) _fastTransactions[index] = ft;
     }
 
-    public void DelteFastTransaction(FastTransaction ft) => _fastTransactions.Remove(ft);
+    public void DelteFastTransaction(Guid id)
+    {
+        var index = _fastTransactions.FindIndex(c => c.Id == id);
+
+        if (index >= 0) _fastTransactions.Remove(_fastTransactions[index]);
+    }
 
     public void AddCreditCard(CreditCard creditCard) => _creditCards.Add(creditCard);
 
+    public void UpdateCreditCard(Guid id, CreditCard creditCard)
+    {
+        var index = _creditCards.FindIndex(c => c.Id == id);
+
+        if (index >= 0) _creditCards[index] = creditCard;
+    }
+
+    public void ActivateCreditCard(Guid creditCardId)
+    {
+        var creditCard = _creditCards.FirstOrDefault(c => c.Id == creditCardId);
+
+        if (creditCard is not null) creditCard.Activate();
+    }
+
+    public void SetPINToCreditCard(Guid creditCardId, string pIN)
+    {
+        var creditCard = _creditCards.FirstOrDefault(c => c.Id == creditCardId);
+
+        if (creditCard is not null && pIN.Length == 4)
+            creditCard.SetPIN(pIN);
+    }
+
     public void AddDebitCard(DebitCard debitCard) => _debitCards.Add(debitCard);
+
+    public void UpdateDebitCard(Guid id, DebitCard debitCard)
+    {
+        var index = _debitCards.FindIndex(c => c.Id == id);
+
+        if (index >= 0) _debitCards[index] = debitCard;
+    }
+
 
     public decimal UpdateBalance(decimal amount, string operationType)
     {

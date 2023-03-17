@@ -11,12 +11,12 @@ namespace OnlineBanking.API.Controllers;
 
 public class FastTransactionsController : BaseApiController
 {
-    // GET api/v1/Fast-transactions/TR12345678 
+    // GET api/v1/fast-transactions/TR12345678 
     [Cached(600)]
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> ListFastTransactionsByIBAN([FromRoute] string iban,
-                                                                                                 CancellationToken cancellationToken = default)
+                                                                                                CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()
         {
@@ -33,7 +33,7 @@ public class FastTransactionsController : BaseApiController
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request,
-                                                         CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
@@ -49,7 +49,7 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ValidateGuid]
     public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
-                                                           CancellationToken cancellationToken = default)
+                                                        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
 
@@ -61,13 +61,14 @@ public class FastTransactionsController : BaseApiController
     }
 
     // DELETE api/v1/Fast-transactions/1234
-    [HttpDelete(ApiRoutes.FastTransactions.IdRoute)]
+    [HttpDelete]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ValidateGuid]
-    public async Task<IActionResult> DeleteFastTransaction([FromQuery] string id,
+    public async Task<IActionResult> DeleteFastTransaction([FromBody] DeleteFastTransactionRequest request,
                                                             CancellationToken cancellationToken = default)
     {
-        var command = new DeleteFastTransactionCommand() { Id = Guid.Parse(id) };
+        var command = _mapper.Map<DeleteFastTransactionCommand>(request);
+
         var result = await _mediator.Send(command);
 
         if (result.IsError) HandleErrorResponse(result.Errors);

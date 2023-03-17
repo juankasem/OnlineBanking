@@ -3,12 +3,12 @@ using OnlineBanking.API.Common;
 
 namespace OnlineBanking.API.Middleware;
 
-public class ExceptionMiddleware
+public class ExceptionHandlingMiddleware
 {
     private readonly ILogger _logger;
     private readonly RequestDelegate _next;
 
-    public ExceptionMiddleware(RequestDelegate next, ILogger logger)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger logger)
     {
         _logger = logger;
         _next = next;

@@ -27,7 +27,7 @@ public class BranchController : BaseApiController
         if (result.IsError) HandleErrorResponse(result.Errors);
 
         Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                     result.Payload.TotalCount, result.Payload.TotalPages);
+                                    result.Payload.TotalCount, result.Payload.TotalPages);
 
         return Ok(result.Payload);
     }

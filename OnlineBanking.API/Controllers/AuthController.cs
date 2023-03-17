@@ -23,10 +23,10 @@ public class AuthController : BaseApiController
     private readonly ITokenService _tokenService;
 
     public AuthController(ILogger<AuthController> logger,
-                         UserManager<AppUser> userManager,
-                         SignInManager<AppUser> signInManager,
-                         RoleManager<IdentityRole> roleManager,
-                         ITokenService tokenService)
+                        UserManager<AppUser> userManager,
+                        SignInManager<AppUser> signInManager,
+                        RoleManager<IdentityRole> roleManager,
+                        ITokenService tokenService)
     {
 
         _logger = logger;
@@ -89,10 +89,10 @@ public class AuthController : BaseApiController
 
             var authClaims = new List<Claim>()
             {
-               new Claim(ClaimTypes.Name, user.UserName),
-               new Claim(ClaimTypes.Email, user.Email),
-               new Claim(ClaimTypes.GivenName, user.DisplayName),
-               new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.DisplayName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             foreach (var userRole in userRoles)
@@ -140,7 +140,7 @@ public class AuthController : BaseApiController
             await _userManager.AddToRoleAsync(appUser, UserRoles.User);
 
         if (request.IsAdmin){
-              if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
             await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
 
             await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);

@@ -1,4 +1,3 @@
-using System;
 using MediatR;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;

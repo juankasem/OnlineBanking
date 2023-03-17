@@ -11,6 +11,8 @@ using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.Branch.Responses;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
+using OnlineBanking.Application.Models.CreditCard;
+using OnlineBanking.Application.Models.CreditCard.Responses;
 using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
 using OnlineBanking.Application.Models.FastTransaction.Responses;
@@ -48,12 +50,14 @@ public class MappingProfile : Profile
         CreateMap<CreateCashTransactionRequest, MakeFundsTransferCommand>().ReverseMap();
         CreateMap<CreateCashTransactionRequest, MakeWithdrawalCommand>().ReverseMap();
 
+
         //Fast Transactions
         CreateMap<CreateFastTransactionRequest, CreateFastTransactionCommand>().ReverseMap();
         CreateMap<UpdateFastTransactionRequest, UpdateFastTransactionCommand>().ReverseMap();
+        CreateMap<DeleteFastTransactionRequest, DeleteFastTransactionCommand>().ReverseMap();
         CreateMap<FastTransaction, FastTransactionResponse>()
-         .ForMember(d => d.RecipientBankName, o => o.MapFrom(s => s.BankAccount.Branch.Name))
-         .ReverseMap();
+        .ForMember(d => d.RecipientBankName, o => o.MapFrom(s => s.BankAccount.Branch.Name))
+        .ReverseMap();
 
         //Customers
         CreateMap<Address, AddressDto>();

@@ -1,4 +1,3 @@
-using System;
 using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Base;

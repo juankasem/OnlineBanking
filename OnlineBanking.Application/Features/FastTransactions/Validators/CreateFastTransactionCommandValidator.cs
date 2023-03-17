@@ -1,4 +1,3 @@
-
 using FluentValidation;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 

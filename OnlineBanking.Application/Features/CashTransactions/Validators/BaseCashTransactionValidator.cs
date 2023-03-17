@@ -1,4 +1,3 @@
-using System;
 using FluentValidation;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Models.CashTransaction.Base;
@@ -29,6 +28,6 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
         .NotNull().WithMessage("{PropertyName} is required");
 
         RuleFor(c => c.TransactionDate)
-        .LessThan(DateTime.Now).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+        .GreaterThanOrEqualTo(DateTime.Now).WithMessage("{PropertyName} must not be before {ComparisonValue}");
     }
 }

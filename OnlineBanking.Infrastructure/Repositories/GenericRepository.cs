@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Specifications;
@@ -20,11 +16,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
+    
     public async Task<IReadOnlyList<T>> GetAllAsync(PaginationParams paginationParams)
     {
         var query = _dbContext.Set<T>().AsNoTracking();
         
-         return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
     }
 
     public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams)
@@ -85,11 +82,11 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
 
     public void Add(T entity) => _dbContext.Set<T>().Add(entity);
-    
+
     public void Update(T entity)
     {
-       _dbContext.Set<T>().Attach(entity);
-       _dbContext.Entry(entity).State = EntityState.Modified;
+        _dbContext.Set<T>().Attach(entity);
+        _dbContext.Entry(entity).State = EntityState.Modified;
     }
 
     public void Delete(T entity) => _dbContext.Set<T>().Remove(entity);
