@@ -31,9 +31,9 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
         try
         {
-            var toBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.To);
+            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
 
-            if (toBankAccount is null)
+            if (bankAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
                 string.Format(BankAccountErrorMessages.NotFound, request.To));
@@ -41,10 +41,10 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
                 return result;
             }
             
-            if (!toBankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+            if (!bankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.To));
+                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
 
                 return result;
             }
@@ -52,16 +52,16 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
             var amountToDeposit = request.BaseCashTransaction.Amount.Value;
 
             //Update account balance & Add transaction
-            var updatedToBalance = toBankAccount.UpdateBalance(amountToDeposit, OperationType.Add);
+            var updatedBalance = bankAccount.UpdateBalance(amountToDeposit, OperationType.Add);
             var accountTransaction = new AccountTransaction()
             {
-                Account = toBankAccount,
-                Transaction = CreateCashTransaction(request, updatedToBalance)
+                Account = bankAccount,
+                Transaction = CreateCashTransaction(request, updatedBalance)
             };
 
-            toBankAccount.AddTransaction(accountTransaction);
+            bankAccount.AddTransaction(accountTransaction);
 
-            _uow.BankAccounts.Update(toBankAccount);
+            _uow.BankAccounts.Update(bankAccount);
         
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {

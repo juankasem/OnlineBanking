@@ -109,7 +109,7 @@ public class CashTransaction : BaseDomainEntity
                             string from, string to, decimal amount, int currencyId, decimal fees, string description,
                             decimal senderAvailableBalance, decimal recipientAvailableBalance,
                             PaymentType paymentType, DateTime transactionDate,
-                             string? sender = null, string? recipient = null,
+                            string? sender = null, string? recipient = null,
                             string? creditCardNo = null, string? debitCardNo = null)
     {
         Id = id;

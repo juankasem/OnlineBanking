@@ -87,7 +87,8 @@ public class CashTransactionsController : BaseApiController
     // POST api/v1/cash-transactions
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> PostCashTransaction([FromBody] CreateCashTransactionRequest request,
+    public async Task<IActionResult> PostCashTransaction([FromRoute] string iban,
+                                                        [FromBody] CreateCashTransactionRequest request,
                                                         CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
