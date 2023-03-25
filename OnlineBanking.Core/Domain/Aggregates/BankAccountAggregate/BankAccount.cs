@@ -141,9 +141,9 @@ public class BankAccount : BaseDomainEntity
 
     public void AddTransaction(AccountTransaction at) => _accountTransactions.Add(at);
 
-    public void UpdateTransaction(Guid id, CashTransaction cashTransaction)
+    public void UpdateTransaction(CashTransaction cashTransaction)
     {
-        var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == id);
+        var accountTransaction = _accountTransactions.FirstOrDefault(at => at.Transaction.Id == cashTransaction.Id);
 
         if (accountTransaction is not null)
             accountTransaction.Transaction = cashTransaction;

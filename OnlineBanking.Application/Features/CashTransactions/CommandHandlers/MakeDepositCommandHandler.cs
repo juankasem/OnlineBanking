@@ -62,13 +62,12 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
             bankAccount.AddTransaction(accountTransaction);
 
             _uow.BankAccounts.Update(bankAccount);
-        
+
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {
-                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
-                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
-                _uow.CashTransactions.Update(cashTransaction);
-            
+                accountTransaction.Transaction.UpdateStatus(CashTransactionStatus.Completed);
+                _uow.BankAccounts.Update(bankAccount);
+
                 await _uow.SaveAsync();
             }
 

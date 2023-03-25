@@ -132,6 +132,7 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpPut(ApiRoutes.BankAccounts.Deactivate)]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeactivateBankAccount([FromQuery] string id,
                                                             CancellationToken cancellationToken = default)
     {
@@ -147,8 +148,8 @@ public class BankAccountsController : BaseApiController
     [HttpPost(ApiRoutes.BankAccounts.CashTransaction)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddCashTransaction([FromRoute] string iban,
-                                                            [FromBody] CreateCashTransactionRequest request,
-                                                            CancellationToken cancellationToken = default)
+                                                        [FromBody] CreateCashTransactionRequest request,
+                                                        CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
 
@@ -156,7 +157,7 @@ public class BankAccountsController : BaseApiController
             result.IsError = true;
         else
         {
-            switch (request.BaseCashTransaction.Type)
+            switch (request.BaseCashTransaction?.Type)
             {
                 case CashTransactionType.Deposit:
                     var makeDepositCommand = _mapper.Map<MakeDepositCommand>(request);
