@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Middleware;
 using OnlineBanking.Application;
@@ -8,6 +9,11 @@ var configuration = builder.Configuration;
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+});
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddCors(options =>
 {
@@ -20,8 +26,8 @@ builder.Services.AddCors(options =>
 
 // Add services to the container.
 builder.Services.ConfigureIdentityServices(configuration);
-builder.Services.ConfigureApplicationServices(configuration);
-builder.Services.ConfigureInfrastructureServices(configuration);
+builder.Services.ConfigureApplicationServices();
+builder.Services.ConfigureInfrastructureServices();
 builder.Services.ConfigurePersistenceServices(configuration);
 
 var app = builder.Build();

@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace OnlineBanking.Core.Helpers;
 
-public
- class PagedList<T> : List<T>
+public class PagedList<T> : List<T>
 {
     public PagedList(IReadOnlyList<T> items, int count, int pageNumber, int pageSize)
     {
@@ -26,9 +21,8 @@ public
 
     public static PagedList<T> Create(IReadOnlyList<T> items, int pageNumber, int pageSize)
     {
-        var count = items.Count();
-        // var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        items = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-        return new PagedList<T>(items, count, pageNumber, pageSize);
+        return new PagedList<T>(items, items.Count, pageNumber, pageSize);
     }
 }

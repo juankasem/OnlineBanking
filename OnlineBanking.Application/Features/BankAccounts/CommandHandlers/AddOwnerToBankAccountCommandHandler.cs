@@ -51,16 +51,10 @@ public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBan
 
         foreach (var accountOwner in accountOwners)
         {
-            var bankAccountOwner = new CustomerBankAccount()
-                {
-                    Customer = accountOwner,
-                    BankAccount = bankAccount,
-                    BankAccountType = bankAccount.Type
-                };
-
+            var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
+              
             bankAccount.AddOwnerToBankAccount(bankAccountOwner);
         }
-
 
         _uow.BankAccounts.Update(bankAccount);
         await _uow.SaveAsync();

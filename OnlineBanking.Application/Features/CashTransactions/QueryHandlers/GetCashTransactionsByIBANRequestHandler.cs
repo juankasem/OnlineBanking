@@ -47,10 +47,4 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
     
         return result;
     }
-
-    private async Task<string> GetAccountOwnerName(string iban)
-    {
-        var customer = await _uow.Customers.GetByIBANAsync(iban);
-        return customer != null ? customer.FirstName + " " + customer.LastName : string.Empty;
-    }
 }

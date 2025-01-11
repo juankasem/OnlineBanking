@@ -12,7 +12,7 @@ using OnlineBanking.Infrastructure.Persistence;
 namespace OnlineBanking.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineBankDbContext))]
-    [Migration("20230214124042_InitialCreate")]
+    [Migration("20250103005520_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace OnlineBanking.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.2")
+                .HasAnnotation("ProductVersion", "7.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -164,6 +164,9 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CityId")
                         .HasColumnType("int");
 
@@ -199,7 +202,118 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("DistrictId");
+
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("City");
+                });
+
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Country");
+                });
+
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.District", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("District");
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.AccountTransaction", b =>
@@ -227,10 +341,12 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("AllowedBalanceToUse")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("BranchId")
                         .HasColumnType("int");
@@ -245,7 +361,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Debt")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("IBAN")
                         .HasColumnType("nvarchar(max)");
@@ -263,7 +380,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("MinimumAllowedBalance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -284,7 +402,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -305,7 +424,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Fees")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("From")
                         .HasColumnType("nvarchar(max)");
@@ -329,7 +449,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("RecipientAvailableBalance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<string>("ReferenceNo")
                         .HasColumnType("nvarchar(max)");
@@ -338,7 +459,8 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("SenderAvailableBalance")
-                        .HasColumnType("decimal(18,2)");
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -365,7 +487,7 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankAccountId")
+                    b.Property<Guid>("BankAccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
@@ -374,6 +496,15 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreditCardNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -381,6 +512,15 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PIN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SecurityCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -435,9 +575,6 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.Property<Guid>("BankAccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BankAccountType")
-                        .HasColumnType("int");
-
                     b.HasKey("CustomerId", "BankAccountId");
 
                     b.HasIndex("BankAccountId");
@@ -482,7 +619,11 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankAccountId")
+                    b.Property<decimal>("Amount")
+                        .HasPrecision(18, 4)
+                        .HasColumnType("decimal(18,4)");
+
+                    b.Property<Guid>("BankAccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
@@ -499,6 +640,12 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.Property<DateTime>("LastModifiedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("RecipientIBAN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecipientName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -567,9 +714,6 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -589,8 +733,6 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.ToTable("Branches");
                 });
@@ -671,6 +813,9 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -700,6 +845,12 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -775,18 +926,73 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Address", b =>
+                {
+                    b.HasOne("OnlineBanking.Core.Domain.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("District");
+                });
+
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", b =>
+                {
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.District", b =>
+                {
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.AccountTransaction", b =>
                 {
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "Account")
                         .WithMany("AccountTransactions")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CashTransaction", "Transaction")
                         .WithMany("AccountTransactions")
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -826,9 +1032,13 @@ namespace OnlineBanking.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CreditCard", b =>
                 {
-                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", null)
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "BankAccount")
                         .WithMany("CreditCards")
-                        .HasForeignKey("BankAccountId");
+                        .HasForeignKey("BankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankAccount");
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CustomerBankAccount", b =>
@@ -836,13 +1046,13 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "BankAccount")
                         .WithMany("BankAccountOwners")
                         .HasForeignKey("BankAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Customer", "Customer")
                         .WithMany("CustomerBankAccounts")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("BankAccount");
@@ -859,18 +1069,50 @@ namespace OnlineBanking.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.FastTransaction", b =>
                 {
-                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", null)
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "BankAccount")
                         .WithMany("FastTransactions")
-                        .HasForeignKey("BankAccountId");
+                        .HasForeignKey("BankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankAccount");
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Branch", b =>
                 {
-                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
+                    b.OwnsOne("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Address", "Address", b1 =>
+                        {
+                            b1.Property<int>("BranchId")
+                                .HasColumnType("int");
 
-                    b.Navigation("Address");
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("District")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Name")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Street")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ZipCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("BranchId");
+
+                            b1.ToTable("Branches");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BranchId");
+                        });
+
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Customer", b =>

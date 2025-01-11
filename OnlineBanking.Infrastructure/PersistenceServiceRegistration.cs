@@ -14,7 +14,7 @@ public static class PersistenceServiceRegistration
     {
         services.AddDbContext<OnlineBankDbContext>(options =>
         {
-            options.UseSqlServer(configuration.GetConnectionString("OnlineBankConnection"));
+            options.UseSqlServer(configuration.GetConnectionString("OnlineBankingConnection"));
         });
 
         services.AddSingleton<IConnectionMultiplexer>(c => {

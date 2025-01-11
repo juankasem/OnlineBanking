@@ -40,7 +40,7 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, A
                 return result;
             }
 
-            var address = _mapper.Map<Address>(request.Address);
+            var address = _mapper.Map<Address>(request.BranchAddress);
 
             branch.SetAddress(address);
 

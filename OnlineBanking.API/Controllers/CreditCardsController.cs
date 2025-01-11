@@ -15,7 +15,6 @@ namespace OnlineBanking.API.Controllers;
 public class CreditCardsController : BaseApiController
 {
     // GET api/v1/credit-cards/all
-    [Cached(600)]
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CreditCardDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PagedList<CreditCardDto>>> GetAllCreditCards([FromQuery] CreditCardParams creditCardParams,
@@ -31,7 +30,6 @@ public class CreditCardsController : BaseApiController
     }
 
     // GET api/v1/credit-cards/TR12345678 
-    [Cached(600)]
     [HttpGet(ApiRoutes.CreditCards.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<CreditCardDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IReadOnlyList<CreditCardDto>>> GetCustomerCreditCards([FromRoute] string customerNo,
@@ -47,7 +45,6 @@ public class CreditCardsController : BaseApiController
     }
 
     // GET api/v1/credit-cards/TR12345678 
-    [Cached(600)]
     [HttpGet(ApiRoutes.CreditCards.IdRoute)]
     [ValidateGuid]
     [ProducesResponseType(typeof(CreditCardDetailsResponse), (int)HttpStatusCode.OK)]
@@ -111,7 +108,7 @@ public class CreditCardsController : BaseApiController
 
     
     // PUT api/v1/credit-cards/deactivate/TR12345678
-    [HttpPut(ApiRoutes.CreditCards.Activate)]
+    [HttpPut(ApiRoutes.CreditCards.Deactivate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeactivateCreditCard([FromRoute] string creditCardNo,
                                                         CancellationToken cancellationToken = default)

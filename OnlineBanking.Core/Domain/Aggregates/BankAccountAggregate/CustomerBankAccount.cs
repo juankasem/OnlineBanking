@@ -1,5 +1,4 @@
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
@@ -11,5 +10,11 @@ public class CustomerBankAccount
     public Guid BankAccountId { get; set; }
     public BankAccount BankAccount { get; set; }
 
-    public BankAccountType BankAccountType { get; set; }
+    private CustomerBankAccount(Guid bankAccountId, Guid customerId)
+    {
+       BankAccountId = bankAccountId;
+        CustomerId = customerId;
+    }
+
+    public static CustomerBankAccount Create(Guid bankAccountId, Guid customerId) => new(bankAccountId, customerId);
 }

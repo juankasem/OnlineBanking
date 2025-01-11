@@ -9,7 +9,7 @@ namespace OnlineBanking.API.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
-[ApiVersion("1.1")]
+[ApiVersion("1.0")]
 public class BaseApiController : ControllerBase
 {
     private IMediator _mediatorInstance;

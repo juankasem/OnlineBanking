@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using OnlineBanking.API.Common;
@@ -33,7 +34,10 @@ public class ValidateGuidAttribute : ActionFilterAttribute
             apiError.StatusCode = 400;
             apiError.StatusPhrase = "Bad Request";
             apiError.Timestamp = DateTime.Now;
-            context.Result = new ObjectResult(apiError);
+            context.Result = new ObjectResult(apiError)
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
         }
     }
 }

@@ -13,10 +13,10 @@ public class UpdateBranchCommandValidator : AbstractValidator<UpdateBranchComman
         .NotEmpty().WithMessage("{PropertyName} is required")
         .GreaterThan(0);
 
-        RuleFor(c => c.Name)
+        RuleFor(c => c.BranchName)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
-        RuleFor(c => c.Address).SetValidator(new BranchAddressValidator());
+        RuleFor(c => c.BranchAddress).SetValidator(new BranchAddressValidator());
     }
 }

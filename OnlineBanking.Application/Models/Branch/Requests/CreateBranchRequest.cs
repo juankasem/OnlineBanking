@@ -4,6 +4,6 @@ namespace OnlineBanking.Application.Models.Branch.Requests;
 
 public class CreateBranchRequest
 {
-    public int Name { get; set; }
-    public BaseAddressDto Address { get; set; }
+    public string Name { get; set; }
+    public BranchAddressDto Address { get; set; }
 }

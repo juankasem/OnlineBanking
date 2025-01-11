@@ -12,48 +12,46 @@ namespace OnlineBanking.API.Controllers;
 public class FastTransactionsController : BaseApiController
 {
     // GET api/v1/fast-transactions/TR12345678 
-    [Cached(600)]
     [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
-    [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<IReadOnlyList<FastTransactionResponse>>> ListFastTransactionsByIBAN([FromRoute] string iban,
-                                                                                                CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(IReadOnlyList<FastTransactionResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ListFastTransactionsByIBAN([FromRoute] string iban, CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()
         {
             IBAN = iban,
         };
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
         return Ok(result.Payload);
     }
 
     // POST api/v1/Fast-transactions
     [HttpPost]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request,
-                                                        CancellationToken cancellationToken = default)
+                                                           CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
         return Ok();
     }
 
     // PUT api/v1/Fast-transactions/1234
     [HttpPut(ApiRoutes.FastTransactions.IdRoute)]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ValidateGuid]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ValidateGuid("id")]
     public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
-                                                        CancellationToken cancellationToken = default)
+                                                           CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 

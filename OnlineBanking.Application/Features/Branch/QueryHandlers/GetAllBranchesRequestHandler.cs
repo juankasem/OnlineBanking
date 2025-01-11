@@ -25,14 +25,13 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
     public async Task<ApiResult<PagedList<BranchResponse>>> Handle(GetAllBranchesRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<BranchResponse>>();
-        var reqParams = request.BranchParams;
+        var requestParams = request.BranchParams;
 
-        var allBranches = await _uow.Branches.GetAllAsync(request.BranchParams);
+        var allBranches = await _uow.Branches.GetAllAsync(requestParams);
 
-        var mappedBranches = allBranches.Select(branch => _mapper.Map<BranchResponse>(branch))
-                                        .ToList().AsReadOnly();
+        var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(allBranches);
 
-        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, requestParams.PageNumber, requestParams.PageSize);
 
         return result;
     }

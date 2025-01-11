@@ -29,13 +29,13 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
         {
             var bankAccount = CreateBankAccount(request);
 
-            if (request.AccountOwners.Any())
+            if (request.CustomerNos.Any())
             {
                 var accountOwners = new List<Customer>();
 
-                foreach (var owner in request.AccountOwners)
+                foreach (var customerNo in request.CustomerNos)
                 {
-                    var customer = await _uow.Customers.GetByIdAsync(owner.CustomerId);
+                    var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
                     if (customer is null)
                     {
                         result.AddError(ErrorCode.NotFound,
@@ -48,18 +48,14 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
                 foreach (var accountOwner in accountOwners)
                 {
-                    var bankAccountOwner = new CustomerBankAccount()
-                    {
-                        Customer = accountOwner,
-                        BankAccount = bankAccount,
-                        BankAccountType = bankAccount.Type
-                    };
+                    var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
 
                     bankAccount.AddOwnerToBankAccount(bankAccountOwner);
                 }
             }
 
-            _uow.BankAccounts.Add(bankAccount);    
+            _uow.BankAccounts.Add(bankAccount);
+
             await _uow.SaveAsync();
 
             return result;
@@ -77,11 +73,11 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
     }
 
     #region Private helper methods
-    private OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
-    OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.
+    private static Core.Domain.Aggregates.BankAccountAggregate.BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
+                Core.Domain.Aggregates.BankAccountAggregate.
                 BankAccount.Create(request.AccountNo, request.IBAN, request.Type,
-                                    request.BranchId, request.AccountBalance.Balance,
-                                    request.AccountBalance.AllowedBalanceToUse, request.AccountBalance.MinimumAllowedBalance,
-                                    request.AccountBalance.Debt, request.CurrencyId);
+                                    request.BranchId, request.Balance,
+                                    request.AllowedBalanceToUse, request.MinimumAllowedBalance,
+                                    request.Debt, request.CurrencyId);
     #endregion
 }

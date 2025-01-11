@@ -7,8 +7,8 @@ public class ExceptionHandlingMiddleware
 {
     private readonly ILogger _logger;
     private readonly RequestDelegate _next;
-
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger logger)
+    
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
         _logger = logger;
         _next = next;
@@ -27,7 +27,7 @@ public class ExceptionHandlingMiddleware
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception ex)
+    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -40,6 +40,6 @@ public class ExceptionHandlingMiddleware
 
         errorResponse.Errors.Add("Internal Server Error");
 
-        await context.Response.WriteAsync(errorResponse.ToString());
+        await context.Response.WriteAsync(errorResponse.Errors[0].ToString());
     }
 }

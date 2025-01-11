@@ -15,12 +15,12 @@ public class CreateBankAccountCommandValidator : AbstractValidator<CreateBankAcc
         RuleFor(b => b.AccountNo)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required")
-        .Length(8).WithMessage("{PropertyName} should be {ComparisonValue} characters");
+        .MinimumLength(16).WithMessage("Minimum number of characters of {b.AccountNo } should be 16 characters");
 
         RuleFor(b => b.IBAN)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required")
-        .Length(18).WithMessage("{PropertyName} should be {ComparisonValue} characters");
+        .MinimumLength(20).WithMessage("Minimum number of characters of {PropertyName} should be {ComparisonValue} characters");
 
         RuleFor(b => b.Type)
         .NotNull().WithMessage("{PropertyName} is required");        
@@ -28,16 +28,23 @@ public class CreateBankAccountCommandValidator : AbstractValidator<CreateBankAcc
         RuleFor(b => b.BranchId)
         .NotNull().WithMessage("{PropertyName} is required");
 
-        RuleFor(b => b.AccountBalance).SetValidator(new AccountBanlanceValidator());
-    
+        RuleFor(b => b.Balance)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+
+        RuleFor(b => b.AllowedBalanceToUse)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+
+        RuleFor(b => b.MinimumAllowedBalance)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .GreaterThanOrEqualTo(0).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+
         RuleFor(c => c.CurrencyId)
         .GreaterThan(0)
         .MustAsync(async (id, token) =>
         {
-            return !await _uow.Currencies.ExistsAsync(id);
+            return await _uow.Currencies.ExistsAsync(id);
         }).WithMessage("{PropertyName} does not exist");
-
-        RuleForEach(b => b.AccountOwners)
-        .SetValidator(c => new BankAccountOwnerValidator());
     }
 }

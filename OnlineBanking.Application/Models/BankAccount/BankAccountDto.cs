@@ -14,10 +14,10 @@ public class BankAccountDto
     public CurrencyDto Currency { get; set; }
 
     public BankAccountDto(string accountNo, string iban, BankAccountType type,
-                        BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
+                          BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
     {
         AccountNo = accountNo;
-        IBAN = iban;
+        IBAN = iban;        
         Type = type;
         Branch = branch;
         AccountBalance = accountBalance;

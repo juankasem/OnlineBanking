@@ -4,6 +4,7 @@ using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Customers.Queries;
 using OnlineBanking.Application.Models;
+using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.Customer.Responses;
 
 namespace OnlineBanking.Application.Features.Customers.QueryHandlers;
@@ -28,12 +29,18 @@ public class GetCustomerByIdRequestHandler : IRequestHandler<GetCustomerByIdRequ
         if (customer is null)
         {
             result.AddError(ErrorCode.NotFound,
-                string.Format(CustomerErrorMessages.NotFound, "No.", request.CustomerId));
+                string.Format(CustomerErrorMessages.NotFound, request.CustomerId));
 
             return result;
         }
 
-        result.Payload = _mapper.Map<CustomerResponse>(customer);
+        var customerBankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(customer.Id);
+       
+        var customerResponse = _mapper.Map<CustomerResponse>(customer);
+
+        customerResponse.BankAccounts = _mapper.Map<List<BankAccountDto>>(customerBankAccounts);
+
+        result.Payload = customerResponse;
 
         return result;
     }

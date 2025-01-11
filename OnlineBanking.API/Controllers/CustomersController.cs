@@ -1,8 +1,7 @@
-using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Extensions;
-using OnlineBanking.API.Helpers;
+using OnlineBanking.API.Filters;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Features.Customers.Queries;
 using OnlineBanking.Application.Models.BankAccount;
@@ -16,73 +15,89 @@ namespace OnlineBanking.API.Controllers;
 [Authorize]
 public class CustomersController : BaseApiController
 {
-    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.All)]
-    [ProducesResponseType(typeof(PagedList<CustomerResponse>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<CustomerResponse>>> ListAllCustomers([FromQuery] CustomerParams customerParams,
-                                                                            CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PagedList<CustomerResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ListAllCustomers([FromQuery] CustomerParams customerParams, CancellationToken cancellationToken = default)
     {
-        var query = new GetAllCustomersRequest();
+        var query = new GetAllCustomersRequest()
+        {
+            CustomerParams = customerParams
+        };
+
         var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
-        Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                result.Payload.TotalCount, result.Payload.TotalPages);
+        var customers = result.Payload.Data;
 
-        return Ok(result.Payload.Data);
+        if (customers.Any())
+        {
+            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
+                        result.Payload.TotalCount, result.Payload.TotalPages);
+        }
+
+        return Ok(customers);
     }
     
-    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.IdRoute)]
-    [ProducesResponseType(typeof(CustomerListResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<CustomerResponse>> GetCustomerById([FromRoute] string customerId,
-                                                                    [FromQuery] CustomerParams customerParams,
-                                                                    CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(CustomerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ValidateGuid("id")]
+    public async Task<IActionResult> GetCustomerById([FromRoute] string id, CancellationToken cancellationToken = default)
     {
-        var query = new GetCustomerByIdRequest() { CustomerId = Guid.Parse(customerId) };
-        var result = await _mediator.Send(query);
+        var query = new GetCustomerByIdRequest() 
+        { 
+            CustomerId = Guid.Parse(id) 
+        };
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        var result = await _mediator.Send(query, cancellationToken);
+
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
         return Ok(result.Payload);
     }
 
-    [Cached(600)]
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
-    [ProducesResponseType(typeof(List<BankAccountDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<List<BankAccountDto>>> GetCustomerBankAccounts([FromRoute] string customerId,
-                                                                                [FromQuery] CustomerParams customerParams,
-                                                                                CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(List<BankAccountDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetCustomerBankAccounts([FromRoute] string id, 
+                                                                                    CancellationToken cancellationToken = default)
     {
-        var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(customerId) };
-        var result = await _mediator.Send(query);
+        var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(id) };
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
         return Ok(result.Payload);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request,
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request, 
                                                     CancellationToken cancellationToken = default)
     {
         var query = _mapper.Map<CreateCustomerCommand>(request);
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
-        return Ok(result.Payload);
+        return Ok();
     }
 
     [HttpDelete(ApiRoutes.Customers.IdRoute)]
-    public async Task<IActionResult> DeleteCustomer([FromRoute] string customerId,
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> DeleteCustomer([FromRoute] string customerId, 
                                                     CancellationToken cancellationToken = default)
     {
-        var query = new DeleteCustomerCommand() { CustomerId = Guid.Parse(customerId) };
-        var result = await _mediator.Send(query);
+        var query = new DeleteCustomerCommand() 
+        { 
+            CustomerId = Guid.Parse(customerId) 
+        };
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        var result = await _mediator.Send(query, cancellationToken);
+
+        if (result.IsError) return HandleErrorResponse(result.Errors);
 
         return Ok(result.Payload);
     }

@@ -24,7 +24,7 @@ public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequ
         var result = new ApiResult<PagedList<CustomerResponse>>();
         var requestParams = request.CustomerParams;
 
-        var customers = await _uow.Customers.GetAllAsync(request.CustomerParams);
+        var customers = await _uow.Customers.GetAllAsync(requestParams);
 
         var mappedCustomers = _mapper.Map<IReadOnlyList<CustomerResponse>>(customers);
 

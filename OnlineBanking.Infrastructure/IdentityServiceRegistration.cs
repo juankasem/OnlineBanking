@@ -15,29 +15,45 @@ public static class IdentityServiceRegistration
 {
     public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddIdentity<AppUser, IdentityRole>().AddEntityFrameworkStores<OnlineBankDbContext>();
+        services.AddIdentity<AppUser, IdentityRole>(options =>
+        {
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 5;
+        })
+            .AddEntityFrameworkStores<OnlineBankDbContext>()
+            .AddDefaultTokenProviders();
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Token:SecretKey"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
         var tokenValidationParameters = new TokenValidationParameters(){
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = key,
-            ValidIssuer = configuration["Token:Issuer"],
-            ValidateIssuer = true,
+            ValidIssuer = configuration["Jwt:Issuer"],
+            ValidateIssuer = false,
             ValidateAudience = false
         };
 
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => 
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+                .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = tokenValidationParameters;
                 });
 
-        services.AddAuthorization(opt => {
+        services.AddAuthorization(
+            opt => {
             opt.AddPolicy("IsAccountOwner", policy => 
             {
                 policy.Requirements.Add(new IsAccountOwnerRequirement());
             });
-        });
+        }
+        );
         services.AddTransient<IAuthorizationHandler, IsAccountOwnerRequirementHandler>();
 
         return services;

@@ -14,7 +14,18 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
 
     public async Task<IReadOnlyList<BankAccount>> GetCustomerBankAccountsAsync(Guid customerId)
     {
-        return await _dbContext.BankAccounts.ToListAsync();
+        return await _dbContext.BankAccounts.Where(ba => ba.BankAccountOwners.Where(c => c.CustomerId == customerId).Any()).ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<Customer>> GetByIBANAsync(string iban)
+    {
+        var customers = await _dbContext.CustomerBankAccounts
+                                        .Where(b => b.BankAccount.IBAN == iban)
+                                        .Select(c => c.Customer)
+                                        .AsNoTracking()
+                                        .ToListAsync();
+
+        return customers;
     }
 
     public async Task<Customer> GetByAppUserIdAsync(string appUserId)
@@ -26,12 +37,6 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
     {
         return await _dbContext.Customers.FirstOrDefaultAsync(c => c.CustomerNo == customerNo);
     }
-
-    public async Task<Customer> GetByIBANAsync(string iban)
-    {
-        var customerAccounts = await _dbContext.CustomerBankAccounts.FirstOrDefaultAsync(b => b.BankAccount.IBAN == iban);
-        return customerAccounts.Customer;
-    } 
 
     public async Task<bool> ExistsAsync(string customerNo)
     {

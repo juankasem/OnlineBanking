@@ -20,13 +20,15 @@ public class BankAccountMapper : IBankAccountMapper
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
         return new(bankAccount.AccountNo, bankAccount.IBAN, bankAccount.Type,
-                                        MapToAccountBranchDTO(bankAccount.Branch),
-                                        MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
-                                                            bankAccount.MinimumAllowedBalance, bankAccount.Debt),
-                                        currency);
+                    MapToAccountBranchDTO(bankAccount.Branch),
+                    MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
+                    bankAccount.MinimumAllowedBalance, bankAccount.Debt),
+                    currency);
     }
 
-    public BankAccountResponse MapToResponseModel(BankAccount bankAccount, IReadOnlyList<CashTransaction> cashTransactions)
+    public BankAccountResponse MapToResponseModel(BankAccount bankAccount,
+                                                 IReadOnlyList<Customer> bankAccountOwners,
+                                                 IReadOnlyList<CashTransaction> cashTransactions)
     {
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
@@ -35,7 +37,7 @@ public class BankAccountMapper : IBankAccountMapper
                                         MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
                                                             bankAccount.MinimumAllowedBalance, bankAccount.Debt),
                                         currency,
-                                        MapToAccountOwnersDTO(bankAccount.BankAccountOwners),
+                                        MapToAccountOwnersDTO(bankAccountOwners),
                                         MapToAccountTransactionsDTO(cashTransactions, currency),
                                         MapToAccountFastTransactionsDTO(bankAccount.FastTransactions, currency),
                                         MapToAccountCreditCardsDTO(bankAccount.CreditCards, currency),
@@ -43,26 +45,26 @@ public class BankAccountMapper : IBankAccountMapper
     }
 
     #region Private helper methods
-    private CurrencyDto MapToAccountCurrencyDTO(Currency currency) =>
+    private static CurrencyDto MapToAccountCurrencyDTO(Currency currency) =>
         new(currency.Id, currency.Code, currency.Name, currency.Symbol);
     
-    private BranchDto MapToAccountBranchDTO(Branch branch) =>
+    private static BranchDto MapToAccountBranchDTO(Branch branch) =>
         new(branch.Id, branch.Name);
 
-    private AccountBalanceDto MapToAccountBalanceDTO(decimal balance, decimal allowedBalanceToUse,
+    private static AccountBalanceDto MapToAccountBalanceDTO(decimal balance, decimal allowedBalanceToUse,
                                                     decimal minimumAllowedBalance, decimal debt ) =>
         new (balance, allowedBalanceToUse, minimumAllowedBalance, debt);
 
-    private IReadOnlyList<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<CustomerBankAccount> customerBankAccounts)
+    private IReadOnlyList<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<Customer> customers)
     {
         var bankAccountOwners = new List<AccountOwnerDto>();
-        
-        if ( customerBankAccounts == null ||  customerBankAccounts.Count == 0)
-        return bankAccountOwners;
 
-        foreach (var customerBankAccount in customerBankAccounts)
+        if (customers == null || customers.Count == 0)
+            return bankAccountOwners.AsReadOnly(); 
+
+        foreach (var customer in customers)
         {
-            var bankAccountOwner = new AccountOwnerDto(customerBankAccount.Customer.Id, CreateFullName(customerBankAccount.Customer));
+            var bankAccountOwner = new AccountOwnerDto(customer.Id, customer.CustomerNo, CreateFullName(customer));
 
             bankAccountOwners.Add(bankAccountOwner);
         }
@@ -101,7 +103,7 @@ public class BankAccountMapper : IBankAccountMapper
         foreach (var ft in fastTransactions)
         {
             var accountFastTransaction = new AccountFastTransactionDto(ft.BankAccount.IBAN, ft.RecipientIBAN, ft.RecipientName, 
-                                                                        ft.BankAccount.Branch.Name, CreateMoney(ft.Amount, currency));
+                                                                       ft.BankAccount.Branch.Name, CreateMoney(ft.Amount, currency));
 
             accountFastTransactions.Add(accountFastTransaction);
         }

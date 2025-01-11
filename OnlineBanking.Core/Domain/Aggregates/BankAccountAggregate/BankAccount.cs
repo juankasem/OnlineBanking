@@ -8,7 +8,6 @@ using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
-
 public class BankAccount : BaseDomainEntity
 {
     private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();
@@ -68,15 +67,15 @@ public class BankAccount : BaseDomainEntity
 
     // Many-to-many relationships
     [JsonIgnore]
-    public IReadOnlyList<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners; } }
+    public IReadOnlyList<CustomerBankAccount> BankAccountOwners { get { return _bankAccountOwners.AsReadOnly(); } }
 
     [JsonIgnore]
-    public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+    public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions.AsReadOnly(); } }
 
     // One-to-Many relationships
-    public IReadOnlyList<FastTransaction> FastTransactions { get { return _fastTransactions; } }
-    public IReadOnlyList<CreditCard> CreditCards { get { return _creditCards; } }
-    public IReadOnlyList<DebitCard> DebitCards { get { return _debitCards; } }
+    public IReadOnlyList<FastTransaction> FastTransactions { get { return _fastTransactions.AsReadOnly(); } }
+    public IReadOnlyList<CreditCard> CreditCards { get { return _creditCards.AsReadOnly(); } }
+    public IReadOnlyList<DebitCard> DebitCards { get { return _debitCards.AsReadOnly(); } }
 
     private BankAccount(Guid id, string accountNo, string iBAN, BankAccountType type,
                         int branchId, decimal balance, decimal allowedBalanceToUse,
@@ -149,7 +148,12 @@ public class BankAccount : BaseDomainEntity
             accountTransaction.Transaction = cashTransaction;
     }
 
-    public void DeleteTransaction(AccountTransaction at) => _accountTransactions.Remove(at);
+    public void DeleteTransaction(Guid id) 
+    {
+        var index = _accountTransactions.FindIndex(c => c.Transaction?.Id == id);
+
+        if (index >= 0) _accountTransactions.Remove(_accountTransactions[index]);
+    }
 
     public void AddFastTransaction(FastTransaction ft) => _fastTransactions.Add(ft);
 

@@ -1,5 +1,4 @@
 using OnlineBanking.Core.Domain.Common;
-using OnlineBanking.Core.Domain.Entities;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
@@ -25,21 +24,15 @@ public class Address : BaseDomainEntity
 
     public Country Country { get; set; }
 
-    public string AppUserId { get; set; }
-
-    public AppUser AppUser { get; set; }
-
     private Address(string name, string street, string zipCode,
-                    int districtId, int cityId, int countryId, 
-                    string appUserId, bool isDeleted = false)
+                    int districtId, int cityId, int countryId, bool isDeleted = false)
     {
         Name = name;
         Street = street;
         ZipCode = zipCode;
         DistrictId = districtId;
         CityId = cityId;
-        CountryId = CountryId;
-        AppUserId = appUserId;
+        CountryId = countryId;
         IsDeleted = isDeleted;
     }
 
@@ -50,10 +43,8 @@ public class Address : BaseDomainEntity
         var validator = new AddressValidator();
 
         var objectToValidate = new Address(
-            name, street, zipCode, districtId, cityId, countryId, 
-            appUserId,
-            isDeleted
-        );
+            name, street, zipCode, districtId, 
+            cityId, countryId, isDeleted);
 
         var validationResult = validator.Validate(objectToValidate);
 

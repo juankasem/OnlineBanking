@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
@@ -11,8 +11,10 @@ namespace OnlineBanking.Infrastructure.Persistence;
 
 public class OnlineBankDbContext : IdentityDbContext<AppUser>
 {
-    public OnlineBankDbContext(DbContextOptions options) : base(options)
+    private readonly IAppUserAccessor _appUserAccessor;
+    public OnlineBankDbContext(DbContextOptions options, IAppUserAccessor appUserAccessor) : base(options)
     {
+        _appUserAccessor = appUserAccessor;
     }
 
     public DbSet<AppUser> AppUsers { get; set; }
@@ -38,24 +40,28 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<CustomerBankAccount>()
                     .HasOne(c => c.Customer)
                     .WithMany(c => c.CustomerBankAccounts)
-                    .HasForeignKey(c => c.CustomerId);
+                    .HasForeignKey(c => c.CustomerId)
+                    .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<CustomerBankAccount>()
                     .HasOne(b => b.BankAccount)
                     .WithMany(c => c.BankAccountOwners)
-                    .HasForeignKey(c => c.BankAccountId);
-        
+                    .HasForeignKey(c => c.BankAccountId)
+                    .OnDelete(DeleteBehavior.NoAction);
+
         modelBuilder.Entity<AccountTransaction>().HasKey(ac => new { ac.AccountId, ac.TransactionId });
 
         modelBuilder.Entity<AccountTransaction>()
-                .HasOne<BankAccount>(ac => ac.Account)
-                .WithMany(ac => ac.AccountTransactions)
-                .HasForeignKey(ac => ac.AccountId);
+                    .HasOne<BankAccount>(ac => ac.Account)
+                    .WithMany(ac => ac.AccountTransactions)
+                    .HasForeignKey(ac => ac.AccountId)
+                    .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<AccountTransaction>()
                     .HasOne<CashTransaction>(ac => ac.Transaction)
                     .WithMany(c => c.AccountTransactions)
-                    .HasForeignKey(c => c.TransactionId);
+                    .HasForeignKey(c => c.TransactionId)
+                    .OnDelete(DeleteBehavior.NoAction);
 
         base.OnModelCreating(modelBuilder);
     }
@@ -64,10 +70,12 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
     {
         foreach (var entry in ChangeTracker.Entries<BaseDomainEntity>())
         {
+            entry.Entity.LastModifiedBy = _appUserAccessor.GetUsername();
             entry.Entity.LastModifiedOn = DateTime.UtcNow;
 
             if (entry.State == EntityState.Added)
             {
+                entry.Entity.CreatedBy = _appUserAccessor.GetUsername();
                 entry.Entity.CreatedOn = DateTime.Now;
             }
         }

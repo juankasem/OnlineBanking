@@ -1,13 +1,12 @@
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 
-namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
+namespace OnlineBanking.Application.Features.BankAccounts.QueryHandlers;
 
 public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAccountByAccountNoRequest, ApiResult<BankAccountResponse>>
 {
@@ -34,9 +33,10 @@ public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAc
             return result;
         }
 
-        var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+        var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
+        var accountCashTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
 
-        result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount, accountTransactions);
+        result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, accountCashTransactions);
 
         return result;
     }

@@ -7,13 +7,13 @@ namespace OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
 public class Branch : BaseDomainEntity
 {
-    private readonly List<BankAccount> _bankAccounts = new List<BankAccount>();
+    private readonly List<BankAccount> _bankAccounts = new();
 
     public new int Id { get; set; }
     public string Name { get; private set; }
     public Address Address { get; private set; }
 
-    public IReadOnlyList<BankAccount> BankAccounts { get { return _bankAccounts; } }
+    public IReadOnlyList<BankAccount> BankAccounts => _bankAccounts.AsReadOnly(); 
 
     private Branch(string name)
     {

@@ -45,7 +45,6 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
                 return result;
             }
 
-
             var recipientBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
 
             if (recipientBankAccount is null)
@@ -64,12 +63,9 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
                 return result;
             }
 
-            var fastTransaction = CreateFastTransaction(bankAccount.Id, request.RecipientIBAN, request.RecipientName, request.Amount);
-
             //Add fast transaction to sender's account
-            bankAccount.AddFastTransaction(fastTransaction);
-
-            //Update bank account with new fast transaction
+            bankAccount.AddFastTransaction(FastTransaction.Create(bankAccount.Id, request.RecipientIBAN, request.RecipientName, request.Amount));
+          
             _uow.BankAccounts.Update(bankAccount);
             await _uow.SaveAsync();
 
@@ -88,7 +84,7 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
     }
 
     #region  Private methods
-    private FastTransaction CreateFastTransaction(Guid bankAccountId, string recipientIBAN, string recipientName, decimal amount) =>
+    private  FastTransaction CreateFastTransaction(Guid bankAccountId, string recipientIBAN, string recipientName, decimal amount) =>
         FastTransaction.Create(bankAccountId, recipientIBAN, recipientName, amount);
     #endregion
 }

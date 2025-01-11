@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -32,22 +31,23 @@ public class AuthController : BaseApiController
         _logger = logger;
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager;
         _tokenService = tokenService;
     }
 
     [Authorize]
     [HttpGet(ApiRoutes.AppUsers.CurrentUser)]
-    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<AuthResponse>> GetCurrentUser(CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<AuthResponse>> GetCurrentUser()
     {
         var user = await _userManager.FindByEmailFromClaimsPrincipalAsync(User);
 
         var authClaims = new List<Claim>()
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.GivenName, user.DisplayName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new(ClaimTypes.Name, user.UserName),
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.GivenName, user.DisplayName),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
         var userResponse = _mapper.Map<AuthResponse>(user);
@@ -57,7 +57,7 @@ public class AuthController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.AppUsers.EmailExists)]
-    public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email, CancellationToken cancellationToken = default)
+    public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
     {
         return await _userManager.FindByEmailAsync(email) != null;
     }
@@ -72,9 +72,10 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost(ApiRoutes.AppUsers.Login)]
-    [ProducesResponseType(typeof(AuthResponse), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
     {
         _logger.LogInformation($"Login attempt for {request.Username}");
 
@@ -83,16 +84,16 @@ public class AuthController : BaseApiController
 
         var user = await _userManager.FindByNameAsync(request.Username);
 
-        if (user != null && !await _userManager.CheckPasswordAsync(user, request.Password))
+        if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
         {
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var authClaims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.GivenName, user.DisplayName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new(ClaimTypes.Name, user.UserName),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.GivenName, user.DisplayName),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             foreach (var userRole in userRoles)
@@ -112,22 +113,18 @@ public class AuthController : BaseApiController
         return Unauthorized();
     }
 
+
     [HttpPost(ApiRoutes.AppUsers.Signup)]
-    [ProducesResponseType((int)HttpStatusCode.Created)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult> Signup([FromBody] SignupRequest request, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> Signup([FromBody] SignupRequest request)
     {
         _logger.LogInformation($"Registration attempt for {request.Email}");
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
-        var appUser = new AppUser()
-        {
-            UserName = request.Username,
-            DisplayName = request.DisplayName,
-            Email = request.Email
-        };
+
+        var appUser = AppUser.Create(request.Username, request.DisplayName, request.Email, request.PhoneNumber);
 
         var result = await _userManager.CreateAsync(appUser, request.Password);
 
@@ -151,8 +148,10 @@ public class AuthController : BaseApiController
         return StatusCode(201);
     }
 
+
     [HttpPost(ApiRoutes.AppUsers.RefreshToken)]
-    public async Task<IActionResult> RefreshToken(RefreshTokenRequest request, CancellationToken cancellationToken = default)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
     {
         var apiError = new ErrorResponse();
 
@@ -179,15 +178,17 @@ public class AuthController : BaseApiController
         user.RefreshToken = newRefreshToken;
         await _userManager.UpdateAsync(user);
 
-        return new ObjectResult(new
+        return Ok(new
         {
             accessToken = newAccessToken,
             refreshToken = newRefreshToken
         });
     }
 
+
     [Authorize]
     [HttpPost(ApiRoutes.AppUsers.Revoke)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Revoke(string username)
     {
         var user = await _userManager.FindByNameAsync(username);
@@ -197,5 +198,33 @@ public class AuthController : BaseApiController
         await _userManager.UpdateAsync(user);
 
         return NoContent();
+    }
+
+
+    [HttpPost(ApiRoutes.AppUsers.AssignRole)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> AssignRoleToUser(AssignRoleToUserRequest request)
+    {
+        _logger.LogInformation($"Attempt to assign role to user: {request.Email}");
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var appUser = await _userManager.FindByEmailAsync(request.Email);
+
+        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+        await _userManager.AddToRoleAsync(appUser, UserRoles.User);
+
+        if (request.IsAdmin)
+        {
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+
+            await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
+        }
+
+        return Ok($"Role(s) are assigned Suessfully to username: {appUser.UserName}");
     }
 }

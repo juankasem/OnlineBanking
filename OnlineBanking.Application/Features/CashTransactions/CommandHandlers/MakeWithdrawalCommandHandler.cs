@@ -29,7 +29,6 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-
         try
         {
             var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
@@ -60,20 +59,18 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
             }
 
             //Update account balance & Add transaction
-            var updatedBalance = bankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
-            var accountTransaction = new AccountTransaction()
-            {
-                Account = bankAccount,
-                Transaction = CreateCashTransaction(request, updatedBalance)
-            };
+            var updatedBalance = bankAccount.Balance - amountToWithdraw;
+            var cashTransaction = CreateCashTransaction(request, updatedBalance);
 
-            bankAccount.AddTransaction(accountTransaction);
+            await _uow.CashTransactions.AddAsync(cashTransaction);
+
+            bankAccount.AddTransaction(AccountTransaction.Create(bankAccount.Id, cashTransaction.Id));
             
+            bankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
             _uow.BankAccounts.Update(bankAccount);
 
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {
-                var cashTransaction = await _uow.CashTransactions.GetByIdAsync(accountTransaction.TransactionId);
                 cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
                 _uow.CashTransactions.Update(cashTransaction);
 
@@ -95,7 +92,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
     }
 
     #region Private methods
-    private CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, decimal updatedBalance)
+    private static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
 
@@ -106,7 +103,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
     }
 
 
-    private string GetInitiatorCode(BankAssetType initiatedBy)
+    private static string GetInitiatorCode(BankAssetType initiatedBy)
     {
         return initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
                                     initiatedBy == BankAssetType.Branch ? InitiatorCode.Branch :

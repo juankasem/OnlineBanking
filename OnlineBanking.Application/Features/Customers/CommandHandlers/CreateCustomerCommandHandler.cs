@@ -1,6 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -52,7 +49,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     }
 
     #region Private methods
-    private Customer CreateCustomer(CreateCustomerCommand request)
+    private static Customer CreateCustomer(CreateCustomerCommand request)
     {
         return Customer.Create(request.IdentificationNo, request.IdentificationType,
                                 request.CustomerNo, request.AppUserId,

@@ -207,7 +207,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.City", b =>
@@ -243,7 +243,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("City");
+                    b.ToTable("City", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.Country", b =>
@@ -274,7 +274,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Country", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.AddressAggregate.District", b =>
@@ -310,7 +310,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("District");
+                    b.ToTable("District", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.AccountTransaction", b =>
@@ -325,7 +325,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("TransactionId");
 
-                    b.ToTable("AccountTransactions");
+                    b.ToTable("AccountTransactions", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", b =>
@@ -389,7 +389,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("CurrencyId");
 
-                    b.ToTable("BankAccounts");
+                    b.ToTable("BankAccounts", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CashTransaction", b =>
@@ -475,7 +475,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("CurrencyId");
 
-                    b.ToTable("CashTransactions");
+                    b.ToTable("CashTransactions", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CreditCard", b =>
@@ -484,7 +484,7 @@ namespace OnlineBanking.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BankAccountId")
+                    b.Property<Guid>("BankAccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
@@ -492,6 +492,15 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("CreditCardNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -502,11 +511,20 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PIN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SecurityCode")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ValidTo")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BankAccountId");
 
-                    b.ToTable("CreditCards");
+                    b.ToTable("CreditCards", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Currency", b =>
@@ -543,7 +561,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currencies");
+                    b.ToTable("Currencies", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CustomerBankAccount", b =>
@@ -554,14 +572,11 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.Property<Guid>("BankAccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("BankAccountType")
-                        .HasColumnType("int");
-
                     b.HasKey("CustomerId", "BankAccountId");
 
                     b.HasIndex("BankAccountId");
 
-                    b.ToTable("CustomerBankAccounts");
+                    b.ToTable("CustomerBankAccounts", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.DebitCard", b =>
@@ -592,7 +607,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("BankAccountId");
 
-                    b.ToTable("DebitCards");
+                    b.ToTable("DebitCards", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.FastTransaction", b =>
@@ -633,7 +648,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("BankAccountId");
 
-                    b.ToTable("FastTransactions");
+                    b.ToTable("FastTransactions", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Loan", b =>
@@ -659,7 +674,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Loans");
+                    b.ToTable("Loans", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.UtilityPayment", b =>
@@ -685,7 +700,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UtilityPayments");
+                    b.ToTable("UtilityPayments", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Branch", b =>
@@ -716,7 +731,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Customer", b =>
@@ -780,7 +795,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Entities.AppUser", b =>
@@ -827,6 +842,12 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -962,13 +983,13 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "Account")
                         .WithMany("AccountTransactions")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CashTransaction", "Transaction")
                         .WithMany("AccountTransactions")
                         .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Account");
@@ -1008,9 +1029,13 @@ namespace OnlineBanking.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CreditCard", b =>
                 {
-                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", null)
+                    b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "BankAccount")
                         .WithMany("CreditCards")
-                        .HasForeignKey("BankAccountId");
+                        .HasForeignKey("BankAccountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BankAccount");
                 });
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.CustomerBankAccount", b =>
@@ -1018,13 +1043,13 @@ namespace OnlineBanking.Infrastructure.Migrations
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.BankAccount", "BankAccount")
                         .WithMany("BankAccountOwners")
                         .HasForeignKey("BankAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Customer", "Customer")
                         .WithMany("CustomerBankAccounts")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("BankAccount");
@@ -1052,7 +1077,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Branch", b =>
                 {
-                    b.OwnsOne("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Address", "Address", b1 =>
+                    b.OwnsOne("OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Branch.Address#OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Address", "Address", b1 =>
                         {
                             b1.Property<int>("BranchId")
                                 .HasColumnType("int");
@@ -1077,7 +1102,7 @@ namespace OnlineBanking.Infrastructure.Migrations
 
                             b1.HasKey("BranchId");
 
-                            b1.ToTable("Branches");
+                            b1.ToTable("Branches", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("BranchId");

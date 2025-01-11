@@ -19,7 +19,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
                                                 .Where(at => at.Account.AccountNo == accountNoOrIBAN || at.Account.IBAN == accountNoOrIBAN)
                                                 .Include(at => at.Transaction)
                                                 .OrderByDescending(at => at.Transaction.CreatedOn)
-                                                .Where(t => (t.Transaction.TransactionDate - DateTime.Now).TotalDays <= ctParams.TimeScope)
+                                                .Where(t => t.Transaction.TransactionDate <= DateTime.Now.AddDays(-ctParams.TimeScope))
                                                 .Select(at => at.Transaction)
                                                 .AsQueryable();
         
@@ -33,7 +33,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
                                                 .Where(at => at.Account.IBAN == iban)
                                                 .Include(at => at.Transaction)
                                                 .OrderByDescending(at => at.Transaction.CreatedOn)
-                                                .Where(t => (t.Transaction.TransactionDate - DateTime.Now).TotalDays <= ctParams.TimeScope)
+                                                .Where(t => t.Transaction.TransactionDate <= DateTime.Now.AddDays(-ctParams.TimeScope))
                                                 .Select(at => at.Transaction)
                                                 .AsQueryable();
         

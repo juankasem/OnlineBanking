@@ -24,6 +24,7 @@ public static class SwaggerServiceExtensions
             };
 
             c.AddSecurityDefinition("Bearer", securitySchema);
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Api", Version = "v1" });
 
             var securityRequirement = new OpenApiSecurityRequirement
             {

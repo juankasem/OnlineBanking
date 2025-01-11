@@ -33,25 +33,27 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         if (!await _uow.Customers.ExistsAsync(request.CustomerNo))
         {
             result.AddError(ErrorCode.NotFound,
-            string.Format(CustomerErrorMessages.NotFound, "Customer No.", request.CustomerNo));
+            string.Format(CustomerErrorMessages.NotFound, "No.", request.CustomerNo));
 
             return result;
         }
         
-        var reqParams = request.BankAccountParams;
-        var customerBankAccouns = new List<BankAccountResponse>();
+        var bankAccountParams = request.BankAccountParams;
+        var customerBankAccounts = new List<BankAccountResponse>();
 
-        var bankAccounts = await _uow.BankAccounts.GetAccountsByCustomerNoAsync(request.CustomerNo);
+        var bankAccounts = await _uow.BankAccounts.GetBankAccountsByCustomerNoAsync(request.CustomerNo);
 
         foreach (var bankAccount in bankAccounts)
         {
+            var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
             var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
-            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, accountTransactions);
+            
+            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, accountTransactions);
 
-            customerBankAccouns.Add(customerBankAccount);
+            customerBankAccounts.Add(customerBankAccount);
         }
 
-        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccouns, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccounts, bankAccountParams.PageNumber, bankAccountParams.PageSize);
 
         return result;
     }

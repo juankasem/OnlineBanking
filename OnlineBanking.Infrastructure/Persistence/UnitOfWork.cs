@@ -55,6 +55,7 @@ public class UnitOfWork : IUnitOfWork
         CashTransactions ??= new CashTransactionsRepository(_dbContext);
         Cities ??= new CityRepository(_dbContext);
         Countries ??= new CountryRepository(_dbContext);
+        Currencies ??= new CurrencyRepository(_dbContext);
         Customers ??= new CustomerRepository(_dbContext);
         CustomerAccounts ??= new CustomerAccountRepository(_dbContext);
         CreditCards ??= new CreditCardsRepository(_dbContext);

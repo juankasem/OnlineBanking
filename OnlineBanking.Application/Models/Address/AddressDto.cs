@@ -5,7 +5,7 @@ public class AddressDto
     public string Name { get; set; }
     public string ZipCode { get; set; }
     public string Street { get; set; }
-    public string District { get; set; }
-    public string City { get; set; }
-    public string Country { get; set; }
+    public int DistrictId { get; set; }
+    public int CityId { get; set; }
+    public int CountryId { get; set; }
 }

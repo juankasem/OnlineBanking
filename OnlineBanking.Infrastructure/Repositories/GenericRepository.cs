@@ -71,15 +71,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
-    public async Task<T> GetByIdAsync(int id)
-    {
-        return await _dbContext.Set<T>().FindAsync(id);
-    }
+    public async Task<T> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
+    
 
-    public async Task<T> GetByIdAsync(Guid id)
-    {
-        return await _dbContext.Set<T>().FindAsync(id);
-    }
+    public async Task<T> GetByIdAsync(Guid id) => await _dbContext.Set<T>().FindAsync(id);
+    
+
+    public async Task AddAsync(T entity) => await _dbContext.Set<T>().AddAsync(entity);
 
     public void Add(T entity) => _dbContext.Set<T>().Add(entity);
 
