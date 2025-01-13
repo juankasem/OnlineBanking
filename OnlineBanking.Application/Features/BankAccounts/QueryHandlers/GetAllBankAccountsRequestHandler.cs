@@ -21,14 +21,18 @@ public class GetAllBankAccountsRequestHandler : IRequestHandler<GetAllBankAccoun
     public async Task<ApiResult<PagedList<BankAccountDto>>> Handle(GetAllBankAccountsRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<BankAccountDto>>();
-        var requestParams = request.BankAccountParams;
+        var bankAccountParams = request.BankAccountParams;
 
-        var allBankAccounts = await _uow.BankAccounts.GetAllBankAccountsAsync(requestParams);
+        var (bankAccounts, totalCount) = await _uow.BankAccounts.GetAllBankAccountsAsync(bankAccountParams);
 
-        var mappedBankAccounts = allBankAccounts.Select(bankAccount => _bankAccountMapper.MapToDtoModel(bankAccount))
-                                                .ToList().AsReadOnly();
+        var mappedBankAccounts = bankAccounts.Select(bankAccount => _bankAccountMapper.MapToDtoModel(bankAccount))
+                                             .ToList()
+                                             .AsReadOnly();
 
-        result.Payload = PagedList<BankAccountDto>.Create(mappedBankAccounts, requestParams.PageNumber, requestParams.PageSize);
+        result.Payload = PagedList<BankAccountDto>.Create(mappedBankAccounts, 
+                                                          totalCount,
+                                                          bankAccountParams.PageNumber, 
+                                                          bankAccountParams.PageSize);
 
         return result;
     }

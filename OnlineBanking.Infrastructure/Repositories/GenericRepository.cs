@@ -17,20 +17,27 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
     
-    public async Task<IReadOnlyList<T>> GetAllAsync(PaginationParams paginationParams)
+    public async Task<(IReadOnlyList<T>, int)> GetAllAsync(PaginationParams paginationParams)
     {
-        var query = _dbContext.Set<T>().AsNoTracking();
-        
-        return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        var query = _dbContext.Set<T>().AsQueryable();
+        var totalCount = await query.CountAsync();
+
+       var items = await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+
+      return (items, totalCount);
     }
 
-    public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams)
+    public async Task<(IReadOnlyList<T>, int)> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams)
     {
-        var query = _dbContext.Set<T>().AsNoTracking()
-                                        .Where(predicate);
+        var query = _dbContext.Set<T>()
+                              .Where(predicate)
+                              .AsQueryable();
 
-        return await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        var totalCount = await query.CountAsync();
 
+        var items = await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+
+        return (items, totalCount);
     }
 
     public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeString = null, bool disableTracking = true)

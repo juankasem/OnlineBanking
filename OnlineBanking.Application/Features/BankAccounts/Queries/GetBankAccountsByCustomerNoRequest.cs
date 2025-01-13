@@ -5,6 +5,7 @@ using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Queries;
+
 public class GetBankAccountsByCustomerNoRequest : IRequest<ApiResult<PagedList<BankAccountResponse>>>
 {
     public string CustomerNo { get; set; }

@@ -38,7 +38,7 @@ public class BankAccountsController : BaseApiController
         if (bankAccounts.Any())
         {
             Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                        result.Payload.TotalCount, result.Payload.TotalPages);
+                                         result.Payload.TotalCount, result.Payload.TotalPages);
         }
 
         return Ok(bankAccounts);

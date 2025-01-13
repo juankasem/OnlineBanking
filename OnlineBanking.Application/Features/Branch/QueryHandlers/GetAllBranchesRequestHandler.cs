@@ -7,6 +7,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Branch.Responses;
 using OnlineBanking.Core.Helpers;
 
+
 namespace OnlineBanking.Application.Features.Branch.QueryHandlers;
 
 public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesRequest, ApiResult<PagedList<BranchResponse>>>
@@ -25,14 +26,16 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
     public async Task<ApiResult<PagedList<BranchResponse>>> Handle(GetAllBranchesRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<BranchResponse>>();
-        var requestParams = request.BranchParams;
+        var branchParams = request.BranchParams;
 
-        var allBranches = await _uow.Branches.GetAllAsync(requestParams);
+        var (branches, totalCount) = await _uow.Branches.GetAllAsync(request.BranchParams);
 
-        var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(allBranches);
+        var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(branches);
 
-        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, requestParams.PageNumber, requestParams.PageSize);
-
+        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, 
+                                                          totalCount,
+                                                          branchParams.PageNumber,
+                                                          branchParams.PageSize);
         return result;
     }
 }

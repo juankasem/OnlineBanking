@@ -32,8 +32,8 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
 
             return result;
         }
-        var reqParams = request.CashTransactionParams;
-        var accountTransactions = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(request.AccountNoOrIBAN, reqParams);
+        var cashTransactionParams = request.CashTransactionParams;
+        var (accountTransactions, totalCount) = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(request.AccountNoOrIBAN, cashTransactionParams);
 
         if (!accountTransactions.Any())
         {
@@ -41,19 +41,10 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
-                                                           .ToList()
-                                                           .AsReadOnly();
+                                                           .ToList().AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, reqParams.PageNumber, reqParams.PageSize);
-
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, totalCount,
+                                                                   cashTransactionParams.PageNumber, cashTransactionParams.PageSize);
         return result;
     }
-
-    #region Private Helpermethods
-    private async Task<string> GetAccountOwnerName(string accountNo)
-    {
-        var customer = await _uow.Customers.GetByCustomerNoAsync(accountNo);
-        return customer != null ? customer.FirstName + " " + customer.LastName : string.Empty;
-    }
-    #endregion
 }

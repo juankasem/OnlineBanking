@@ -9,7 +9,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Core.Helpers;
 
-namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
+namespace OnlineBanking.Application.Features.BankAccounts.QueryHandlers;
 
 public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBankAccountsByCustomerNoRequest, ApiResult<PagedList<BankAccountResponse>>>
 {
@@ -41,19 +41,22 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         var bankAccountParams = request.BankAccountParams;
         var customerBankAccounts = new List<BankAccountResponse>();
 
-        var bankAccounts = await _uow.BankAccounts.GetBankAccountsByCustomerNoAsync(request.CustomerNo);
+        var (bankAccounts, totalCount) = await _uow.BankAccounts.GetBankAccountsByCustomerNoAsync(request.CustomerNo, bankAccountParams);
 
         foreach (var bankAccount in bankAccounts)
         {
             var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
-            var accountTransactions = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+            var (cashTransactions, transactionsCount)  = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
             
-            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, accountTransactions);
+            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactions);
 
             customerBankAccounts.Add(customerBankAccount);
         }
 
-        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccounts, bankAccountParams.PageNumber, bankAccountParams.PageSize);
+        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccounts, 
+                                                               totalCount, 
+                                                               bankAccountParams.PageNumber, 
+                                                               bankAccountParams.PageSize);
 
         return result;
     }

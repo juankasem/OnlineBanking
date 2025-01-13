@@ -80,10 +80,10 @@ public class CashTransactionsController : BaseApiController
                                                                [FromQuery] CashTransactionParams cashTransactionParams,
                                                                CancellationToken cancellationToken = default)
     {
-        var query = new GetCashTransactionsByIBANRequest() 
-        { 
-          IBAN = iban,
-          CashTransactionParams = cashTransactionParams
+        var query = new GetCashTransactionsByIBANRequest()
+        {
+            IBAN = iban,
+            CashTransactionParams = cashTransactionParams
         };
 
         var result = await _mediator.Send(query, cancellationToken);

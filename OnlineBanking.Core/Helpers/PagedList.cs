@@ -19,10 +19,10 @@ public class PagedList<T> : List<T>
     public int TotalCount { get; set; }
     public IReadOnlyList<T> Data { get; set; }
 
-    public static PagedList<T> Create(IReadOnlyList<T> items, int pageNumber, int pageSize)
+    public static PagedList<T> Create(IReadOnlyList<T> items, int totalCount, int pageNumber, int pageSize)
     {
         items = items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-        return new PagedList<T>(items, items.Count, pageNumber, pageSize);
+        return new PagedList<T>(items, totalCount, pageNumber, pageSize);
     }
 }

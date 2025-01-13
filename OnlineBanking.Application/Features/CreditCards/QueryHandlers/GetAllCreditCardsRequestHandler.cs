@@ -22,17 +22,20 @@ public class GetAllCreditCardsRequestHandler : IRequestHandler<GetAllCreditCards
     public async Task<ApiResult<PagedList<CreditCardDto>>> Handle(GetAllCreditCardsRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CreditCardDto>>();
-        var reqParams = request.CreditCardParams;
+        var creditCardParams = request.CreditCardParams;
 
-        var allCreditCards = await _uow.CreditCards.GetAllAsync(reqParams);
+        var (creditCards, totalCount) = await _uow.CreditCards.GetAllAsync(creditCardParams);
 
-        if (!allCreditCards.Any())
+        if (!creditCards.Any())
             return result;
 
-        var mappedCreditCards = allCreditCards.Select(creditCard => _mapper.Map<CreditCardDto>(creditCard))
-                                                .ToList().AsReadOnly();
+        var mappedCreditCards = creditCards.Select(creditCard => _mapper.Map<CreditCardDto>(creditCard))
+                                           .ToList().AsReadOnly();
 
-        result.Payload = PagedList<CreditCardDto>.Create(mappedCreditCards, reqParams.PageNumber, reqParams.PageSize);
+        result.Payload = PagedList<CreditCardDto>.Create(mappedCreditCards, 
+                                                         totalCount,
+                                                         creditCardParams.PageNumber, 
+                                                         creditCardParams.PageSize);
 
         return result;
     }

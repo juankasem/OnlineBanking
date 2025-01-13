@@ -24,15 +24,18 @@ public class GetAllCashTransactionsRequestHandler : IRequestHandler<GetAllCashTr
     public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetAllCashTransactionsRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CashTransactionResponse>>();
-        var reqParams = request.CashTransactionParams;
+        var cashTransactionParams = request.CashTransactionParams;
 
-        var allCashTransactions = await _uow.CashTransactions.GetAllAsync(request.CashTransactionParams);
+        var (cashTransactions, totalCount) = await _uow.CashTransactions.GetAllAsync(cashTransactionParams);
 
-        var mappedCashTransactions = allCashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, act.From))
-                                                        .ToList()
-                                                        .AsReadOnly();
+        var mappedCashTransactions = cashTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, act.From))
+                                                     .ToList()
+                                                     .AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.Create(mappedCashTransactions, reqParams.PageNumber, reqParams.PageSize); 
+        result.Payload = PagedList<CashTransactionResponse>.Create(mappedCashTransactions,
+                                                                   totalCount,
+                                                                   cashTransactionParams.PageNumber, 
+                                                                   cashTransactionParams.PageSize); 
 
         return result;
     }

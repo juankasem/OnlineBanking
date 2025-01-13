@@ -22,13 +22,13 @@ public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequ
     public async Task<ApiResult<PagedList<CustomerResponse>>> Handle(GetAllCustomersRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CustomerResponse>>();
-        var requestParams = request.CustomerParams;
+        var customerParams = request.CustomerParams;
 
-        var customers = await _uow.Customers.GetAllAsync(requestParams);
+        var (customers, totalCount) = await _uow.Customers.GetAllAsync(request.CustomerParams);
 
         var mappedCustomers = _mapper.Map<IReadOnlyList<CustomerResponse>>(customers);
 
-        result.Payload = PagedList<CustomerResponse>.Create(mappedCustomers, requestParams.PageNumber, requestParams.PageSize);
+        result.Payload = PagedList<CustomerResponse>.Create(mappedCustomers, totalCount, customerParams.PageNumber, customerParams.PageSize); 
 
         return result;   
     }
