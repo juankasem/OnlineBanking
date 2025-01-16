@@ -133,11 +133,11 @@ public class CashTransaction : BaseDomainEntity
     }
 
     //Factory Method
-    public static CashTransaction Create(string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
+    public static CashTransaction Create(CashTransactionType type, BankAssetType initiatedBy,
                                         string from, string to, decimal amount, int currencyId,
                                         decimal fees, string description, decimal senderAvailableBalance, decimal recipientAvailableBalance,
                                         PaymentType paymentType, DateTime transactionDate, string? sender = null, string? recipient = null,
-                                        string? creditCardNo = null, string? debitCardNo = null, Guid? id = null)
+                                        string? creditCardNo = null, string? debitCardNo = null, Guid? id = null, string? referenceNo= null)
     {
         var validator = new CashTransactionValidator();
         var objectToValidate = new CashTransaction(

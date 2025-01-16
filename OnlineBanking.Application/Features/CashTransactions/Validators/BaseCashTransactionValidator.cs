@@ -20,14 +20,16 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} is required");
 
-        RuleFor(c => c.Amount).SetValidator(new MoneyValidator(_uow));
-        
-        RuleFor(c => c.Fees).SetValidator(new MoneyValidator(_uow));
+        RuleFor(c => c.Amount.Value)
+          .GreaterThan(0).WithMessage("{PropertyName} should be greater than {ComparisonValue}");
+
+        RuleFor(c => c.Fees.Value)
+          .GreaterThan(0).WithMessage("{PropertyName} should be greater than {ComparisonValue}");
 
         RuleFor(c => c.PaymentType)
         .NotNull().WithMessage("{PropertyName} is required");
 
         RuleFor(c => c.TransactionDate)
-        .GreaterThanOrEqualTo(DateTime.Now).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+        .NotEmpty().WithMessage("{PropertyName} must not be before {ComparisonValue}");
     }
 }

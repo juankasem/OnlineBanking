@@ -1,4 +1,5 @@
 using MediatR;
+using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
@@ -118,11 +119,12 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
     private static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, decimal updatedFromBalance, decimal updatedToBalance)
     {
         var ct = request.BaseCashTransaction;
+        var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
-        return CashTransaction.Create(ct.ReferenceNo, ct.Type, ct.InitiatedBy,
-                                    request.From, request.To, ct.Amount.Value, ct.Amount.Currency.Id,
-                                    ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
-                                    ct.PaymentType, ct.TransactionDate);
+        return CashTransaction.Create(ct.Type, ct.InitiatedBy,
+                                      request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
+                                      ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
+                                      ct.PaymentType, transactionDate, request.Sender, request.Recipient);
     }
     #endregion
 }

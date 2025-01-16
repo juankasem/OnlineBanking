@@ -1,9 +1,10 @@
 using OnlineBanking.Application.Models.CashTransaction.Base;
+using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Requests;
 
 public class CreateCashTransactionRequest 
-{   
+{
     public BaseCashTransactionDto BaseCashTransaction { get; set; }
 
     #nullable enable
@@ -13,4 +14,10 @@ public class CreateCashTransactionRequest
     public string? Recipient { get; set; }
     public string? CreditCardNo { get; set; }
     public string? DebitCardNo { get; set; }
+}
+
+public class MoneyDto
+{
+    public decimal Value { get; set; }
+    public decimal currencyId { get; set; }
 }

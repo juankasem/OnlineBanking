@@ -52,20 +52,19 @@ public class CashTransactionsMapper : ICashTransactionsMapper
     }
 
     #region Private helper methods
-    private BaseCashTransactionDto CreateBaseCashTransactionDto(CreateCashTransactionRequest request)
+    private static BaseCashTransactionDto CreateBaseCashTransactionDto(CreateCashTransactionRequest request)
     {
         var ct = request.BaseCashTransaction;
 
-        return new(ct.IBAN, ct.ReferenceNo, ct.Type,
+        return new(ct.IBAN, ct.Type,
                     ct.InitiatedBy, ct.Amount, ct.Fees,
-                    ct.Description, ct.PaymentType, ct.TransactionDate,
-                    ct.Status);
+                    ct.Description, ct.PaymentType, ct.TransactionDate);
     }
 
-    private Money CreateMoney(decimal amount, CurrencyDto currency) =>
+    private static Money CreateMoney(decimal amount, CurrencyDto currency) =>
         new(amount, currency);
 
-    private CurrencyDto CreateCurrency(Currency currency) =>
+    private static CurrencyDto CreateCurrency(Currency currency) =>
      new (currency.Id, currency.Code, currency.Name, currency.Symbol);
     #endregion
 }

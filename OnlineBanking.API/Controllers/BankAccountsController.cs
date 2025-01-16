@@ -187,7 +187,7 @@ public class BankAccountsController : BaseApiController
             result.IsError = true;
         else
         {
-            switch (request.BaseCashTransaction?.Type)
+            switch (request.BaseCashTransaction.Type)
             {
                 case CashTransactionType.Deposit:
                     var makeDepositCommand = _mapper.Map<MakeDepositCommand>(request);

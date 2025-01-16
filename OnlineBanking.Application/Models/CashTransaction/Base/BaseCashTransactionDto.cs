@@ -5,23 +5,25 @@ namespace OnlineBanking.Application.Models.CashTransaction.Base;
 public class BaseCashTransactionDto
 {
     public string IBAN { get; set; }
-    public string ReferenceNo { get; set; }
     public CashTransactionType Type { get; set; }
     public BankAssetType InitiatedBy { get; set; }
-    public Money Amount { get; set; }
-    public Money Fees { get; set; }
+    public MoneyDto Amount { get; set; }
+    public MoneyDto Fees { get; set; }
     public string Description { get; set; }
     public PaymentType PaymentType { get; set; }
-    public DateTime TransactionDate { get; set; }
-    public CashTransactionStatus Status { get; set; }
+    public string TransactionDate { get; set; }
 
+    public class MoneyDto
+    {
+        public decimal Value { get; set; }
+        public int CurrencyId { get; set; }
+    }
 
-    public BaseCashTransactionDto(string iBAN, string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
-                                Money amount, Money fees, string description, PaymentType paymentType,
-                                DateTime transactionDate, CashTransactionStatus status)
+    public BaseCashTransactionDto(string iBAN, CashTransactionType type, BankAssetType initiatedBy,
+                                  MoneyDto amount, MoneyDto fees, string description, 
+                                  PaymentType paymentType, string transactionDate)
     {
         IBAN = iBAN;
-        ReferenceNo = referenceNo;
         Type = type;
         InitiatedBy = initiatedBy;
         Amount = amount;
@@ -29,6 +31,5 @@ public class BaseCashTransactionDto
         Description = description;
         PaymentType = paymentType;
         TransactionDate = transactionDate;
-        Status = status;
     }
 }

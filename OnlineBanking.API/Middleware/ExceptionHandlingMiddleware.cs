@@ -1,5 +1,6 @@
 using System.Net;
 using OnlineBanking.API.Common;
+using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.API.Middleware;
 
@@ -27,19 +28,30 @@ public class ExceptionHandlingMiddleware
         }
     }
 
-    private static async Task HandleExceptionAsync(HttpContext context, Exception ex)
+    private static async ValueTask<bool> HandleExceptionAsync(HttpContext context, Exception ex)
     {
+        var statusPhrase = "";
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+        if (ex is FluentValidation.ValidationException fluentException)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            statusPhrase = "Validation error(s)";
+        }
+        else
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            statusPhrase = "Internal Server Error";
+        }
 
         var errorResponse = new ErrorResponse()
         {
             StatusCode = context.Response.StatusCode,
-            StatusPhrase = "Internal Server Error from custom middleware",
+            StatusPhrase = statusPhrase,
         };
 
-        errorResponse.Errors.Add("Internal Server Error");
+        await context.Response.WriteAsJsonAsync(errorResponse);
 
-        await context.Response.WriteAsync(errorResponse.Errors[0].ToString());
+        return true;
     }
 }

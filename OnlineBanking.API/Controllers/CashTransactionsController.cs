@@ -111,6 +111,9 @@ public class CashTransactionsController : BaseApiController
     {
         var result = new ApiResult<Unit>();
 
+        if (iban != request.BaseCashTransaction.IBAN)
+            result.IsError = true;
+
         switch (request.BaseCashTransaction.Type)
         {
             case CashTransactionType.Deposit:

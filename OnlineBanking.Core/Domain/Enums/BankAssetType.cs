@@ -2,7 +2,7 @@ namespace OnlineBanking.Core.Domain.Enums
 {
     public enum BankAssetType
     {
-         ATM,
+        ATM,
         BankAccount,
         Branch,
         POS,

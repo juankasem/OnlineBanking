@@ -1,4 +1,5 @@
 using MediatR;
+using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
@@ -9,6 +10,7 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
+using System.Globalization;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
@@ -84,18 +86,19 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
     }
 
     #region Private methods
-    private CashTransaction CreateCashTransaction(MakeDepositCommand request, decimal updatedBalance)
+    private static CashTransaction CreateCashTransaction(MakeDepositCommand request, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
+        var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
-        return CashTransaction.Create(ct.ReferenceNo, ct.Type,
-                                        ct.InitiatedBy, GetInitiatorCode(ct.InitiatedBy),
-                                        request.To, ct.Amount.Value, ct.Amount.Currency.Id, 
+        return CashTransaction.Create(ct.Type, ct.InitiatedBy, 
+                                        GetInitiatorCode(ct.InitiatedBy),
+                                        request.To, ct.Amount.Value, ct.Amount.CurrencyId, 
                                         ct.Fees.Value, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, ct.TransactionDate);
+                                        ct.PaymentType, transactionDate);
     }
 
-    private string GetInitiatorCode(BankAssetType initiatedBy)
+    private static string GetInitiatorCode(BankAssetType initiatedBy)
     {
         return initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
                                     initiatedBy == BankAssetType.Branch ? InitiatorCode.Branch :
