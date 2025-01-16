@@ -3,400 +3,88 @@
   "WorkspaceRootPath": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\cashtransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\cashtransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\validators\\cashtransactionvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\validators\\cashtransactionvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\bankaccountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\bankaccountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\fasttransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\fasttransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\fasttransactions\\commandhandlers\\createfasttransactioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\fasttransactions\\commandhandlers\\createfasttransactioncommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makefundstransfercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makefundstransfercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\helpers\\pagedlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\helpers\\pagedlist.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\customerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountsbycustomernorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountsbycustomernorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\bankaccount\\responses\\bankaccountresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\bankaccount\\responses\\bankaccountresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\bankaccounts\\bankaccountmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\bankaccounts\\bankaccountmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\customer\\accountownerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\customer\\accountownerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\queryhandlers\\getcashtransactionsbyibanrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\queryhandlers\\getcashtransactionsbyibanrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\queryhandlers\\getallcashtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\queryhandlers\\getallcashtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountwithtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountwithtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountbyaccountnorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountbyaccountnorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\contracts\\persistence\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\contracts\\persistence\\icustomerrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\cashtransactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\cashtransactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\bankaccounts\\ibankaccountmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\bankaccounts\\ibankaccountmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\bankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\bankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\contracts\\persistence\\ibankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\contracts\\persistence\\ibankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\apiroutes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\apiroutes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\commandhandlers\\createbankaccountcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\commandhandlers\\createbankaccountcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\bankaccount\\requests\\createbankaccountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\bankaccount\\requests\\createbankaccountrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\commands\\createbankaccountcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\commands\\createbankaccountcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\common\\behaviors\\validationbehavior.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\common\\behaviors\\validationbehavior.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getallbankaccountsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getallbankaccountsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\base\\dbhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\base\\dbhelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\contracts\\persistence\\icashtransactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\contracts\\persistence\\icashtransactionsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\genericrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\bankaccount\\bankaccountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\bankaccount\\bankaccountdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\baseapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\baseapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\branchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\branchcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queries\\getbankaccountsbycustomernorequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queries\\getbankaccountsbycustomernorequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\cashtransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\cashtransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\middleware\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\middleware\\exceptionhandlingmiddleware.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\customers\\customererrormessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\customers\\customererrormessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\validators\\basecashtransactionvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\validators\\basecashtransactionvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\helpers\\params\\cashtransactionparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\helpers\\params\\cashtransactionparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makewithdrawalcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makewithdrawalcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\persistence\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\persistence\\unitofwork.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\validators\\createbankaccountcommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\validators\\createbankaccountcommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\applicationserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\applicationserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\infrastructureserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\infrastructureserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\identityserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\identityserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\persistenceserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\persistenceserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\customers\\commandhandlers\\createcustomercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\customers\\commandhandlers\\createcustomercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\bankaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\bankaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\customers\\commands\\createcustomercommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\customers\\commands\\createcustomercommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\customer\\base\\basecustomerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\customer\\base\\basecustomerdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\datetimevalueresolver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\datetimevalueresolver.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\enums\\bankaccounttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\enums\\bankaccounttype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\customers\\queryhandlers\\getcustomerbyidrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\customers\\queryhandlers\\getcustomerbyidrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\customer\\responses\\customerresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\customer\\responses\\customerresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\cashtransactions\\cashtransactionsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\cashtransactions\\cashtransactionsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\branchaggregate\\branch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\branchaggregate\\branch.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\branches\\branchmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\branches\\branchmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\filters\\validateguidattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\filters\\validateguidattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\address\\addressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\address\\addressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\creditcardscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\creditcardscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\persistence\\onlinebankdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\persistence\\onlinebankdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\persistence\\appuseraccessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\persistence\\appuseraccessor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\customer\\requests\\createcustomerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\customer\\requests\\createcustomerrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\addressaggregate\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\addressaggregate\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\branch\\branchaddressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\branch\\branchaddressdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\migrations\\onlinebankdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\migrations\\onlinebankdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\customer\\responses\\customerlistresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\customer\\responses\\customerlistresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\auth\\requests\\assignroletouserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\auth\\requests\\assignroletouserrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\auth\\requests\\signuprequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\auth\\requests\\signuprequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\customers\\queryhandlers\\getallcustomersrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\customers\\queryhandlers\\getallcustomersrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\validators\\updatebranchcommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\validators\\updatebranchcommandvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\commandhandlers\\updatebranchcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\commandhandlers\\updatebranchcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\branch\\requests\\updatebranchrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\branch\\requests\\updatebranchrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\commands\\updatebranchcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\commands\\updatebranchcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\branch\\requests\\createbranchrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\branch\\requests\\createbranchrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\branch\\responses\\branchresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\branch\\responses\\branchresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\services\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\commands\\createbranchcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\commands\\createbranchcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\extensions\\swaggerserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\extensions\\swaggerserviceextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\addresses\\validators\\baseaddressvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\addresses\\validators\\baseaddressvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\queries\\getallbranchesrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\queries\\getallbranchesrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\helpers\\params\\branchparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\helpers\\params\\branchparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\branch\\commandhandlers\\createbranchcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\branch\\commandhandlers\\createbranchcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\migrations\\20250103005520_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\migrations\\20250103005520_initialcreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\addressaggregate\\city.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\addressaggregate\\city.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\accounttransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\accounttransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\services\\bankaccount\\bankaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\services\\bankaccount\\bankaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makefundstransfercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makefundstransfercommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makedepositcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\commandhandlers\\makedepositcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\onlinebanking.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\onlinebanking.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\common\\helpers\\datetimehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\common\\helpers\\datetimehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\commandhandlers\\addownertobankaccountcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\commandhandlers\\addownertobankaccountcommandhandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\cashtransactions\\commands\\makedepositcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\cashtransactions\\commands\\makedepositcommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\customerbankaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\aggregates\\bankaccountaggregate\\customerbankaccount.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.core\\domain\\services\\bankaccount\\ibankaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{56BF5BB6-09E6-46B5-BE14-BFE46E3926AD}|OnlineBanking.Core\\OnlineBanking.Core.csproj|solutionrelative:onlinebanking.core\\domain\\services\\bankaccount\\ibankaccountservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\cashtransaction\\base\\basecashtransactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\cashtransaction\\base\\basecashtransactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\fasttransactions\\messages\\fasttransactionerrormessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\fasttransactions\\messages\\fasttransactionerrormessages.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\models\\cashtransaction\\requests\\createcashtransactionrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\models\\cashtransaction\\requests\\createcashtransactionrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\bankaccountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\bankaccountscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\mappings\\cashtransactions\\cashtransactionsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\mappings\\cashtransactions\\cashtransactionsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\cashtransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\cashtransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\common\\behaviors\\validationbehavior.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\common\\behaviors\\validationbehavior.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.infrastructure\\repositories\\bankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F320B24D-E7FE-4EA6-83DA-39A0ADE90485}|OnlineBanking.Infrastructure\\OnlineBanking.Infrastructure.csproj|solutionrelative:onlinebanking.infrastructure\\repositories\\bankaccountrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountwithtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountwithtransactionsrequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.api\\controllers\\fasttransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3563217A-F27F-4FB3-A6FE-1D634314E8B9}|OnlineBanking.API\\OnlineBanking.API.csproj|solutionrelative:onlinebanking.api\\controllers\\fasttransactionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|c:\\users\\hp\\source\\repos\\onlinebanking\\onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountbyaccountnorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E66AF41D-5FBC-4AAC-840C-29046C3F3802}|OnlineBanking.Application\\OnlineBanking.Application.csproj|solutionrelative:onlinebanking.application\\features\\bankaccounts\\queryhandlers\\getbankaccountbyaccountnorequesthandler.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -405,1300 +93,290 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 280,
-          "SelectedChildIndex": 4,
+          "DockedWidth": 220,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "BankAccountsController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BankAccountsController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\BankAccountsController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BankAccountsController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\BankAccountsController.cs",
-              "ViewState": "AgIAAKQAAAAAAAAAAAArwLoAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:03:38.879Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MakeFundsTransferCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAQwEUAAABpAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:06:43.588Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CreateFastTransactionCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\FastTransactions\\CommandHandlers\\CreateFastTransactionCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\FastTransactions\\CommandHandlers\\CreateFastTransactionCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\FastTransactions\\CommandHandlers\\CreateFastTransactionCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\FastTransactions\\CommandHandlers\\CreateFastTransactionCommandHandler.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAYwCYAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:23:51.271Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "FastTransactionsController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T22:16:59.628Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "CashTransactionsController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
-              "ViewState": "AgIAADwAAAAAAAAAAAAYwEgAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:03:35.685Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CustomerRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\CustomerRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\CustomerRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\CustomerRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\CustomerRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T00:45:28.125Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "BankAccountResponse.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\Responses\\BankAccountResponse.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\BankAccount\\Responses\\BankAccountResponse.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\Responses\\BankAccountResponse.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\BankAccount\\Responses\\BankAccountResponse.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAgwBgAAABLAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-11T00:06:31.36Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BankAccountMapper.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\BankAccounts\\BankAccountMapper.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\BankAccounts\\BankAccountMapper.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\BankAccounts\\BankAccountMapper.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\BankAccounts\\BankAccountMapper.cs",
-              "ViewState": "AgIAADIAAAAAAAAAAAAgwEAAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:05:15.143Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "IBankAccountMapper.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\BankAccounts\\IBankAccountMapper.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\BankAccounts\\IBankAccountMapper.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\BankAccounts\\IBankAccountMapper.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\BankAccounts\\IBankAccountMapper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T23:24:21.029Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AccountOwnerDto.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\AccountOwnerDto.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Customer\\AccountOwnerDto.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\AccountOwnerDto.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Customer\\AccountOwnerDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T23:58:00.918Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "ICustomerRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\ICustomerRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Contracts\\Persistence\\ICustomerRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\ICustomerRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Contracts\\Persistence\\ICustomerRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T23:29:49.488Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "MappingProfile.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\MappingProfile.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\MappingProfile.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\MappingProfile.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\MappingProfile.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T00:58:40.906Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "CreateBankAccountRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\Requests\\CreateBankAccountRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\BankAccount\\Requests\\CreateBankAccountRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\Requests\\CreateBankAccountRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\BankAccount\\Requests\\CreateBankAccountRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T15:42:16.37Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "ValidationBehavior.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAACcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T01:16:58.118Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "GenericRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\GenericRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\GenericRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\GenericRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\GenericRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBMAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T14:20:24.773Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ApiRoutes.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\ApiRoutes.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\ApiRoutes.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\ApiRoutes.cs",
-              "RelativeToolTip": "OnlineBanking.API\\ApiRoutes.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:11:51.973Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "BaseApiController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BaseApiController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\BaseApiController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BaseApiController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\BaseApiController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA8AAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:20:19.691Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "BankAccountDto.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\BankAccountDto.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\BankAccount\\BankAccountDto.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\BankAccount\\BankAccountDto.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\BankAccount\\BankAccountDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T01:01:13.86Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "BranchController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BranchController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\BranchController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BranchController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\BranchController.cs",
-              "ViewState": "AgIAAEYAAAAAAAAAAAA5wE0AAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:11:48.26Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "ExceptionHandlingMiddleware.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAkwBQAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:07:17.309Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "CustomersController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CustomersController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\CustomersController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CustomersController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\CustomersController.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAgwFkAAABOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T13:50:27.891Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "CreateBankAccountCommandValidator.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Validators\\CreateBankAccountCommandValidator.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\Validators\\CreateBankAccountCommandValidator.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Validators\\CreateBankAccountCommandValidator.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\Validators\\CreateBankAccountCommandValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T17:10:33.289Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Program.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Program.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Program.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Program.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAAABwAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T23:15:34.868Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "UnitOfWork.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\UnitOfWork.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Persistence\\UnitOfWork.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\UnitOfWork.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Persistence\\UnitOfWork.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAD4vzoAAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T00:45:05.316Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "ApplicationServiceRegistration.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\ApplicationServiceRegistration.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\ApplicationServiceRegistration.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\ApplicationServiceRegistration.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\ApplicationServiceRegistration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T22:27:45.041Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "IdentityServiceRegistration.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\IdentityServiceRegistration.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\IdentityServiceRegistration.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\IdentityServiceRegistration.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\IdentityServiceRegistration.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwBEAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:57:23.858Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "InfrastructureServiceRegistration.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\InfrastructureServiceRegistration.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\InfrastructureServiceRegistration.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\InfrastructureServiceRegistration.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\InfrastructureServiceRegistration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T01:16:08.905Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
-              "Title": "PersistenceServiceRegistration.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\PersistenceServiceRegistration.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\PersistenceServiceRegistration.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\PersistenceServiceRegistration.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\PersistenceServiceRegistration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAwAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T23:29:22.878Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "BankAccount.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\BankAccount.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\BankAccount.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\BankAccount.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\BankAccount.cs",
-              "ViewState": "AgIAAFUAAAAAAAAAAAD4v2UAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T22:15:46.019Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
-              "Title": "AppUser.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AppUser.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\AppUser.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AppUser.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\AppUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T12:56:15.252Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 50,
-              "Title": "DateTimeValueResolver.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\DateTimeValueResolver.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\DateTimeValueResolver.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\DateTimeValueResolver.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\DateTimeValueResolver.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T15:11:57.237Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 49,
-              "Title": "BaseCustomerDto.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Base\\BaseCustomerDto.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Customer\\Base\\BaseCustomerDto.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Base\\BaseCustomerDto.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Customer\\Base\\BaseCustomerDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T22:01:52.7Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
-              "Title": "BankAccountType.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Enums\\BankAccountType.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Enums\\BankAccountType.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Enums\\BankAccountType.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Enums\\BankAccountType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T15:43:07.384Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 53,
-              "Title": "CustomerResponse.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerResponse.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerResponse.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerResponse.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBUAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T22:02:03.499Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 57,
-              "Title": "ValidateGuidAttribute.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Filters\\ValidateGuidAttribute.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Filters\\ValidateGuidAttribute.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Filters\\ValidateGuidAttribute.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Filters\\ValidateGuidAttribute.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAAB8AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T00:03:47.387Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 55,
-              "Title": "Branch.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BranchAggregate\\Branch.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\BranchAggregate\\Branch.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BranchAggregate\\Branch.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\BranchAggregate\\Branch.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T14:58:00.893Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 59,
-              "Title": "CreditCardsController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CreditCardsController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\CreditCardsController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CreditCardsController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\CreditCardsController.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAD4vzAAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:33:59.777Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 60,
-              "Title": "OnlineBankDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\OnlineBankDbContext.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Persistence\\OnlineBankDbContext.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\OnlineBankDbContext.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Persistence\\OnlineBankDbContext.cs",
-              "ViewState": "AgIAADAAAAAAAAAAAAAuwEkAAAA6AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T23:30:07.029Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 61,
-              "Title": "AppUserAccessor.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\AppUserAccessor.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Persistence\\AppUserAccessor.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Persistence\\AppUserAccessor.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Persistence\\AppUserAccessor.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T23:55:43.556Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 62,
-              "Title": "CreateCustomerRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Requests\\CreateCustomerRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Customer\\Requests\\CreateCustomerRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Requests\\CreateCustomerRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Customer\\Requests\\CreateCustomerRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwBcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T16:29:23.255Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 64,
-              "Title": "BranchAddressDto.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\BranchAddressDto.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Branch\\BranchAddressDto.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\BranchAddressDto.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Branch\\BranchAddressDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T15:12:21.736Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 63,
-              "Title": "Address.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\Address.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\Address.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\Address.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\Address.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAQwBYAAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:24:50.289Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 65,
-              "Title": "OnlineBankDbContextModelSnapshot.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\OnlineBankDbContextModelSnapshot.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\OnlineBankDbContextModelSnapshot.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\OnlineBankDbContextModelSnapshot.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\OnlineBankDbContextModelSnapshot.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T01:12:19.371Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 66,
-              "Title": "CustomerListResponse.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerListResponse.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerListResponse.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerListResponse.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Customer\\Responses\\CustomerListResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T22:02:15.823Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 67,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAAJIAAAAAAAAAAAAswM8AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:46:00.857Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 68,
-              "Title": "AssignRoleToUserRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Auth\\Requests\\AssignRoleToUserRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Auth\\Requests\\AssignRoleToUserRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Auth\\Requests\\AssignRoleToUserRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Auth\\Requests\\AssignRoleToUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T13:11:23.18Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 69,
-              "Title": "SignupRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Auth\\Requests\\SignupRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Auth\\Requests\\SignupRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Auth\\Requests\\SignupRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Auth\\Requests\\SignupRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAIAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T00:25:42.415Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 74,
-              "Title": "UpdateBranchCommand.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Commands\\UpdateBranchCommand.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\Commands\\UpdateBranchCommand.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Commands\\UpdateBranchCommand.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\Commands\\UpdateBranchCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T23:01:47.939Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 75,
-              "Title": "CreateBranchRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Requests\\CreateBranchRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Branch\\Requests\\CreateBranchRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Requests\\CreateBranchRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Branch\\Requests\\CreateBranchRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T14:46:58.06Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 76,
-              "Title": "BranchResponse.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Responses\\BranchResponse.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Branch\\Responses\\BranchResponse.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Responses\\BranchResponse.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Branch\\Responses\\BranchResponse.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:40:44.051Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 77,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\appsettings.json",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\appsettings.json",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\appsettings.json",
-              "RelativeToolTip": "OnlineBanking.API\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-01-02T23:10:50.325Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 78,
-              "Title": "TokenService.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Services\\TokenService.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Services\\TokenService.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Services\\TokenService.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Services\\TokenService.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBwAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T15:55:10.486Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 79,
-              "Title": "CreateBranchCommand.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Commands\\CreateBranchCommand.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\Commands\\CreateBranchCommand.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Commands\\CreateBranchCommand.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\Commands\\CreateBranchCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T15:08:00.29Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 80,
-              "Title": "SwaggerServiceExtensions.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Extensions\\SwaggerServiceExtensions.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\Extensions\\SwaggerServiceExtensions.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Extensions\\SwaggerServiceExtensions.cs",
-              "RelativeToolTip": "OnlineBanking.API\\Extensions\\SwaggerServiceExtensions.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAwAYAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T14:37:01.079Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 81,
-              "Title": "BaseAddressValidator.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Addresses\\Validators\\BaseAddressValidator.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Addresses\\Validators\\BaseAddressValidator.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Addresses\\Validators\\BaseAddressValidator.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Addresses\\Validators\\BaseAddressValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA8AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T15:04:01.469Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 83,
-              "Title": "BranchParams.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\Params\\BranchParams.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Helpers\\Params\\BranchParams.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\Params\\BranchParams.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Helpers\\Params\\BranchParams.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAIAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T01:04:00.984Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 82,
-              "Title": "GetAllBranchesRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Queries\\GetAllBranchesRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\Queries\\GetAllBranchesRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Queries\\GetAllBranchesRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\Queries\\GetAllBranchesRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:38:01.907Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 84,
-              "Title": "CreateBranchCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\CreateBranchCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\CreateBranchCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\CreateBranchCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\CreateBranchCommandHandler.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAgwDkAAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T21:43:13.224Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 87,
-              "Title": "20250103005030_InitialCreate.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\20250103005030_InitialCreate.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:50:30.679Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 88,
-              "Title": "20250103003327_Initial.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\20250103003327_Initial.cs",
-              "ViewState": "AgIAAPIBAAAAAAAAAAAhwAICAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:33:27.738Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 85,
-              "Title": "20250103005520_InitialCreate.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005520_InitialCreate.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\20250103005520_InitialCreate.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005520_InitialCreate.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\20250103005520_InitialCreate.cs",
-              "ViewState": "AgIAAP0BAAAAAAAAAAAowAgCAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:55:20.714Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 86,
-              "Title": "20250103005156_InitialCreateUpdated.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\20250103005156_InitialCreateUpdated.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:51:56.538Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 89,
-              "Title": "City.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\City.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\City.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\City.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\AddressAggregate\\City.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:26:12.703Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 90,
-              "Title": "20250103001708_Initial.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Migrations\\20250103001708_Initial.cs",
-              "ViewState": "AgIAAF4AAAAAAAAAAAAQwHgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-03T00:17:08.947Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 91,
-              "Title": "AccountTransaction.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\AccountTransaction.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\AccountTransaction.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\AccountTransaction.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\AccountTransaction.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAIwBEAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T23:30:27.302Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 93,
-              "Title": "MakeDepositCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAYwDgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T20:35:07.444Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 92,
-              "Title": "BankAccountService.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Services\\BankAccount\\BankAccountService.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Services\\BankAccount\\BankAccountService.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Services\\BankAccount\\BankAccountService.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Services\\BankAccount\\BankAccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:38:32.051Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 94,
-              "Title": "OnlineBanking.API",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
-              "RelativeDocumentMoniker": "OnlineBanking.API\\OnlineBanking.API.csproj",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\OnlineBanking.API.csproj",
-              "RelativeToolTip": "OnlineBanking.API\\OnlineBanking.API.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-01-02T21:44:42.638Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 95,
-              "Title": "AddOwnerToBankAccountCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\AddOwnerToBankAccountCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\AddOwnerToBankAccountCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\AddOwnerToBankAccountCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\AddOwnerToBankAccountCommandHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAABPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T21:38:45.119Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 96,
-              "Title": "CustomerBankAccount.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CustomerBankAccount.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CustomerBankAccount.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CustomerBankAccount.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CustomerBankAccount.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T17:18:51.094Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 97,
-              "Title": "IBankAccountService.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Services\\BankAccount\\IBankAccountService.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Services\\BankAccount\\IBankAccountService.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Services\\BankAccount\\IBankAccountService.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Services\\BankAccount\\IBankAccountService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:36:28.562Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 98,
-              "Title": "FastTransactionErrorMessages.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\FastTransactions\\Messages\\FastTransactionErrorMessages.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\FastTransactions\\Messages\\FastTransactionErrorMessages.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\FastTransactions\\Messages\\FastTransactionErrorMessages.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\FastTransactions\\Messages\\FastTransactionErrorMessages.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-29T16:55:22.152Z",
-              "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedWidth": 120,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "GetBankAccountsByCustomerNoRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountsByCustomerNoRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountsByCustomerNoRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountsByCustomerNoRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountsByCustomerNoRequestHandler.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAiwDcAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-09T20:55:21.856Z",
+              "Title": "CashTransactionValidator.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Validators\\CashTransactionValidator.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Validators\\CashTransactionValidator.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Validators\\CashTransactionValidator.cs",
+              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Validators\\CashTransactionValidator.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAQwCMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:58:08.329Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "PagedList.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\PagedList.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Helpers\\PagedList.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\PagedList.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Helpers\\PagedList.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAIA1wBsAAAABAAAAAAAAAA==",
+              "Title": "MakeFundsTransferCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeFundsTransferCommandHandler.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAkwHoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T22:08:46.802Z",
+              "WhenOpened": "2025-01-15T23:21:02.92Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "CashTransactionsRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\CashTransactionsRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\CashTransactionsRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\CashTransactionsRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\CashTransactionsRepository.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAA1wB0AAAA2AAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "MakeWithdrawalCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeWithdrawalCommandHandler.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeWithdrawalCommandHandler.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeWithdrawalCommandHandler.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeWithdrawalCommandHandler.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAkwHAAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T22:40:12.287Z",
+              "WhenOpened": "2025-01-15T23:30:01.524Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "GetAllCashTransactionsRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetAllCashTransactionsRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetAllCashTransactionsRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetAllCashTransactionsRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetAllCashTransactionsRequestHandler.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAACUAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "BaseCashTransactionValidator.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\Validators\\BaseCashTransactionValidator.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\Validators\\BaseCashTransactionValidator.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\Validators\\BaseCashTransactionValidator.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\Validators\\BaseCashTransactionValidator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T23:44:13.224Z",
+              "WhenOpened": "2025-01-15T23:31:06.133Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CashTransaction.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CashTransaction.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CashTransaction.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CashTransaction.cs",
+              "RelativeToolTip": "OnlineBanking.Core\\Domain\\Aggregates\\BankAccountAggregate\\CashTransaction.cs",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAgwI0AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T22:43:31.694Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MakeDepositCommandHandler.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\CommandHandlers\\MakeDepositCommandHandler.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAkwFwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:10:35.463Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DateTimeHelper.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Helpers\\DateTimeHelper.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Common\\Helpers\\DateTimeHelper.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Helpers\\DateTimeHelper.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Common\\Helpers\\DateTimeHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:48:57.504Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "MakeDepositCommand.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\Commands\\MakeDepositCommand.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\Commands\\MakeDepositCommand.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\Commands\\MakeDepositCommand.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\Commands\\MakeDepositCommand.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:05:06.005Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\MappingProfile.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\MappingProfile.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\MappingProfile.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAQwEIAAABRAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:41:56.639Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BaseCashTransactionDto.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\CashTransaction\\Base\\BaseCashTransactionDto.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\CashTransaction\\Base\\BaseCashTransactionDto.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\CashTransaction\\Base\\BaseCashTransactionDto.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Models\\CashTransaction\\Base\\BaseCashTransactionDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T23:02:06.701Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "GetCashTransactionsByIBANRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetCashTransactionsByIBANRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetCashTransactionsByIBANRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetCashTransactionsByIBANRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\CashTransactions\\QueryHandlers\\GetCashTransactionsByIBANRequestHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
+              "Title": "CreateCashTransactionRequest.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\CashTransaction\\Requests\\CreateCashTransactionRequest.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\CashTransaction\\Requests\\CreateCashTransactionRequest.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\CashTransaction\\Requests\\CreateCashTransactionRequest.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Models\\CashTransaction\\Requests\\CreateCashTransactionRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T23:47:19.696Z",
+              "WhenOpened": "2025-01-15T22:51:11.192Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "GetBankAccountByAccountNoRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAB8AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 12,
+              "Title": "BankAccountsController.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BankAccountsController.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\BankAccountsController.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\BankAccountsController.cs",
+              "RelativeToolTip": "OnlineBanking.API\\Controllers\\BankAccountsController.cs",
+              "ViewState": "AgIAAKkAAAAAAAAAAADwv7QAAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T20:59:30.32Z",
+              "WhenOpened": "2025-01-12T14:59:45.23Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 13,
-              "Title": "GetBankAccountWithTransactionsRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-09T22:40:10.351Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "CreateBankAccountCommand.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Commands\\CreateBankAccountCommand.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\Commands\\CreateBankAccountCommand.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Commands\\CreateBankAccountCommand.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\Commands\\CreateBankAccountCommand.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T00:58:12.538Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "IBankAccountRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\IBankAccountRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Contracts\\Persistence\\IBankAccountRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\IBankAccountRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Contracts\\Persistence\\IBankAccountRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-09T23:06:46.06Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "BankAccountRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAcwB0AAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-09T00:00:37.877Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "CreateBankAccountCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\CreateBankAccountCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\CreateBankAccountCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\CreateBankAccountCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\CommandHandlers\\CreateBankAccountCommandHandler.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAiwBkAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-02T22:07:30.341Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "GetAllBankAccountsRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetAllBankAccountsRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetAllBankAccountsRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetAllBankAccountsRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetAllBankAccountsRequestHandler.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACEAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T15:30:02.326Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "DBHelpers.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\Base\\DBHelpers.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\Base\\DBHelpers.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\Base\\DBHelpers.cs",
-              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\Base\\DBHelpers.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAYAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T22:39:05.026Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "ICashTransactionsRepository.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\ICashTransactionsRepository.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Contracts\\Persistence\\ICashTransactionsRepository.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Contracts\\Persistence\\ICashTransactionsRepository.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Contracts\\Persistence\\ICashTransactionsRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-10T22:03:49.125Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "CustomerErrorMessages.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\CustomerErrorMessages.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Customers\\CustomerErrorMessages.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\CustomerErrorMessages.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Customers\\CustomerErrorMessages.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T23:32:14.853Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "GetBankAccountsByCustomerNoRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Queries\\GetBankAccountsByCustomerNoRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\Queries\\GetBankAccountsByCustomerNoRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\Queries\\GetBankAccountsByCustomerNoRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\Queries\\GetBankAccountsByCustomerNoRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-09T22:26:39.722Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "CashTransactionParams.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\Params\\CashTransactionParams.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Core\\Helpers\\Params\\CashTransactionParams.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Core\\Helpers\\Params\\CashTransactionParams.cs",
-              "RelativeToolTip": "OnlineBanking.Core\\Helpers\\Params\\CashTransactionParams.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAEAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-08T23:06:44.969Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 45,
-              "Title": "CreateCustomerCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\CommandHandlers\\CreateCustomerCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Customers\\CommandHandlers\\CreateCustomerCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\CommandHandlers\\CreateCustomerCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Customers\\CommandHandlers\\CreateCustomerCommandHandler.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAABwAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T16:20:52.497Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "CreateCustomerCommand.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\Commands\\CreateCustomerCommand.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Customers\\Commands\\CreateCustomerCommand.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\Commands\\CreateCustomerCommand.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Customers\\Commands\\CreateCustomerCommand.cs",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAAABoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T20:51:31.035Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 52,
-              "Title": "GetCustomerByIdRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetCustomerByIdRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetCustomerByIdRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetCustomerByIdRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetCustomerByIdRequestHandler.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAwCIAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T23:31:35.021Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 56,
-              "Title": "BranchMapper.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\Branches\\BranchMapper.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\Branches\\BranchMapper.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\Branches\\BranchMapper.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Mappings\\Branches\\BranchMapper.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T00:43:04.742Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 54,
               "Title": "CashTransactionsMapper.cs",
               "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\CashTransactions\\CashTransactionsMapper.cs",
               "RelativeDocumentMoniker": "OnlineBanking.Application\\Mappings\\CashTransactions\\CashTransactionsMapper.cs",
               "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Mappings\\CashTransactions\\CashTransactionsMapper.cs",
               "RelativeToolTip": "OnlineBanking.Application\\Mappings\\CashTransactions\\CashTransactionsMapper.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAYwBgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAowEEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-06T00:43:14.629Z",
+              "WhenOpened": "2025-01-15T23:34:50.789Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
-              "Title": "AddressDto.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Address\\AddressDto.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Address\\AddressDto.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Address\\AddressDto.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Address\\AddressDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAABAAAAAAAAAA==",
+              "DocumentIndex": 14,
+              "Title": "CashTransactionsController.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
+              "RelativeToolTip": "OnlineBanking.API\\Controllers\\CashTransactionsController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAgwGcAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T21:30:03.638Z",
+              "WhenOpened": "2025-01-12T15:12:13.634Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
-              "Title": "GetAllCustomersRequestHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetAllCustomersRequestHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetAllCustomersRequestHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetAllCustomersRequestHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Customers\\QueryHandlers\\GetAllCustomersRequestHandler.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAFAAAAAAAAAA==",
+              "DocumentIndex": 16,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Program.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.API\\Program.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Program.cs",
+              "RelativeToolTip": "OnlineBanking.API\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T14:01:00.563Z",
+              "WhenOpened": "2025-01-15T22:17:58.078Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
-              "Title": "UpdateBranchCommandValidator.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Validators\\UpdateBranchCommandValidator.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\Validators\\UpdateBranchCommandValidator.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\Validators\\UpdateBranchCommandValidator.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\Validators\\UpdateBranchCommandValidator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 15,
+              "Title": "ValidationBehavior.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Common\\Behaviors\\ValidationBehavior.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAZAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T13:28:18.123Z",
+              "WhenOpened": "2025-01-15T22:18:07.124Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
-              "Title": "UpdateBranchCommandHandler.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\UpdateBranchCommandHandler.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\UpdateBranchCommandHandler.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\UpdateBranchCommandHandler.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Features\\Branch\\CommandHandlers\\UpdateBranchCommandHandler.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAD4vyoAAAA9AAAAAAAAAA==",
+              "DocumentIndex": 19,
+              "Title": "FastTransactionsController.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
+              "RelativeToolTip": "OnlineBanking.API\\Controllers\\FastTransactionsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAABiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-05T13:28:03.421Z",
+              "WhenOpened": "2025-01-12T15:13:06.737Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 73,
-              "Title": "UpdateBranchRequest.cs",
-              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Requests\\UpdateBranchRequest.cs",
-              "RelativeDocumentMoniker": "OnlineBanking.Application\\Models\\Branch\\Requests\\UpdateBranchRequest.cs",
-              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Models\\Branch\\Requests\\UpdateBranchRequest.cs",
-              "RelativeToolTip": "OnlineBanking.Application\\Models\\Branch\\Requests\\UpdateBranchRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 20,
+              "Title": "GetBankAccountByAccountNoRequestHandler.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountByAccountNoRequestHandler.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-04T22:59:59.185Z",
+              "WhenOpened": "2025-01-12T14:59:02.016Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 161,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{6d4078d1-5951-4ed1-ac0e-0a8099c1cce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ExceptionHandlingMiddleware.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
+              "RelativeToolTip": "OnlineBanking.API\\Middleware\\ExceptionHandlingMiddleware.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAYwDUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-15T00:24:17.321Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "BankAccountRepository.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
+              "RelativeToolTip": "OnlineBanking.Infrastructure\\Repositories\\BankAccountRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-12T15:33:40.166Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "GetBankAccountWithTransactionsRequestHandler.cs",
+              "DocumentMoniker": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
+              "RelativeDocumentMoniker": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
+              "ToolTip": "C:\\Users\\HP\\Source\\Repos\\OnlineBanking\\OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
+              "RelativeToolTip": "OnlineBanking.Application\\Features\\BankAccounts\\QueryHandlers\\GetBankAccountWithTransactionsRequestHandler.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABkAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-12T14:58:44.047Z",
               "EditorCaption": ""
             }
           ]
