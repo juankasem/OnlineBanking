@@ -45,42 +45,15 @@ public class CashTransactionsController : BaseApiController
         return Ok(cashTransactions);
     }
 
-    // GET api/v1/cash-transactions/12345678
-    [HttpGet(ApiRoutes.CashTransactions.GetByAccountNo)]
-    [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ListAccountCashTransactions([FromRoute] string accountNoOrIBAN,
-                                                                 [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                 CancellationToken cancellationToken = default)
-    {
-        var query = new GetAccountTransactionsRequest() 
-        { 
-          AccountNoOrIBAN = accountNoOrIBAN,
-          CashTransactionParams = cashTransactionParams
-        };
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        var accountTransactions = result.Payload.Data;
-
-        if (accountTransactions.Any())
-        {
-            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                         result.Payload.TotalCount, result.Payload.TotalPages);
-        }
-
-        return Ok(accountTransactions);
-    }
-
     // GET api/v1/cash-transactions/TR12345678 
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCashTransactionsByIBAN([FromRoute] string iban,
+    public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute] string iban,
                                                                [FromQuery] CashTransactionParams cashTransactionParams,
                                                                CancellationToken cancellationToken = default)
     {
-        var query = new GetCashTransactionsByIBANRequest()
+        var query = new GetCashTransactionsByAccountNoOrIBANRequest()
         {
             IBAN = iban,
             CashTransactionParams = cashTransactionParams
@@ -110,9 +83,6 @@ public class CashTransactionsController : BaseApiController
                                                            CancellationToken cancellationToken = default)
     {
         var result = new ApiResult<Unit>();
-
-        if (iban != request.BaseCashTransaction.IBAN)
-            result.IsError = true;
 
         switch (request.BaseCashTransaction.Type)
         {

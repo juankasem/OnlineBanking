@@ -5,8 +5,8 @@ namespace OnlineBanking.Application.Models.CashTransaction.Responses;
 public class CashTransactionResponse
 {
     public string Id { get; set; }
-    public CashTransactionType Type { get; set; }
-    public BankAssetType InitiatedBy { get; set; }
+    public string Type { get; set; }
+    public string InitiatedBy { get; set; }
     public string From { get; set; }
     public string To { get; private set; }
     public string Sender { get; set; }
@@ -14,21 +14,16 @@ public class CashTransactionResponse
     public Money Amount { get; set; }
     public Money Fees { get; set; }
     public string Description { get; set; }
-    public PaymentType PaymentType { get; set; }
+    public string PaymentType { get; set; }
     public DateTime TransactionDate { get; set; }
-    public CashTransactionStatus Status { get; set; }
+    public string Status { get; set; }
     public Money AvailableBalance { get; set; }
 
 
-#nullable enable
-    public string? CreditCardNo { get; set; }
-    public string? DebitCardNo { get; set; }
-
-    public CashTransactionResponse(string id, CashTransactionType type, BankAssetType initiatedBy,
+    public CashTransactionResponse(string id, string type, string initiatedBy,
                                     string from, string to, string sender, string recipient, Money amount,
-                                    Money fees, string description, PaymentType paymentType, DateTime transactionDate,
-                                    CashTransactionStatus status, Money availableBalance,
-                                    string? creditCardNo = null, string? debitCardNo = null)
+                                    Money fees, string description, string paymentType, DateTime transactionDate,
+                                    string status, Money availableBalance)
     {
         Id = id;
         Type = type;
@@ -44,7 +39,5 @@ public class CashTransactionResponse
         TransactionDate = transactionDate;
         Status = status;
         AvailableBalance = availableBalance;
-        CreditCardNo = creditCardNo;
-        DebitCardNo = debitCardNo;
     }
 }

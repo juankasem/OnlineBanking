@@ -25,8 +25,8 @@ public class CashTransactionsMapper : ICashTransactionsMapper
 
         return new CashTransactionResponse(
                     ct.Id.ToString(),
-                    ct.Type,
-                    ct.InitiatedBy,
+                    Enum.GetName(typeof(Core.Domain.Enums.CashTransactionType), ct.Type),
+                    Enum.GetName(typeof(Core.Domain.Enums.BankAssetType), ct.InitiatedBy),
                     ct.From,
                     ct.To,
                     ct.Sender ?? null, 
@@ -37,17 +37,16 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     :
                     CreateMoney(-ct.Amount, currency),
                     CreateMoney(ct.Fees, currency),
-                    ct.Description, 
-                    ct.PaymentType,
+                    ct.Description,
+                    Enum.GetName(typeof(Core.Domain.Enums.PaymentType), ct.PaymentType),
+      
                     ct.TransactionDate,
-                    ct.Status,
+                    Enum.GetName(typeof(Core.Domain.Enums.CashTransactionStatus), ct.Status),
                     ct.To != iban
                     ?
                     CreateMoney(ct.SenderAvailableBalance, currency)
                     :
-                    CreateMoney(ct.RecipientAvailableBalance, currency),
-                    ct.CreditCardNo ?? null,
-                    ct.DebitCardNo ?? null
+                    CreateMoney(ct.RecipientAvailableBalance, currency)
         );
     }
 

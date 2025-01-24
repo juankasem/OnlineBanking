@@ -10,18 +10,18 @@ using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 
-public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTransactionsByIBANRequest, ApiResult<PagedList<CashTransactionResponse>>>
+public class GetCashTransactionsByAccountNoOrIBANRequestHandler : IRequestHandler<GetCashTransactionsByAccountNoOrIBANRequest, ApiResult<PagedList<CashTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly ICashTransactionsMapper _cashTransactionsMapper;
 
-    public GetCashTransactionsByIBANRequestHandler(IUnitOfWork uow, ICashTransactionsMapper cashTransactionsMapper)
+    public GetCashTransactionsByAccountNoOrIBANRequestHandler(IUnitOfWork uow, ICashTransactionsMapper cashTransactionsMapper)
     {
         _uow = uow;
         _cashTransactionsMapper = cashTransactionsMapper;
     }
     
-    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetCashTransactionsByIBANRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetCashTransactionsByAccountNoOrIBANRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CashTransactionResponse>>();
 
@@ -33,7 +33,7 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
             return result;
         }
         var cashTransactionParams = request.CashTransactionParams;
-        var (accountTransactions, totalCount) = await _uow.CashTransactions.GetByIBANAsync(request.IBAN, cashTransactionParams);
+        var (accountTransactions, totalCount) = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(request.IBAN, cashTransactionParams);
 
         if (!accountTransactions.Any())
         {
@@ -44,8 +44,8 @@ public class GetCashTransactionsByIBANRequestHandler : IRequestHandler<GetCashTr
                                                             .ToList().AsReadOnly();
 
         result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, totalCount, 
-                                                                   cashTransactionParams.PageNumber, cashTransactionParams.PageSize);
-                                           ;
+                                                                    cashTransactionParams.PageNumber, 
+                                                                    cashTransactionParams.PageSize);
     
         return result;
     }

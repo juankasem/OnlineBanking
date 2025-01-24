@@ -6,33 +6,40 @@ using OnlineBanking.Core.Domain.Enums;
 namespace OnlineBanking.Core.Domain.Validators;
 public class CashTransactionValidator : AbstractValidator<CashTransaction>
 {
+    public CashTransactionValidator()
+    {
+        RuleFor(c => c.Id)
+         .NotNull().WithMessage("{PropertyName} is required")
+         .NotEmpty().WithMessage("{PropertyName} is required"); 
+        
+       RuleFor(c => c.ReferenceNo)
+        .NotNull().WithMessage("Reference No is required")
+        .NotEmpty().WithMessage("Reference No is required");
 
-    public string ReferenceNo { get; private set; }
+        RuleFor(c => c.Type)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} is required");
 
-    public CashTransactionType Type { get; private set; }
+        RuleFor(c => c.From)
+       .NotEmpty().WithMessage("{PropertyName} is required");
 
-    public BankAssetType InitiatedBy { get; private set; }
+        RuleFor(c => c.To)
+         .NotEmpty().WithMessage("{PropertyName} is required");
 
+        RuleFor(c => c.InitiatedBy)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} is required");
 
-    public string From { get; private set; }
+        RuleFor(c => c.Amount)
+          .GreaterThan(0).WithMessage("Amount should be greater than {ComparisonValue}");
 
-    public string To { get; private set; }
+        RuleFor(c => c.Fees)
+          .GreaterThanOrEqualTo(0).WithMessage("Fees should be greater than {ComparisonValue}");
 
-    public decimal Amount { get; private set; }
+        RuleFor(c => c.PaymentType)
+        .NotNull().WithMessage("{PropertyName} is required");
 
-    public int CurrencyId { get; private set; }
-
-    public decimal Fees { get; set; }
-
-    public string Description { get; set; }
-
-    public decimal SenderAvailableBalance { get; set; }
-
-    public decimal RecipientAvailableBalance { get; set; }
-
-    public PaymentType PaymentType { get; set; }
-
-    public DateTime TransactionDate { get; set; }
-
-    public CashTransactionStatus Status { get; set; }
+        RuleFor(c => c.TransactionDate)
+        .GreaterThanOrEqualTo(DateTime.Now.AddMinutes(-60)).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+    }
 }

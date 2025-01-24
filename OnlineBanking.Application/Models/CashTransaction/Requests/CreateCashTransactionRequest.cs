@@ -19,5 +19,5 @@ public class CreateCashTransactionRequest
 public class MoneyDto
 {
     public decimal Value { get; set; }
-    public decimal currencyId { get; set; }
+    public decimal CurrencyId { get; set; }
 }

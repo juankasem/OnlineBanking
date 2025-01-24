@@ -46,7 +46,9 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                 return result;
             }
 
-            if (!senderAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+            var senderAccountOwner = senderAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+            if (senderAccountOwner is null)
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
                 string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.From));
@@ -65,6 +67,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             }
 
             var amountToTransfer = request.BaseCashTransaction.Amount.Value;
+            var fees = request.BaseCashTransaction.Fees.Value;
 
             if (senderAccount.AllowedBalanceToUse < amountToTransfer)
             {
@@ -74,7 +77,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
             }
 
             //Update sender's & Recipient's account
-            var updatedFromBalance = senderAccount.Balance - amountToTransfer;
+            var updatedFromBalance = senderAccount.Balance - (amountToTransfer + fees);
             var updatedToBalance = recipientAccount.Balance + amountToTransfer;
 
             var cashTransaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);

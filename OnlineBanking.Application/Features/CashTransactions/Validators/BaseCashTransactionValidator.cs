@@ -29,7 +29,7 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
         RuleFor(c => c.PaymentType)
         .NotNull().WithMessage("{PropertyName} is required");
 
-        RuleFor(c => c.TransactionDate)
-        .NotEmpty().WithMessage("{PropertyName} must not be before {ComparisonValue}");
+        //RuleFor(c => c.TransactionDate)
+        //.NotEmpty().WithMessage("{PropertyName} must not be before {ComparisonValue}");
     }
 }

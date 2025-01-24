@@ -10,7 +10,6 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
-using System.Globalization;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
@@ -42,8 +41,10 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
                 return result;
             }
-            
-            if (!bankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+
+            var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+            if (bankAccountOwner is null)
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
                 string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
@@ -55,7 +56,9 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             //Update account balance & Add transaction
             var updatedBalance = bankAccount.Balance + amountToDeposit;
-            var cashTransaction = CreateCashTransaction(request, updatedBalance);
+            var recipient = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
+
+            var cashTransaction = CreateCashTransaction(request, recipient, updatedBalance);
 
             await _uow.CashTransactions.AddAsync(cashTransaction);
 
@@ -86,7 +89,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
     }
 
     #region Private methods
-    private static CashTransaction CreateCashTransaction(MakeDepositCommand request, decimal updatedBalance)
+    private static CashTransaction CreateCashTransaction(MakeDepositCommand request, string recipient, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
         var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
@@ -95,7 +98,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
                                         GetInitiatorCode(ct.InitiatedBy),
                                         request.To, ct.Amount.Value, ct.Amount.CurrencyId, 
                                         ct.Fees.Value, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, transactionDate);
+                                        ct.PaymentType, transactionDate, "Unknown", recipient);
     }
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)

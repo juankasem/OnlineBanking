@@ -1,6 +1,7 @@
 using System.Net;
 using OnlineBanking.API.Common;
 using OnlineBanking.Application.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OnlineBanking.API.Middleware;
 
@@ -49,6 +50,8 @@ public class ExceptionHandlingMiddleware
             StatusCode = context.Response.StatusCode,
             StatusPhrase = statusPhrase,
         };
+
+        errorResponse.Errors.Add(ex.Message);
 
         await context.Response.WriteAsJsonAsync(errorResponse);
 

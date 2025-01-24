@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace OnlineBanking.Core.Domain.Enums
+namespace OnlineBanking.Core.Domain.Enums;
+
+public enum PaymentType
 {
-    public enum PaymentType
-    {
-        Housing,
-        Rent,
-        ECommerce  
-    }
+    Deposit,
+    Withdrawal,
+    Housing,
+    Rent,
+    ECommerce, 
+    Gift  
 }

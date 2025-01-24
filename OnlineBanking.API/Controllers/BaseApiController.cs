@@ -40,8 +40,7 @@ public class BaseApiController : ControllerBase
         if (errors.Any(e => e.Code == ErrorCode.InSufficintFunds ||
                             e.Code == ErrorCode.CreateCashTransactionNotAuthorized))
         {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.InSufficintFunds || 
-                                                    er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
+            var error = errors.FirstOrDefault(er =>  er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
 
             if (error is not null)
             {
