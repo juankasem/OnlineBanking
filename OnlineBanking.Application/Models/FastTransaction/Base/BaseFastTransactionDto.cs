@@ -2,7 +2,6 @@
 namespace OnlineBanking.Application.Models.FastTransaction.Base;
 public class BaseFastTransactionDto
 {
-    public Guid BankAccountId { get; set; }
     public string IBAN { get; set; }
     public string RecipientIBAN { get; set; }
     public string RecipientName { get; set; }

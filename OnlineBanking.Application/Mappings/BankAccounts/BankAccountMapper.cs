@@ -81,11 +81,14 @@ public class BankAccountMapper : IBankAccountMapper
 
         foreach (var ct in cashTransactions)
         {
-            var accountTransaction = new AccountTransactionDto(ct.Type, ct.InitiatedBy,
+            var accountTransaction = new AccountTransactionDto(Enum.GetName(typeof(Core.Domain.Enums.CashTransactionType), ct.Type),
+                                                                Enum.GetName(typeof(Core.Domain.Enums.BankAssetType), ct.InitiatedBy),
                                                                 CreateMoney(ct.Amount, currency), CreateMoney(ct.Fees, currency),
-                                                                ct.Description, ct.PaymentType, ct.TransactionDate, ct.Status,
+                                                                ct.Description,
+                                                                Enum.GetName(typeof(Core.Domain.Enums.PaymentType), ct.PaymentType),
+                                                                ct.TransactionDate,
+                                                                Enum.GetName(typeof(Core.Domain.Enums.CashTransactionStatus), ct.Status),
                                                                 ct.From, ct.To, ct.Sender, ct.Recipient);
-
             accountTransactions.Add(accountTransaction);
         }
         

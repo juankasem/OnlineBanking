@@ -39,7 +39,6 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     CreateMoney(ct.Fees, currency),
                     ct.Description,
                     Enum.GetName(typeof(Core.Domain.Enums.PaymentType), ct.PaymentType),
-      
                     ct.TransactionDate,
                     Enum.GetName(typeof(Core.Domain.Enums.CashTransactionStatus), ct.Status),
                     ct.To != iban

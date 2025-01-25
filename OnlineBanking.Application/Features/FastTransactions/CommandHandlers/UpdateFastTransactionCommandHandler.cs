@@ -35,12 +35,12 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
 
         try
         {
-            var bankAccount = await _uow.BankAccounts.GetByIdAsync(request.BankAccountId);
-            
+            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.IBAN);
+
             if (bankAccount is null)
             {
                 result.AddError(ErrorCode.NotFound,
-                string.Format(BankAccountErrorMessages.NotFound, "Id", request.BankAccountId));
+                string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.IBAN));
 
                 return result;
             }
@@ -63,8 +63,8 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
                 return result;
             }
 
-            var fastTransaction = CreateFastTransaction( request.Id, bankAccount.Id, request.RecipientIBAN,
-                                                        request.RecipientName, request.Amount);
+            var fastTransaction = FastTransaction.Create(bankAccount.Id, request.RecipientIBAN,
+                                                         request.RecipientName, request.Amount, request.Id);
 
             //Add transaction to sender's account
             bankAccount.UpdateFastTransaction(request.Id, fastTransaction);
@@ -86,9 +86,4 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
 
         return result;
     }
-    
-    #region  Private methods
-    private FastTransaction CreateFastTransaction(Guid id, Guid bankAccountId, string recipientIBAN, string recipientName, decimal amount) =>
-        FastTransaction.Create( bankAccountId, recipientIBAN, recipientName, amount, id);
-#endregion
 }

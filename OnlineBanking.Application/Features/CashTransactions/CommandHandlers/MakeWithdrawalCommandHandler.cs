@@ -42,7 +42,9 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
                 return result;
             }
 
-            if (!bankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
+            var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+            if (bankAccount is null)
             {
                 result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
                 string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
@@ -61,7 +63,9 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
 
             //Update account balance & Add transaction
             var updatedBalance = bankAccount.Balance - amountToWithdraw;
-            var cashTransaction = CreateCashTransaction(request, updatedBalance);
+            var sender = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
+
+            var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);
 
             await _uow.CashTransactions.AddAsync(cashTransaction);
 
@@ -93,7 +97,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
     }
 
     #region Private methods
-    private static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, decimal updatedBalance)
+    private static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, string sender, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
         var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
@@ -101,7 +105,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         return CashTransaction.Create(ct.Type, ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), 
                                       ct.Amount.Value, ct.Amount.CurrencyId, ct.Fees.Value, 
                                       ct.Description, updatedBalance, 0,
-                                      ct.PaymentType, transactionDate);
+                                      ct.PaymentType, transactionDate, sender, "Unknown");
     }
 
 

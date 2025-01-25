@@ -1,4 +1,5 @@
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Filters;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
@@ -8,6 +9,7 @@ using OnlineBanking.Application.Models.FastTransaction.Responses;
 
 namespace OnlineBanking.API.Controllers;
 
+[Authorize]
 public class FastTransactionsController : BaseApiController
 {
     // GET api/v1/fast-transactions/TR12345678 
@@ -44,8 +46,7 @@ public class FastTransactionsController : BaseApiController
     // PUT api/v1/Fast-transactions/1234
     [HttpPut(ApiRoutes.FastTransactions.IdRoute)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ValidateGuid("id")]
-    public async Task<IActionResult> UpdateFastTransaction(Guid id, [FromBody] UpdateFastTransactionRequest request,
+    public async Task<IActionResult> UpdateFastTransaction([FromRoute] string id, [FromBody] UpdateFastTransactionRequest request,
                                                            CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
@@ -59,14 +60,14 @@ public class FastTransactionsController : BaseApiController
 
     // DELETE api/v1/Fast-transactions/1234
     [HttpDelete]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ValidateGuid]
     public async Task<IActionResult> DeleteFastTransaction([FromBody] DeleteFastTransactionRequest request,
                                                             CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<DeleteFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 

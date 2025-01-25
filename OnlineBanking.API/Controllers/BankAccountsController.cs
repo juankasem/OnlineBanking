@@ -93,12 +93,12 @@ public class BankAccountsController : BaseApiController
         return Ok(result.Payload);
     }
 
-    [HttpGet(ApiRoutes.BankAccounts.AccountTransactions)]
+    [HttpGet(ApiRoutes.BankAccounts.GetByIBAN)]
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetBankAccountByIBANWithTransactions([FromRoute] string iban,
-                                                                          [FromQuery] CashTransactionParams accountTransactionParams,                                                
-                                                                          CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetBankAccountByIBAN([FromRoute] string iban,
+                                                          [FromQuery] CashTransactionParams accountTransactionParams,                                                
+                                                           CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest()
         {
