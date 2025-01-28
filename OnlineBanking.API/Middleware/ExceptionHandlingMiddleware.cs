@@ -1,47 +1,27 @@
-using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 using OnlineBanking.API.Common;
-using OnlineBanking.Application.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OnlineBanking.API.Middleware;
 
-public class ExceptionHandlingMiddleware
+public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
-    private readonly ILogger _logger;
-    private readonly RequestDelegate _next;
-    
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
-    {
-        _logger = logger;
-        _next = next;
-    }
+    private readonly ILogger<GlobalExceptionHandler> _logger = logger;
 
-    public async Task InvokeAsync(HttpContext httpContext)
+    public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _next(httpContext);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Something went wrong: {ex}");
-            await HandleExceptionAsync(httpContext, ex);
-        }
-    }
-
-    private static async ValueTask<bool> HandleExceptionAsync(HttpContext context, Exception ex)
-    {
-        var statusPhrase = "";
+        _logger.LogError(
+            exception, "Exception occurred: {Message}", exception.Message);
+        string statusPhrase;
         context.Response.ContentType = "application/json";
 
-        if (ex is FluentValidation.ValidationException fluentException)
+        if (exception is FluentValidation.ValidationException)
         {
-            context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
             statusPhrase = "Validation error(s)";
         }
         else
         {
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             statusPhrase = "Internal Server Error";
         }
 
@@ -51,10 +31,10 @@ public class ExceptionHandlingMiddleware
             StatusPhrase = statusPhrase,
         };
 
-        errorResponse.Errors.Add(ex.Message);
+        errorResponse.Errors.Add(exception.Message);
 
-        await context.Response.WriteAsJsonAsync(errorResponse);
+        await context.Response.WriteAsJsonAsync(errorResponse, cancellationToken);
 
-        return true;
+        return true;    
     }
 }

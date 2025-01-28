@@ -52,8 +52,7 @@ public static class IdentityServiceRegistration
             {
                 policy.Requirements.Add(new IsAccountOwnerRequirement());
             });
-        }
-        );
+        });
         services.AddTransient<IAuthorizationHandler, IsAccountOwnerRequirementHandler>();
 
         return services;

@@ -75,14 +75,14 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
                 return result;
             }
-
+             
             //Update sender's & Recipient's account
             var updatedFromBalance = senderAccount.Balance - (amountToTransfer + fees);
             var updatedToBalance = recipientAccount.Balance + amountToTransfer;
 
             var cashTransaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
             await _uow.CashTransactions.AddAsync(cashTransaction);
-
+            
             //Create transfer transaction 
             bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id, amountToTransfer);
 
@@ -104,7 +104,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                 await _uow.SaveAsync();
             }
         
-            return result;
+            return result; 
         }
         catch (CashTransactionNotValidException e)
         {

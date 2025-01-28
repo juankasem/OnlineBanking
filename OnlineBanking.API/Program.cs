@@ -30,13 +30,16 @@ builder.Services.ConfigureApplicationServices();
 builder.Services.ConfigureInfrastructureServices();
 builder.Services.ConfigurePersistenceServices(configuration);
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
     app.UseSwaggerDocumentation();
 
-app.UseMiddleware<ExceptionHandlingMiddleware>(); 
+app.UseExceptionHandler(); 
 
 app.UseHttpsRedirection();
 
