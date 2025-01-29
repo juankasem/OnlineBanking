@@ -32,7 +32,9 @@ public static class IdentityServiceRegistration
             IssuerSigningKey = key,
             ValidIssuer = configuration["Jwt:Issuer"],
             ValidateIssuer = false,
-            ValidateAudience = false
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero
         };
 
         services.AddAuthentication(options =>

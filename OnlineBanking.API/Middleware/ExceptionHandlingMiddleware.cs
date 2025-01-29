@@ -10,14 +10,16 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
     public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
     {
         _logger.LogError(
-            exception, "Exception occurred: {Message}", exception.Message);
+            "Error Message: {exceptionMessage}, Time of occurrence {time}",
+            exception.Message, DateTime.UtcNow);
+
         string statusPhrase;
         context.Response.ContentType = "application/json";
 
         if (exception is FluentValidation.ValidationException)
         {
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            statusPhrase = "Validation error(s)";
+            statusPhrase = exception.GetType().Name;
         }
         else
         {

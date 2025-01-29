@@ -31,7 +31,7 @@ public class TokenService : ITokenService
 
         var tokenHandler = new JwtSecurityTokenHandler();
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var token = tokenHandler.CreateJwtSecurityToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(token);
     }
@@ -53,7 +53,7 @@ public class TokenService : ITokenService
             ValidateIssuer = false,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])),
-            ValidateLifetime = false
+            ValidateLifetime = true
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
