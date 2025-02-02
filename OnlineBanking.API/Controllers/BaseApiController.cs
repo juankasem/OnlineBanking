@@ -37,8 +37,7 @@ public class BaseApiController : ControllerBase
             return NotFound(apiError);
         }
 
-        if (errors.Any(e => e.Code == ErrorCode.InSufficintFunds ||
-                            e.Code == ErrorCode.CreateCashTransactionNotAuthorized))
+        if (errors.Any(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized))
         {
             var error = errors.FirstOrDefault(er =>  er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
 

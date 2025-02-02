@@ -10,16 +10,21 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
+using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
 public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
+    private readonly IBankAccountService _bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor;
-    public MakeWithdrawalCommandHandler(IUnitOfWork uow, IAppUserAccessor appUserAccessor)
+    public MakeWithdrawalCommandHandler(IUnitOfWork uow, 
+                                        IBankAccountService bankAccountService, 
+                                        IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
+        _bankAccountService = bankAccountService;
         _appUserAccessor = appUserAccessor;
     }
 
@@ -69,9 +74,15 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
 
             await _uow.CashTransactions.AddAsync(cashTransaction);
 
-            bankAccount.AddTransaction(AccountTransaction.Create(bankAccount.Id, cashTransaction.Id));
-            
-            bankAccount.UpdateBalance(amountToWithdraw, OperationType.Subtract);
+            bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal);
+
+            if (!createdTransaction)
+            {
+                result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+
+                return result;
+            }
+
             _uow.BankAccounts.Update(bankAccount);
 
             if (await _uow.CompleteDbTransactionAsync() >= 1)
@@ -103,7 +114,7 @@ public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalComman
         var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), 
-                                      ct.Amount.Value, ct.Amount.CurrencyId, ct.Fees.Value, 
+                                      ct.Amount.Value, ct.Amount.CurrencyId, 0,
                                       ct.Description, updatedBalance, 0,
                                       ct.PaymentType, transactionDate, sender, "Unknown");
     }

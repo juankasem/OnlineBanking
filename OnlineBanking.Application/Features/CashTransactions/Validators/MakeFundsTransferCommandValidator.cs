@@ -21,5 +21,7 @@ public class MakeFundsTransferCommandValidator : AbstractValidator<MakeFundsTran
         RuleFor(b => b.To)
                     .NotNull().WithMessage("{PropertyName} is required")
                     .NotEmpty().WithMessage("{PropertyName} is required");
+
+        RuleFor(c => c.BaseCashTransaction.Fees).SetValidator(new MoneyDtoValidator());
     }
 }

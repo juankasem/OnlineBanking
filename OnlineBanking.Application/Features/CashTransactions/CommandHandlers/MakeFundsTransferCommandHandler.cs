@@ -20,7 +20,9 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
     private readonly IAppUserAccessor _appUserAccessor;
 
 
-    public MakeFundsTransferCommandHandler(IUnitOfWork uow, IBankAccountService bankAccountService,  IAppUserAccessor appUserAccessor)
+    public MakeFundsTransferCommandHandler(IUnitOfWork uow, 
+                                           IBankAccountService bankAccountService,  
+                                           IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
         _bankAccountService = bankAccountService;

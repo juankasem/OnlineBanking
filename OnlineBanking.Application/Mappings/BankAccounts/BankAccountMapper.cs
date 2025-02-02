@@ -9,6 +9,7 @@ using OnlineBanking.Application.Models.DebitCard;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
+using System.Collections.ObjectModel;
 
 namespace OnlineBanking.Application.Mappings.BankAccounts;
 
@@ -55,7 +56,7 @@ public class BankAccountMapper : IBankAccountMapper
                                                     decimal minimumAllowedBalance, decimal debt ) =>
         new (balance, allowedBalanceToUse, minimumAllowedBalance, debt);
 
-    private IReadOnlyList<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<Customer> customers)
+    private ReadOnlyCollection<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<Customer> customers)
     {
         var bankAccountOwners = new List<AccountOwnerDto>();
 
@@ -72,7 +73,7 @@ public class BankAccountMapper : IBankAccountMapper
         return bankAccountOwners.AsReadOnly();
     }
 
-    private IReadOnlyList<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> cashTransactions, CurrencyDto currency)
+    private ReadOnlyCollection<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> cashTransactions, CurrencyDto currency)
     {
         var accountTransactions = new List<AccountTransactionDto>();
 
@@ -81,13 +82,14 @@ public class BankAccountMapper : IBankAccountMapper
 
         foreach (var ct in cashTransactions)
         {
-            var accountTransaction = new AccountTransactionDto(Enum.GetName(typeof(Core.Domain.Enums.CashTransactionType), ct.Type),
-                                                                Enum.GetName(typeof(Core.Domain.Enums.BankAssetType), ct.InitiatedBy),
-                                                                CreateMoney(ct.Amount, currency), CreateMoney(ct.Fees, currency),
+            var accountTransaction = new AccountTransactionDto(Enum.GetName(ct.Type),
+                                                                Enum.GetName(ct.InitiatedBy),
+                                                                CreateMoney(ct.Amount, currency), 
+                                                                CreateMoney(ct.Fees, currency),
                                                                 ct.Description,
-                                                                Enum.GetName(typeof(Core.Domain.Enums.PaymentType), ct.PaymentType),
+                                                                Enum.GetName(ct.PaymentType),
                                                                 ct.TransactionDate,
-                                                                Enum.GetName(typeof(Core.Domain.Enums.CashTransactionStatus), ct.Status),
+                                                                Enum.GetName(ct.Status),
                                                                 ct.From, ct.To, ct.Sender, ct.Recipient);
             accountTransactions.Add(accountTransaction);
         }
@@ -96,7 +98,7 @@ public class BankAccountMapper : IBankAccountMapper
     }
         
 
-    private IReadOnlyList<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(IReadOnlyList<FastTransaction> fastTransactions, CurrencyDto currency)
+    private ReadOnlyCollection<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(IReadOnlyList<FastTransaction> fastTransactions, CurrencyDto currency)
     {
         var accountFastTransactions = new List<AccountFastTransactionDto>();
 
@@ -114,18 +116,18 @@ public class BankAccountMapper : IBankAccountMapper
         return accountFastTransactions.AsReadOnly();
     }
 
-    private IReadOnlyList<CreditCardDto> MapToAccountCreditCardsDTO(IReadOnlyList<CreditCard> creditCards, CurrencyDto currency)
+    private static ReadOnlyCollection<CreditCardDto> MapToAccountCreditCardsDTO(IReadOnlyList<CreditCard> creditCards, CurrencyDto currency)
     {
         var accountCreditCards = new List<CreditCardDto>();
 
-        return accountCreditCards;
+        return accountCreditCards.AsReadOnly();
     }
 
-    private IReadOnlyList<DebitCardDto> MapToAccountDebitCardsDTO(IReadOnlyList<DebitCard> debitCards, CurrencyDto currency)
+    private static ReadOnlyCollection<DebitCardDto> MapToAccountDebitCardsDTO(IReadOnlyList<DebitCard> debitCards, CurrencyDto currency)
     {
         var accountDebitCards = new List<DebitCardDto>();
 
-        return accountDebitCards;
+        return accountDebitCards.AsReadOnly();
     }
 
     private Money CreateMoney(decimal amount, CurrencyDto currency) =>

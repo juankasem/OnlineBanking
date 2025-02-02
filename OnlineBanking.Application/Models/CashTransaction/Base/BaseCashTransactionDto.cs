@@ -13,12 +13,7 @@ public class BaseCashTransactionDto
     public PaymentType PaymentType { get; set; }
     public string TransactionDate { get; set; }
 
-    public class MoneyDto
-    {
-        public decimal Value { get; set; }
-        public int CurrencyId { get; set; }
-    }
-
+  
     public BaseCashTransactionDto(string iBAN, CashTransactionType type, BankAssetType initiatedBy,
                                   MoneyDto amount, MoneyDto fees, string description, 
                                   PaymentType paymentType, string transactionDate)
@@ -32,4 +27,11 @@ public class BaseCashTransactionDto
         PaymentType = paymentType;
         TransactionDate = transactionDate;
     }
+
+}
+
+public class MoneyDto(decimal value, int currencyId)
+{
+    public decimal Value { get; set; } = value;
+    public int CurrencyId { get; set; } = currencyId;
 }

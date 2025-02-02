@@ -10,16 +10,21 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
+using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
 public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
+    private readonly IBankAccountService _bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor;
-    public MakeDepositCommandHandler(IUnitOfWork uow, IAppUserAccessor appUserAccessor)
+    public MakeDepositCommandHandler(IUnitOfWork uow, 
+                                     IBankAccountService bankAccountService, 
+                                     IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
+        _bankAccountService = bankAccountService;
         _appUserAccessor = appUserAccessor;
     }
 
@@ -62,9 +67,14 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
 
             await _uow.CashTransactions.AddAsync(cashTransaction);
 
-            bankAccount.AddTransaction(AccountTransaction.Create(bankAccount.Id, cashTransaction.Id));
+            bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction.Id, amountToDeposit, CashTransactionType.Deposit);
 
-            bankAccount.UpdateBalance(amountToDeposit, OperationType.Add);
+            if (!createdTransaction)
+            {
+                result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+
+                return result;
+            }
 
             if (await _uow.CompleteDbTransactionAsync() >= 1)
             {
@@ -97,7 +107,7 @@ public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, Api
         return CashTransaction.Create(ct.Type, ct.InitiatedBy, 
                                         GetInitiatorCode(ct.InitiatedBy),
                                         request.To, ct.Amount.Value, ct.Amount.CurrencyId, 
-                                        ct.Fees.Value, ct.Description, 0, updatedBalance,
+                                        0, ct.Description, 0, updatedBalance,
                                         ct.PaymentType, transactionDate, "Unknown", recipient);
     }
 

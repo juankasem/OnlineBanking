@@ -16,20 +16,21 @@ where TRequest : IRequest<TResponse>
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
-    ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(next);
 
-    if (_validators.Any())
-    {
-        var validationResult = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(request, cancellationToken)));
-
-        var errors = validationResult.SelectMany(r => r.Errors).Where(f => f != null).ToList();
-
-
-        if (errors.Any())
+        if (_validators.Any())
         {
-            throw new ValidationException(errors);
+            var validationResult = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync(request, cancellationToken)));
+
+            var errors = validationResult.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+
+
+            if (errors.Count != 0)
+            {
+                throw new ValidationException(errors);
+            }
         }
-    }
+
         return await next();
     }
 }
