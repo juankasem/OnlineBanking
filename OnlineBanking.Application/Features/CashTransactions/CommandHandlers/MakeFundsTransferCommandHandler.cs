@@ -13,21 +13,13 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
-public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
+public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
+                                    IBankAccountService bankAccountService,
+                                    IAppUserAccessor appUserAccessor) : IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IBankAccountService _bankAccountService;
-    private readonly IAppUserAccessor _appUserAccessor;
-
-
-    public MakeFundsTransferCommandHandler(IUnitOfWork uow, 
-                                           IBankAccountService bankAccountService,  
-                                           IAppUserAccessor appUserAccessor)
-    {
-        _uow = uow;
-        _bankAccountService = bankAccountService;
-        _appUserAccessor = appUserAccessor;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
 
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
@@ -77,14 +69,14 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
 
                 return result;
             }
-             
+
             //Update sender's & Recipient's account
             var updatedFromBalance = senderAccount.Balance - (amountToTransfer + fees);
             var updatedToBalance = recipientAccount.Balance + amountToTransfer;
 
             var cashTransaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
             await _uow.CashTransactions.AddAsync(cashTransaction);
-            
+
             //Create transfer transaction 
             bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id, amountToTransfer);
 
@@ -106,7 +98,7 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
                 await _uow.SaveAsync();
             }
         
-            return result; 
+            return result;
         }
         catch (CashTransactionNotValidException e)
         {
@@ -127,9 +119,9 @@ public class MakeFundsTransferCommandHandler : IRequestHandler<MakeFundsTransfer
         var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy,
-                                      request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
-                                      ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
-                                      ct.PaymentType, transactionDate, request.Sender, request.Recipient);
+                                    request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
+                                    ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
+                                    ct.PaymentType, transactionDate, request.Sender, request.Recipient);
     }
     #endregion
 }

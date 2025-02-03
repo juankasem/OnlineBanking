@@ -14,19 +14,13 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
-public class MakeWithdrawalCommandHandler : IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
+public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
+                                    IBankAccountService bankAccountService,
+                                    IAppUserAccessor appUserAccessor) : IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IBankAccountService _bankAccountService;
-    private readonly IAppUserAccessor _appUserAccessor;
-    public MakeWithdrawalCommandHandler(IUnitOfWork uow, 
-                                        IBankAccountService bankAccountService, 
-                                        IAppUserAccessor appUserAccessor)
-    {
-        _uow = uow;
-        _bankAccountService = bankAccountService;
-        _appUserAccessor = appUserAccessor;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
 
     public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {

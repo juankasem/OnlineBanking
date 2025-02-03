@@ -14,19 +14,13 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
-public class MakeDepositCommandHandler : IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
+public class MakeDepositCommandHandler(IUnitOfWork uow,
+                                 IBankAccountService bankAccountService,
+                                 IAppUserAccessor appUserAccessor) : IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IBankAccountService _bankAccountService;
-    private readonly IAppUserAccessor _appUserAccessor;
-    public MakeDepositCommandHandler(IUnitOfWork uow, 
-                                     IBankAccountService bankAccountService, 
-                                     IAppUserAccessor appUserAccessor)
-    {
-        _uow = uow;
-        _bankAccountService = bankAccountService;
-        _appUserAccessor = appUserAccessor;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
 
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
