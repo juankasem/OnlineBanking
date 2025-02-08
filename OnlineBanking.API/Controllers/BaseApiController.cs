@@ -28,7 +28,7 @@ public class BaseApiController : ControllerBase
 
             if (error is not null)
             {
-                apiError.StatusCode = 404;
+                apiError.StatusCode = (int)ErrorCode.NotFound;
                 apiError.StatusPhrase = "Not Found";
                 apiError.Timestamp = DateTime.UtcNow;
                 apiError.Errors.Add(error.Message);
@@ -39,7 +39,7 @@ public class BaseApiController : ControllerBase
 
         if (errors.Any(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized))
         {
-            var error = errors.FirstOrDefault(er =>  er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
+            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
 
             if (error is not null)
             {
@@ -52,15 +52,15 @@ public class BaseApiController : ControllerBase
             return StatusCode(403, apiError);
         }
 
-        if (errors.Any(e => e.Code == ErrorCode.ServerError ||
+        if (errors.Any(e => e.Code == ErrorCode.InternalServerError ||
                             e.Code == ErrorCode.UnknownError))
         {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.ServerError || 
+            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.InternalServerError || 
                         er.Code == ErrorCode.UnknownError);
 
             if (error is not null)
             {
-                apiError.StatusCode = 500;
+                apiError.StatusCode = (int)ErrorCode.InternalServerError;
                 apiError.StatusPhrase = "Internal Server Error";
                 apiError.Timestamp = DateTime.UtcNow;
                 apiError.Errors.Add(error.Message);
@@ -69,7 +69,7 @@ public class BaseApiController : ControllerBase
             return StatusCode(500, apiError);
         }
 
-        apiError.StatusCode = 400;
+        apiError.StatusCode = (int)ErrorCode.BadRequest;
         apiError.StatusPhrase = "Bad Request";
         apiError.Timestamp = DateTime.UtcNow;
         errors.ForEach(er => apiError.Errors.Add(er.Message));

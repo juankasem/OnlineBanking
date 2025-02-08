@@ -1,10 +1,12 @@
 using OnlineBanking.Core.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Base;
 
 public class BaseCashTransactionDto
 {
     public string IBAN { get; set; }
+    [Required]
     public CashTransactionType Type { get; set; }
     public BankAssetType InitiatedBy { get; set; }
     public MoneyDto Amount { get; set; }

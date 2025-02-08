@@ -16,6 +16,6 @@ public class MakeDepositCommandValidator : AbstractValidator<MakeDepositCommand>
 
         RuleFor(b => b.To)
         .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required");
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
     }
 }

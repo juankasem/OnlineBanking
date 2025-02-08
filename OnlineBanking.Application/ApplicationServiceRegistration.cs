@@ -3,7 +3,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineBanking.Application.Common.Behaviors;
-using OnlineBanking.Application.Features.BankAccount.Validators;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Mappings.Branches;
 using OnlineBanking.Application.Mappings.CashTransactions;
@@ -17,10 +16,14 @@ public static class ApplicationServiceRegistration
     public static IServiceCollection ConfigureApplicationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
-        services.AddValidatorsFromAssemblyContaining<CreateBankAccountRequestValidator>(ServiceLifetime.Transient);
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
+
+        services.AddMediatR(cfg => {
+            cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
+        });
+
+        //services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
         services.AddScoped<IBankAccountMapper, BankAccountMapper>();
         services.AddScoped<IBranchMapper, BranchMapper>();

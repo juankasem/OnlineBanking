@@ -11,6 +11,10 @@ public class CreateCashTransactionRequestValidator : AbstractValidator<CreateCas
     {
         _uow = uow;
 
+        RuleFor(c => c.From)
+       .NotNull().WithMessage("{PropertyName} is required")
+       .NotEmpty().WithMessage("{PropertyName} is required");
+
         RuleFor(c => c.BaseCashTransaction).SetValidator(new BaseCashTransactionValidator(_uow));
     }
 }

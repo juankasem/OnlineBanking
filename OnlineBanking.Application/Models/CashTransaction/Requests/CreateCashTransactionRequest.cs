@@ -1,9 +1,9 @@
+using OnlineBanking.Application.Common.Processors;
 using OnlineBanking.Application.Models.CashTransaction.Base;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Requests;
 
-public class CreateCashTransactionRequest 
+public class CreateCashTransactionRequest : IValidatableRequest
 {
     public BaseCashTransactionDto BaseCashTransaction { get; set; }
 

@@ -8,8 +8,8 @@ public class BranchAddressValidator : AbstractValidator<BranchAddressDto>
     public BranchAddressValidator()
     {
         RuleFor(b => b.Name)
-.NotNull().WithMessage("{PropertyName} is required")
-.NotEmpty().WithMessage("{PropertyName} can't be empty");
+            .NotNull().WithMessage("{PropertyName} is required")
+            .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
         RuleFor(b => b.Street)
             .NotNull().WithMessage("{PropertyName} is required")

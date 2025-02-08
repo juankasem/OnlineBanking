@@ -9,7 +9,6 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
-using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
@@ -29,73 +28,64 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
 
-        try
+        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
+
+        if (bankAccount is null)
         {
-            var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
-
-            if (bankAccount is null)
-            {
-                result.AddError(ErrorCode.NotFound,
-                string.Format(BankAccountErrorMessages.NotFound, request.From));
-
-                return result;
-            }
-
-            var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-            if (bankAccount is null)
-            {
-                result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
-
-                return result;
-            }
-
-            var amountToWithdraw = request.BaseCashTransaction.Amount.Value;
-
-            if (bankAccount.AllowedBalanceToUse < amountToWithdraw)
-            {
-                result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-
-                return result;
-            }
-
-            //Update account balance & Add transaction
-            var updatedBalance = bankAccount.Balance - amountToWithdraw;
-            var sender = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
-
-            var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);
-
-            await _uow.CashTransactions.AddAsync(cashTransaction);
-
-            bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal);
-
-            if (!createdTransaction)
-            {
-                result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-
-                return result;
-            }
-
-            _uow.BankAccounts.Update(bankAccount);
-
-            if (await _uow.CompleteDbTransactionAsync() >= 1)
-            {
-                cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
-                _uow.CashTransactions.Update(cashTransaction);
-
-                await _uow.SaveAsync();
-            }
+            result.AddError(ErrorCode.NotFound,
+            string.Format(BankAccountErrorMessages.NotFound, request.From));
 
             return result;
         }
-        catch (CashTransactionNotValidException e)
+
+        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+        if (bankAccount is null)
         {
-            e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
+            result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
+            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
+
+            return result;
         }
-        catch (Exception e)
+
+        var amountToWithdraw = request.BaseCashTransaction.Amount.Value;
+
+        if (bankAccount.AllowedBalanceToUse < amountToWithdraw)
         {
-            result.AddUnknownError(e.Message);
+            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
+
+            return result;
+        }
+
+        //Update account balance & Add transaction
+        var updatedBalance = bankAccount.Balance - amountToWithdraw;
+        var sender = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
+
+        var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);
+
+        await _uow.CashTransactions.AddAsync(cashTransaction);
+
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal);
+
+        if (!createdTransaction)
+        {
+            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+
+            return result;
+        }
+
+        _uow.BankAccounts.Update(bankAccount);
+
+        if (await _uow.CompleteDbTransactionAsync() >= 1)
+        {
+            cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+            _uow.CashTransactions.Update(cashTransaction);
+
+            await _uow.SaveAsync();
+        }
+        else
+        {
+            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
         }
 
         return result;

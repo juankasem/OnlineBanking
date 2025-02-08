@@ -1,11 +1,12 @@
 using FluentValidation;
 using MediatR;
-
+using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Common.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-where TRequest : IRequest<TResponse>
+public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IRequest<TResponse>
+    where TResponse: ApiResult<Unit>, new()
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -14,7 +15,9 @@ where TRequest : IRequest<TResponse>
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, 
+                                        RequestHandlerDelegate<TResponse> next,
+                                        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(next);
 
@@ -24,10 +27,17 @@ where TRequest : IRequest<TResponse>
 
             var errors = validationResult.SelectMany(r => r.Errors).Where(f => f != null).ToList();
 
-
             if (errors.Count != 0)
             {
-                throw new ValidationException(errors);
+                TResponse response = new();
+
+                errors.ForEach(error => response.AddError(Enums.ErrorCode.ValidationError, error.ErrorMessage));
+
+                return await Task.FromResult(response);
+            }
+            else
+            {
+                return await next();
             }
         }
 

@@ -1,12 +1,10 @@
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Exceptions;
 
 namespace OnlineBanking.Application.Features.Customers.CommandHandlers;
 
@@ -23,28 +21,15 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     public async Task<ApiResult<Unit>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
+    
+        var address = _mapper.Map<Address>(request.Address);
 
-        try
-        {
-            var address = _mapper.Map<Address>(request.Address);
-
-            var customer = CreateCustomer(request);
-            customer.SetAddress(address);
+        var customer = CreateCustomer(request);
+        customer.SetAddress(address);
   
-            _uow.Customers.Add(customer);
-            await _uow.SaveAsync();
-
-            return result;
-        }
-        catch (CustomerNotValidException e)
-        {
-            e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
-        }
-        catch (Exception e)
-        {
-            result.AddUnknownError(e.Message);
-        }
-
+        _uow.Customers.Add(customer);
+        await _uow.SaveAsync();   
+      
         return result;
     }
 

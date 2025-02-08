@@ -7,7 +7,6 @@ using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Exceptions;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
 
@@ -25,50 +24,37 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
     {
         var result = new ApiResult<Unit>();
 
-        try
+        var bankAccount = CreateBankAccount(request);
+
+        if (request.CustomerNos.Any())
         {
-            var bankAccount = CreateBankAccount(request);
+            var accountOwners = new List<Customer>();
 
-            if (request.CustomerNos.Any())
+            foreach (var customerNo in request.CustomerNos)
             {
-                var accountOwners = new List<Customer>();
-
-                foreach (var customerNo in request.CustomerNos)
+                var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
+                if (customer is null)
                 {
-                    var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
-                    if (customer is null)
-                    {
-                        result.AddError(ErrorCode.NotFound,
-                        string.Format(CustomerErrorMessages.NotFound, "Id", customer.Id));
+                    result.AddError(ErrorCode.NotFound,
+                    string.Format(CustomerErrorMessages.NotFound, "Id", customer.Id));
 
-                        return result;
-                    }
-                    accountOwners.Add(customer);
+                    return result;
                 }
-
-                foreach (var accountOwner in accountOwners)
-                {
-                    var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
-
-                    bankAccount.AddOwnerToBankAccount(bankAccountOwner);
-                }
+                accountOwners.Add(customer);
             }
 
-            _uow.BankAccounts.Add(bankAccount);
+            foreach (var accountOwner in accountOwners)
+            {
+                var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
 
-            await _uow.SaveAsync();
-
-            return result;
-        }
-        catch (BankAccountNotValidException e)
-        {
-            e.ValidationErrors.ForEach(er => result.AddError(ErrorCode.ValidationError, er));
-        }
-        catch (Exception e)
-        {
-            result.AddUnknownError(e.Message);
+                bankAccount.AddOwnerToBankAccount(bankAccountOwner);
+            }
         }
 
+        _uow.BankAccounts.Add(bankAccount);
+
+        await _uow.SaveAsync();
+        
         return result;
     }
 

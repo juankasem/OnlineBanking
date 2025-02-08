@@ -40,8 +40,7 @@ public class BranchesController : BaseApiController
 
     [HttpGet(ApiRoutes.Branches.IdRoute)]
     [ProducesResponseType(typeof(BranchResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetBranchById([FromRoute] int id,
-                                                                   CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetBranchById([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         var request = new GetBranchByIdRequest() { BranchId = id };
         var result = await _mediator.Send(request, cancellationToken);
@@ -54,8 +53,7 @@ public class BranchesController : BaseApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request,
-                                                  CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBranchCommand>(request);
         var result = await _mediator.Send(command, cancellationToken);

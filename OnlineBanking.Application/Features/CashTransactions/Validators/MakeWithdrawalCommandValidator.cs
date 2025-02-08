@@ -16,6 +16,6 @@ public class MakeWithdrawalCommandValidator : AbstractValidator<MakeWithdrawalCo
 
         RuleFor(b => b.From)
         .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required");
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
     }
 }

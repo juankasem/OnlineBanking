@@ -24,6 +24,7 @@ builder.Services.AddCors(options =>
     );
 });
 
+
 // Add services to the container.
 builder.Services.ConfigureIdentityServices(configuration);
 builder.Services.ConfigureApplicationServices();

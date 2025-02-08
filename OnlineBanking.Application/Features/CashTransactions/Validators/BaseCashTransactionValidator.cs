@@ -14,11 +14,11 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
 
         RuleFor(c => c.Type)
         .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required");
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
         RuleFor(c => c.InitiatedBy)
         .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required");
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
         RuleFor(c => c.Amount)
         .NotNull().WithMessage("{PropertyName} is required")
