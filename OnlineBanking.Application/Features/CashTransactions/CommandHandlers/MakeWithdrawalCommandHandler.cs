@@ -56,16 +56,17 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
             return result;
         }
-
+        
         //Update account balance & Add transaction
         var updatedBalance = bankAccount.Balance - amountToWithdraw;
         var sender = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
+
 
         var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);
 
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal);
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal); 
 
         if (!createdTransaction)
         {
@@ -83,7 +84,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
             await _uow.SaveAsync();
         }
-        else
+        else 
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
         }
@@ -95,12 +96,12 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     private static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, string sender, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
-        var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), 
                                       ct.Amount.Value, ct.Amount.CurrencyId, 0,
                                       ct.Description, updatedBalance, 0,
-                                      ct.PaymentType, transactionDate, sender, "Unknown");
+                                      ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
+                                      sender, "Unknown");
     }
 
 

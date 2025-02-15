@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Filters;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.CashTransactions.Queries;
 using OnlineBanking.Application.Models;
@@ -103,7 +102,6 @@ public class CashTransactionsController : BaseApiController
                 break;
 
             default:
-                result.AddError(ErrorCode.ValidationError, "cash transaction type is required");
                 break;
         }
 

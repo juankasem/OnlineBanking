@@ -12,6 +12,10 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
     {
         _uow = uow;
 
+        RuleFor(c => c.IBAN)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
+
         RuleFor(c => c.Type)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} can't be empty");

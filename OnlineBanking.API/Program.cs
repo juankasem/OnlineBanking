@@ -40,7 +40,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
     app.UseSwaggerDocumentation();
 
-app.UseExceptionHandler(); 
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

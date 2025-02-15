@@ -86,13 +86,13 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     private static CashTransaction CreateCashTransaction(MakeDepositCommand request, string recipient, decimal updatedBalance)
     {
         var ct = request.BaseCashTransaction;
-        var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy, 
                                         GetInitiatorCode(ct.InitiatedBy),
                                         request.To, ct.Amount.Value, ct.Amount.CurrencyId, 
                                         0, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, transactionDate, "Unknown", recipient);
+                                        ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
+                                        "Unknown", recipient);
     }
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)

@@ -8,7 +8,6 @@ using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Enums;
-using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
@@ -108,12 +107,12 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     private static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, decimal updatedFromBalance, decimal updatedToBalance)
     {
         var ct = request.BaseCashTransaction;
-        var transactionDate = DateTimeHelper.ConvertToDate(ct.TransactionDate);
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy,
                                     request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
                                     ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
-                                    ct.PaymentType, transactionDate, request.Sender, request.Recipient);
+                                    ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
+                                    request.Sender, request.Recipient);
     }
     #endregion
 }
