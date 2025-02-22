@@ -121,31 +121,84 @@ public class AuthController : BaseApiController
     {
         _logger.LogInformation($"Registration attempt for {request.Email}");
 
+        var errorResponse = new ErrorResponse();
+        string logMessage;
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        if (await _userManager.FindByEmailAsync(request.Email) is not null)
+        {
+            logMessage = "Failed to create user.";
+            var errorMessage = $"User with email {request.Email} already exists";
+
+            _logger.LogError($"{logMessage} {errorMessage}");
+            errorResponse.Errors.Add(errorMessage);
+
+            return BadRequest(errorResponse);
+        }
+
         var appUser = AppUser.Create(request.Username, request.DisplayName, request.Email, request.PhoneNumber);
 
-        var result = await _userManager.CreateAsync(appUser, request.Password);
+        var createUserResult = await _userManager.CreateAsync(appUser, request.Password);
 
-        if (!result.Succeeded)
-            return BadRequest();
+        if (!createUserResult.Succeeded)
+        {
+            logMessage = "Failed to create user.";
+
+            return BadRequest(HandleErrorResult(createUserResult, logMessage));
+        }
 
         if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+        {
+            var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
-            await _userManager.AddToRoleAsync(appUser, UserRoles.User);
+            if (!createRoleResult.Succeeded)
+            {
+                logMessage = $"Failed to create role {UserRoles.User}.";
 
-        if (request.IsAdmin){
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-
-            await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
+                return BadRequest(HandleErrorResult(createRoleResult, logMessage));
+            }
         }
+
+        var addUserToRoleResult = await _userManager.AddToRoleAsync(appUser, UserRoles.User);
+
+        if (!addUserToRoleResult.Succeeded)
+        {
+            logMessage = $"Failed to add user of user name {appUser.UserName} to role {UserRoles.User}";
+
+            return BadRequest(HandleErrorResult(addUserToRoleResult, logMessage));
+        }
+
+        if (request.IsAdmin)
+        {
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+
+                if (!createRoleResult.Succeeded)
+                {
+                    logMessage = $"Failed to create role {UserRoles.Admin}.";
+
+                    return BadRequest(HandleErrorResult(createRoleResult, logMessage));
+                }
+            }
+
+            addUserToRoleResult = await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
+
+            if (!addUserToRoleResult.Succeeded)
+            {
+                logMessage = $"Failed to add user of user name {appUser.UserName} to role {UserRoles.Admin}";
+
+                return BadRequest(HandleErrorResult(addUserToRoleResult, logMessage));
+            }
+        }
+
+        _logger.LogInformation($"User of user name {appUser.UserName} was successfully created!");
 
         var userResponse = _mapper.Map<AuthResponse>(appUser);
 
-        return StatusCode(201);
+        return StatusCode(201, userResponse);
     }
 
 
@@ -227,4 +280,21 @@ public class AuthController : BaseApiController
 
         return Ok($"Role(s) are assigned Suessfully to username: {appUser.UserName}");
     }
+
+
+    private ErrorResponse HandleErrorResult(IdentityResult result, string logMessage = "")
+    {
+        var errorResponse = new ErrorResponse();
+
+        var errors = result.Errors.Select(e => e.Description).ToList();
+        errors.ForEach(er => errorResponse.Errors.Add(er));
+
+        _logger.LogError(
+          $"{logMessage}. Errors: {string.Join(", ", errors)}"
+      );
+
+        return errorResponse;
+    }
 }
+
+ 

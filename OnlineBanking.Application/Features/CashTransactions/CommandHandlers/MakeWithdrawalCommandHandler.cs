@@ -25,8 +25,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     {
         var result = new ApiResult<Unit>();
 
-        var userName = _appUserAccessor.GetUsername();
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
+        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
 
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
 
@@ -40,7 +39,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
         var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
 
-        if (bankAccount is null)
+        if (bankAccountOwner is null)
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
             string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
@@ -58,8 +57,8 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         }
         
         //Update account balance & Add transaction
-        var updatedBalance = bankAccount.Balance - amountToWithdraw;
-        var sender = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
+        var updatedBalance = bankAccount.Balance - amountToWithdraw; 
+        var sender = $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}";
 
 
         var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);

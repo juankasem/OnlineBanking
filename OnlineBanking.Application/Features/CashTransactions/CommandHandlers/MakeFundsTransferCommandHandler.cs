@@ -24,9 +24,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     {
         var result = new ApiResult<Unit>();
 
-        var userName = _appUserAccessor.GetUsername();
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
-
+        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
       
         var senderAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
 
@@ -43,7 +41,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (senderAccountOwner is null)
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.From));
+            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
 
             return result;
         }
@@ -59,7 +57,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         }
 
         var amountToTransfer = request.BaseCashTransaction.Amount.Value;
-        var fees = request.BaseCashTransaction.Fees.Value;
+        var fees = amountToTransfer * 0.025M;
 
         if (senderAccount.AllowedBalanceToUse < amountToTransfer)
         {
