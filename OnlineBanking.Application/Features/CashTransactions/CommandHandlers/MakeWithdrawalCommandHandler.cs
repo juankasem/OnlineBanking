@@ -42,7 +42,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         if (bankAccountOwner is null)
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
+            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
 
             return result;
         }

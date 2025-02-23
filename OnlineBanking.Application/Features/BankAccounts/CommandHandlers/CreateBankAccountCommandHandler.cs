@@ -2,31 +2,39 @@ using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
+using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
 
 public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccountCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
-    public CreateBankAccountCommandHandler(IUnitOfWork uow, IMapper mapper)
+    public CreateBankAccountCommandHandler(IUnitOfWork uow)
     {
         _uow = uow;
-        _mapper = mapper;
     }
 
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
 
+        if (await _uow.BankAccounts.ExistsAsync(request.AccountNo))
+        {
+            result.AddError(ErrorCode.CustomerAlreadyExists,
+            string.Format(BankAccountErrorMessages.AlreadyExists, request.AccountNo));
+
+            return result;
+        }
+
         var bankAccount = CreateBankAccount(request);
 
-        if (request.CustomerNos.Any())
+        if (request.CustomerNos.Count > 0)
         {
             var accountOwners = new List<Customer>();
 
@@ -41,18 +49,13 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
                     return result;
                 }
                 accountOwners.Add(customer);
-            }
 
-            foreach (var accountOwner in accountOwners)
-            {
-                var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
-
+                var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, customer.Id);
                 bankAccount.AddOwnerToBankAccount(bankAccountOwner);
             }
         }
 
-        _uow.BankAccounts.Add(bankAccount);
-
+        await _uow.BankAccounts.AddAsync(bankAccount);
         await _uow.SaveAsync();
         
         return result;

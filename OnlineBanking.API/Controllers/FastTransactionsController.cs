@@ -30,9 +30,7 @@ public class FastTransactionsController : BaseApiController
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-
-    public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request,
-                                                           CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request, CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 

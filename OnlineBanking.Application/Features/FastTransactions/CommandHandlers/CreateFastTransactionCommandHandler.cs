@@ -1,4 +1,4 @@
-using AutoMapper;
+
 using MediatR;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -8,6 +8,7 @@ using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Domain.Services.BankAccount;
 
 
 namespace OnlineBanking.Application.Features.FastTransactions.CommandHandlers;
@@ -16,13 +17,15 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
 {
 
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
+    private readonly IBankAccountService _bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor;
 
-    public CreateFastTransactionCommandHandler(IUnitOfWork uow, IMapper mapper, IAppUserAccessor appUserAccessor)
+    public CreateFastTransactionCommandHandler(IUnitOfWork uow, 
+                                               IBankAccountService bankAccountService, 
+                                               IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
-        _mapper = mapper;
+        _bankAccountService = bankAccountService;
         _appUserAccessor = appUserAccessor;
     }
 
@@ -56,7 +59,7 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
         if (!bankAccount.BankAccountOwners.Any(b => b.Customer.AppUserId == loggedInAppUser.Id))
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-            string.Format(FastTransactionErrorMessages.UnAuthorizedOperation, request.RecipientIBAN));
+            string.Format(FastTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
 
             return result;
         }
@@ -65,7 +68,14 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
         await _uow.FastTransactions.AddAsync(fastTransaction);
 
         //Add fast transaction to sender's account
-        bankAccount.AddFastTransaction(fastTransaction);
+        var createdFastTransaction = _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
+
+        if (!createdFastTransaction)
+        {
+            result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.UnknownError);
+
+            return result;
+        }
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

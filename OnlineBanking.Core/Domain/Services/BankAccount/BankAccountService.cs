@@ -3,6 +3,7 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
+using OnlineBanking.Core.Models;
 
 namespace OnlineBanking.Core.Domain.Services.BankAccount;
 
@@ -72,6 +73,11 @@ public class BankAccountService : IBankAccountService
     public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction)
     {
         bool createdFastTransaction = false;
+
+        if (!Guid.TryParse(fastTransaction.Id.ToString(), out Guid fastTransactionId) || fastTransaction.Amount <= 0)
+        {
+            return createdFastTransaction;
+        }
 
         bankAccount.AddFastTransaction(fastTransaction);
 

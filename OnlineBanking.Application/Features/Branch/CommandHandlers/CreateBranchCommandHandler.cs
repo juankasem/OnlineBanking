@@ -28,7 +28,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
         var branch = CreateBranch(request);
         branch.SetAddress(address);
 
-        _uow.Branches.Add(branch);
+        await _uow.Branches.AddAsync(branch);
         await _uow.SaveAsync();
 
         return result;

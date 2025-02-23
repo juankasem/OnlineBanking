@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
@@ -7,6 +8,7 @@ using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
 using OnlineBanking.Core.Helpers;
 using OnlineBanking.Core.Helpers.Params;
+using StackExchange.Redis;
 
 
 namespace OnlineBanking.API.Controllers;
@@ -50,7 +52,9 @@ public class BranchesController : BaseApiController
         return Ok(result.Payload);
     }
 
+
     [HttpPost]
+    [Authorize(Roles = UserRoles.Admin)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, CancellationToken cancellationToken = default)
