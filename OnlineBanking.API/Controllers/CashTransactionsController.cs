@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OnlineBanking.API.Common;
 using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Filters;
@@ -36,7 +37,7 @@ public class CashTransactionsController : BaseApiController
 
         var cashTransactions = result.Payload.Data;
 
-        if (cashTransactions.Any())
+        if (cashTransactions.Count > 0)
         {
             Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
                                          result.Payload.TotalCount, result.Payload.TotalPages);
@@ -48,7 +49,7 @@ public class CashTransactionsController : BaseApiController
     // GET api/v1/cash-transactions/TR12345678 
     [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute] string iban,
                                                                [FromQuery] CashTransactionParams cashTransactionParams,
                                                                CancellationToken cancellationToken = default)
@@ -65,7 +66,7 @@ public class CashTransactionsController : BaseApiController
 
         var accountTransactions = result.Payload.Data;
 
-        if (accountTransactions.Any())
+        if (accountTransactions.Count > 0)
         {
             Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
                                          result.Payload.TotalCount, result.Payload.TotalPages);
@@ -77,7 +78,7 @@ public class CashTransactionsController : BaseApiController
     // POST api/v1/cash-transactions
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCashTransaction([FromRoute] string iban,
                                                            [FromBody] CreateCashTransactionRequest request,
                                                            CancellationToken cancellationToken = default)

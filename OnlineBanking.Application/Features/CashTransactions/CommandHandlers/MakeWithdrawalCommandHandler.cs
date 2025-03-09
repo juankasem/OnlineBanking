@@ -65,7 +65,8 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, amountToWithdraw, CashTransactionType.Withdrawal); 
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, 
+                                                                            amountToWithdraw, CashTransactionType.Withdrawal); 
 
         if (!createdTransaction)
         {

@@ -3,7 +3,6 @@ using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
-using OnlineBanking.Core.Models;
 
 namespace OnlineBanking.Core.Domain.Services.BankAccount;
 
@@ -13,7 +12,7 @@ public class BankAccountService : IBankAccountService
                                       Aggregates.BankAccountAggregate.BankAccount recipientAccount,
                                       Guid cashTransactionId,
                                       decimal amount, 
-                                      CashTransactionType cashTransactionType = CashTransactionType.Transfer)
+                                      CashTransactionType cashTransactionType)
     { 
         var createdTransaction = false;
 

@@ -1,9 +1,11 @@
 
 using MediatR;
+using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
+using OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
 using OnlineBanking.Application.Models;
@@ -13,24 +15,22 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.FastTransactions.CommandHandlers;
 
-public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTransactionCommand, ApiResult<Unit>>
+public class CreateFastTransactionCommandHandler(IUnitOfWork uow,
+                                                IBankAccountService bankAccountService,
+                                                IAppUserAccessor appUserAccessor,
+                                                ILogger<CreateFastTransactionCommandHandler> logger) : 
+                                                IRequestHandler<CreateFastTransactionCommand, ApiResult<Unit>>
 {
 
-    private readonly IUnitOfWork _uow;
-    private readonly IBankAccountService _bankAccountService;
-    private readonly IAppUserAccessor _appUserAccessor;
-
-    public CreateFastTransactionCommandHandler(IUnitOfWork uow, 
-                                               IBankAccountService bankAccountService, 
-                                               IAppUserAccessor appUserAccessor)
-    {
-        _uow = uow;
-        _bankAccountService = bankAccountService;
-        _appUserAccessor = appUserAccessor;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<CreateFastTransactionCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Start creating fast transaction for {request.IBAN}");
+
         var result = new ApiResult<Unit>();
 
         var userName = _appUserAccessor.GetUsername();
@@ -82,10 +82,15 @@ public class CreateFastTransactionCommandHandler : IRequestHandler<CreateFastTra
             _uow.BankAccounts.Update(bankAccount);
 
             await _uow.SaveAsync();
+
+            _logger.LogInformation($"Fast transaction of Id {fastTransaction.Id} of amount " +
+                $"{fastTransaction.Amount}{fastTransaction.BankAccount.Currency.Symbol} for bank account IBAN {fastTransaction.RecipientIBAN} with name " +
+                $"{fastTransaction.RecipientName} is successfully created!");
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.UnknownError);
+            _logger.LogError($"Ceate fast transaction failed...Please try again.");
         }
 
         return result;

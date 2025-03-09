@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -14,15 +15,20 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
 public class MakeDepositCommandHandler(IUnitOfWork uow,
-                                 IBankAccountService bankAccountService,
-                                 IAppUserAccessor appUserAccessor) : IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
+                                        IBankAccountService bankAccountService,
+                                        IAppUserAccessor appUserAccessor,
+                                        ILogger<MakeDepositCommandHandler> logger) : 
+                                  IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Start creating deposit to {request.To}");
+
         var result = new ApiResult<Unit>();
 
         var userName = _appUserAccessor.GetUsername();
@@ -73,10 +79,13 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
             _uow.BankAccounts.Update(bankAccount);
 
             await _uow.SaveAsync();
+
+            _logger.LogInformation($"Deposit transaction of Id {cashTransaction.Id} of amount {amountToDeposit} is created");
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            _logger.LogError($"Deposit transactyion failed");
         }
 
         return result;

@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
@@ -13,15 +14,20 @@ using OnlineBanking.Core.Domain.Services.BankAccount;
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
 public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
-                                    IBankAccountService bankAccountService,
-                                    IAppUserAccessor appUserAccessor) : IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
+                                             IBankAccountService bankAccountService,
+                                             IAppUserAccessor appUserAccessor,
+                                             ILogger<MakeFundsTransferCommandHandler> logger) : 
+                                             IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<MakeFundsTransferCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Start creating transfer from {request.From} to {request.To}");
+
         var result = new ApiResult<Unit>();
 
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
@@ -74,7 +80,8 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
         //Create transfer transaction 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id, amountToTransfer);
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id, 
+                                                                            amountToTransfer, CashTransactionType.Transfer);
 
         if (!createdTransaction)
         {
@@ -92,11 +99,14 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
             _uow.CashTransactions.Update(cashTransaction);
                 
             await _uow.SaveAsync();
+
+            _logger.LogInformation($"Transfer transaction of Id {cashTransaction.Id} of amount {amountToTransfer} is successfully created!");
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-        }        
+            _logger.LogError($"Deposit transaction failed...Please try again.");
+        }
 
         return result;
     }
