@@ -101,7 +101,7 @@ public class CashTransactionsController : BaseApiController
                 var makeFundsTransferCommand = _mapper.Map<MakeFundsTransferCommand>(request);
                 result = await _mediator.Send(makeFundsTransferCommand, cancellationToken);
                 break;
-
+            
             default:
                 break;
         }

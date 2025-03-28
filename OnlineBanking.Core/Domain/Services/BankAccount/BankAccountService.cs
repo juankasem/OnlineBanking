@@ -11,7 +11,8 @@ public class BankAccountService : IBankAccountService
     public bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount, 
                                       Aggregates.BankAccountAggregate.BankAccount recipientAccount,
                                       Guid cashTransactionId,
-                                      decimal amount, 
+                                      decimal amount,
+                                      decimal fees,
                                       CashTransactionType cashTransactionType)
     { 
         var createdTransaction = false;
@@ -30,10 +31,9 @@ public class BankAccountService : IBankAccountService
                     senderAccount.AddTransaction(AccountTransaction.Create(senderAccount.Id, cashTransactionId));
                     recipientAccount.AddTransaction(AccountTransaction.Create(recipientAccount.Id, cashTransactionId));
 
-                    senderAccount.UpdateBalance(amount, OperationType.Subtract);
+                    senderAccount.UpdateBalance(amount + fees, OperationType.Subtract);
                     recipientAccount.UpdateBalance(amount, OperationType.Add);
                 }
-    
                 break;
 
             case CashTransactionType.Deposit:

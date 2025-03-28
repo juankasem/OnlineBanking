@@ -1,13 +1,12 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Services.BankAccount;
 
@@ -29,14 +28,13 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         _logger.LogInformation($"Start creating transfer from {request.From} to {request.To}");
 
         var result = new ApiResult<Unit>();
-
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
       
         var senderAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
 
         if (senderAccount is null)
         {
-            result.AddError(ErrorCode.NotFound,
+            result.AddError(ErrorCode.BadRequest,
             string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.From));
 
             return result;
@@ -56,7 +54,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         if (recipientAccount is null)
         {
-            result.AddError(ErrorCode.NotFound,
+            result.AddError(ErrorCode.BadRequest,
             string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.To));
 
             return result;
@@ -64,8 +62,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         var amountToTransfer = request.BaseCashTransaction.Amount.Value;
         var fees = amountToTransfer * 0.025M;
+        var amountWithFees = amountToTransfer + fees;
 
-        if (senderAccount.AllowedBalanceToUse < amountToTransfer)
+        if (senderAccount.AllowedBalanceToUse < amountWithFees)
         {
             result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
 
@@ -73,16 +72,15 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         }
 
         //Update sender's & Recipient's account
-        var updatedFromBalance = senderAccount.Balance - (amountToTransfer + fees);
+        var updatedFromBalance = senderAccount.Balance - amountWithFees;
         var updatedToBalance = recipientAccount.Balance + amountToTransfer;
 
-        var cashTransaction = CreateCashTransaction(request, updatedFromBalance, updatedToBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, updatedFromBalance, updatedToBalance, fees);
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
         //Create transfer transaction 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id, 
-                                                                            amountToTransfer, CashTransactionType.Transfer);
-
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction.Id,
+                                                                            amountToTransfer, fees, CashTransactionType.Transfer);
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
@@ -110,17 +108,4 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         return result;
     }
-
-    #region Private helper methods
-    private static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, decimal updatedFromBalance, decimal updatedToBalance)
-    {
-        var ct = request.BaseCashTransaction;
-
-        return CashTransaction.Create(ct.Type, ct.InitiatedBy,
-                                    request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
-                                    ct.Fees.Value, ct.Description, updatedFromBalance, updatedToBalance,
-                                    ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
-                                    request.Sender, request.Recipient);
-    }
-    #endregion
 }

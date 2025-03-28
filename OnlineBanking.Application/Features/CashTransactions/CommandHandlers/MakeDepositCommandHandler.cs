@@ -1,14 +1,12 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Services.BankAccount;
 
@@ -38,8 +36,8 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
 
         if (bankAccount is null)
         {
-            result.AddError(ErrorCode.NotFound,
-            string.Format(BankAccountErrorMessages.NotFound, request.To));
+            result.AddError(ErrorCode.BadRequest,
+            string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.To));
 
             return result;
         }
@@ -60,12 +58,12 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         var updatedBalance = bankAccount.Balance + amountToDeposit;
         var recipient = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
 
-        var cashTransaction = CreateCashTransaction(request, recipient, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
 
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction.Id, amountToDeposit, CashTransactionType.Deposit);
-
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction.Id, 
+                                                                            amountToDeposit, 0, CashTransactionType.Deposit);
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
@@ -90,26 +88,4 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
 
         return result;
     }
-
-    #region Private methods
-    private static CashTransaction CreateCashTransaction(MakeDepositCommand request, string recipient, decimal updatedBalance)
-    {
-        var ct = request.BaseCashTransaction;
-
-        return CashTransaction.Create(ct.Type, ct.InitiatedBy, 
-                                        GetInitiatorCode(ct.InitiatedBy),
-                                        request.To, ct.Amount.Value, ct.Amount.CurrencyId, 
-                                        0, ct.Description, 0, updatedBalance,
-                                        ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
-                                        "Unknown", recipient);
-    }
-
-    private static string GetInitiatorCode(BankAssetType initiatedBy)
-    {
-        return initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
-                                    initiatedBy == BankAssetType.Branch ? InitiatorCode.Branch :
-                                    initiatedBy == BankAssetType.POS ?
-                                    InitiatorCode.POS : InitiatorCode.Unknown;
-    }
-    #endregion
 }

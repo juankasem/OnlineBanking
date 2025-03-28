@@ -1,6 +1,4 @@
 
-
-
 namespace OnlineBanking.Core.Domain.Exceptions;
 
 public class NotValidException : Exception

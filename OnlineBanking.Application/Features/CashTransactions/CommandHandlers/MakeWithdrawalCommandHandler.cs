@@ -1,28 +1,32 @@
 using MediatR;
-using OnlineBanking.Application.Common.Helpers;
+using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
-public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
-                                    IBankAccountService bankAccountService,
-                                    IAppUserAccessor appUserAccessor) : IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
+    public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
+                                                IBankAccountService bankAccountService,
+                                                IAppUserAccessor appUserAccessor,
+                                                ILogger<MakeWithdrawalCommandHandler> logger) : 
+                                                IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<MakeWithdrawalCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"Start creating withdrawal from {request.From}");
+
         var result = new ApiResult<Unit>();
 
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
@@ -31,8 +35,8 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
         if (bankAccount is null)
         {
-            result.AddError(ErrorCode.NotFound,
-            string.Format(BankAccountErrorMessages.NotFound, request.From));
+            result.AddError(ErrorCode.BadRequest,
+            string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.From));
 
             return result;
         }
@@ -60,14 +64,12 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         var updatedBalance = bankAccount.Balance - amountToWithdraw; 
         var sender = $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}";
 
-
-        var cashTransaction = CreateCashTransaction(request, sender, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, sender, updatedBalance);
 
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
         bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, 
-                                                                            amountToWithdraw, CashTransactionType.Withdrawal); 
-
+                                                                            amountToWithdraw, 0, CashTransactionType.Withdrawal); 
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
@@ -83,34 +85,15 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
             _uow.CashTransactions.Update(cashTransaction);
 
             await _uow.SaveAsync();
+
+            _logger.LogInformation($"Withdrawal transaction of Id {cashTransaction.Id} of amount {amountToWithdraw} is created");
         }
         else 
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            _logger.LogError($"Withdrawal transaction failed...Please try again.");
         }
 
         return result;
     }
-
-    #region Private methods
-    private static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, string sender, decimal updatedBalance)
-    {
-        var ct = request.BaseCashTransaction;
-
-        return CashTransaction.Create(ct.Type, ct.InitiatedBy, request.From, GetInitiatorCode(ct.InitiatedBy), 
-                                      ct.Amount.Value, ct.Amount.CurrencyId, 0,
-                                      ct.Description, updatedBalance, 0,
-                                      ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate), 
-                                      sender, "Unknown");
-    }
-
-
-    private static string GetInitiatorCode(BankAssetType initiatedBy)
-    {
-        return initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
-                                    initiatedBy == BankAssetType.Branch ? InitiatorCode.Branch :
-                                    initiatedBy == BankAssetType.POS ?
-                                    InitiatorCode.POS : InitiatorCode.Unknown;
-    }
-    #endregion
 }

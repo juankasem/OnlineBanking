@@ -11,6 +11,7 @@ public interface IBankAccountService
                                Aggregates.BankAccountAggregate.BankAccount recipientAccount, 
                                Guid cashTransactionId, 
                                decimal amount,
+                               decimal fees,
                                CashTransactionType cashTransactionType);
 
     bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction);
