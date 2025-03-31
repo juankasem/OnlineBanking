@@ -4,12 +4,10 @@ using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Queries;
+using OnlineBanking.Application.Helpers;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
-using OnlineBanking.Core.Helpers;
-using OnlineBanking.Core.Helpers.Params;
-using StackExchange.Redis;
-
 
 namespace OnlineBanking.API.Controllers;
 

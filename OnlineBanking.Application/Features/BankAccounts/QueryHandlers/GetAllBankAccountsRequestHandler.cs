@@ -1,10 +1,11 @@
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount;
-using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.BankAccount.QueryHandlers;
 
@@ -26,13 +27,9 @@ public class GetAllBankAccountsRequestHandler : IRequestHandler<GetAllBankAccoun
         var (bankAccounts, totalCount) = await _uow.BankAccounts.GetAllBankAccountsAsync(bankAccountParams);
 
         var mappedBankAccounts = bankAccounts.Select(bankAccount => _bankAccountMapper.MapToDtoModel(bankAccount))
-                                             .ToList()
-                                             .AsReadOnly();
+                                             .ToList().AsReadOnly();
 
-        result.Payload = PagedList<BankAccountDto>.Create(mappedBankAccounts, 
-                                                          totalCount,
-                                                          bankAccountParams.PageNumber, 
-                                                          bankAccountParams.PageSize);
+        result.Payload = mappedBankAccounts.ToPagedList(totalCount, bankAccountParams.PageNumber, bankAccountParams.PageSize);
 
         return result;
     }

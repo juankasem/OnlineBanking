@@ -1,6 +1,6 @@
 
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Contracts.Persistence;
 

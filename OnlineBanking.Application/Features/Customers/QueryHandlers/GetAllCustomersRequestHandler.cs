@@ -1,10 +1,11 @@
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.Customers.Queries;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Customer.Responses;
-using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.Customers.QueryHandlers;
 
@@ -28,7 +29,7 @@ public class GetAllCustomersRequestHandler : IRequestHandler<GetAllCustomersRequ
 
         var mappedCustomers = _mapper.Map<IReadOnlyList<CustomerResponse>>(customers);
 
-        result.Payload = PagedList<CustomerResponse>.Create(mappedCustomers, totalCount, customerParams.PageNumber, customerParams.PageSize); 
+        result.Payload = mappedCustomers.ToPagedList(totalCount, customerParams.PageNumber, customerParams.PageSize); 
 
         return result;   
     }

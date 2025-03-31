@@ -1,4 +1,4 @@
-namespace OnlineBanking.Core.Helpers.Params;
+namespace OnlineBanking.Application.Helpers.Params;
 
 public class BankAccountParams : PaginationParams
 {

@@ -1,7 +1,7 @@
 using MediatR;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
-using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Queries;
 

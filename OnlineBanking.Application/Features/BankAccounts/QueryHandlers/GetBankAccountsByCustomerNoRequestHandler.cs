@@ -1,28 +1,26 @@
-using AutoMapper;
+
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
 using OnlineBanking.Application.Features.Customers;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount.Responses;
-using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.BankAccounts.QueryHandlers;
 
 public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBankAccountsByCustomerNoRequest, ApiResult<PagedList<BankAccountResponse>>>
 {
     private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
     private readonly IBankAccountMapper _bankAccountMapper;
 
     public GetBankAccountsByCustomerNoRequestHandler(IUnitOfWork uow,
-                                                    IMapper mapper,
                                                     IBankAccountMapper bankAccountMapper)
     {
         _uow = uow;
-        _mapper = mapper;
         _bankAccountMapper = bankAccountMapper;
     }
 
@@ -39,6 +37,7 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         }
         
         var bankAccountParams = request.BankAccountParams;
+        var accountTransactionsParams = request.AccountTransactionsParams;
         var customerBankAccounts = new List<BankAccountResponse>();
 
         var (bankAccounts, totalCount) = await _uow.BankAccounts.GetBankAccountsByCustomerNoAsync(request.CustomerNo, bankAccountParams);
@@ -46,17 +45,16 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
         foreach (var bankAccount in bankAccounts)
         {
             var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
-            var (cashTransactions, transactionsCount)  = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
-            
+            var (cashTransactions, transactionsCount) = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, accountTransactionsParams);
+
+            var cashTransactionsPagedList = cashTransactions.ToPagedList(transactionsCount, accountTransactionsParams.PageNumber, accountTransactionsParams.PageSize);
+
             var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactions);
 
             customerBankAccounts.Add(customerBankAccount);
         }
 
-        result.Payload = PagedList<BankAccountResponse>.Create(customerBankAccounts, 
-                                                               totalCount, 
-                                                               bankAccountParams.PageNumber, 
-                                                               bankAccountParams.PageSize);
+        result.Payload = customerBankAccounts.ToPagedList(customerBankAccounts.Count, bankAccountParams.PageNumber, bankAccountParams.PageSize);
 
         return result;
     }

@@ -4,11 +4,11 @@ using OnlineBanking.API.Extensions;
 using OnlineBanking.API.Filters;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Features.Customers.Queries;
+using OnlineBanking.Application.Helpers;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.Customer.Responses;
-using OnlineBanking.Core.Helpers;
-using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.API.Controllers;
 

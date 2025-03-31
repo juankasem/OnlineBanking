@@ -34,7 +34,8 @@ public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAc
         }
 
         var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
-        var (cashTransactions, totalCount) = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+        var (cashTransactions, totalCount) = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
+
 
         result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactions);
 

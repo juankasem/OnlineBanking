@@ -2,14 +2,16 @@ using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.FastTransactions.Queries;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.FastTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.FastTransactions.QueryHandlers;
 
-public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTransactionsByIBANRequest, ApiResult<IReadOnlyList<FastTransactionResponse>>>
+public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTransactionsByIBANRequest, ApiResult<PagedList<FastTransactionResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -21,9 +23,9 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
     }
 
 
-    public async Task<ApiResult<IReadOnlyList<FastTransactionResponse>>> Handle(GetFastTransactionsByIBANRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<FastTransactionResponse>>> Handle(GetFastTransactionsByIBANRequest request, CancellationToken cancellationToken)
     {
-        var result = new ApiResult<IReadOnlyList<FastTransactionResponse>>();
+        var result = new ApiResult<PagedList<FastTransactionResponse>>();
 
         if (!await _uow.BankAccounts.ExistsAsync(request.IBAN))
         {
@@ -33,16 +35,20 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
             return result;
         }
 
-        var accountFastTransactions = await _uow.FastTransactions.GetByIBANAsync(request.IBAN);
+        var fastTransactionParams = request.FastTransactionParams;
 
-        if (!accountFastTransactions.Any())
+        var (fastTransactions, totalCount) = await _uow.FastTransactions.GetByIBANAsync(request.IBAN, fastTransactionParams);
+
+        if (!fastTransactions.Any())
         {
             return result;
         }
 
-        result.Payload = accountFastTransactions.Select(aft => _mapper.Map<FastTransactionResponse>(aft))
-                                                .ToList()
-                                                .AsReadOnly();
+        var mappedFastTransactions = fastTransactions.Select(ft => _mapper.Map<FastTransactionResponse>(ft))
+                                                        .ToList()
+                                                        .AsReadOnly();
+
+        result.Payload = mappedFastTransactions.ToPagedList(totalCount, fastTransactionParams.PageNumber, fastTransactionParams.PageSize);
 
         return result;
     }

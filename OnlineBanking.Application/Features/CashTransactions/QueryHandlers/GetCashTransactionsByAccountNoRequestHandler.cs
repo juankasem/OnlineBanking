@@ -1,12 +1,13 @@
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Queries;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
-using OnlineBanking.Core.Helpers;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
 
@@ -43,8 +44,10 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
                                                            .ToList().AsReadOnly();
 
-        result.Payload = PagedList<CashTransactionResponse>.Create(mappedAccountTransactions, totalCount,
-                                                                   cashTransactionParams.PageNumber, cashTransactionParams.PageSize);
+        result.Payload = mappedAccountTransactions.ToPagedList(totalCount, 
+                                                               cashTransactionParams.PageNumber, 
+                                                               cashTransactionParams.PageSize, 
+                                                               cancellationToken);
         return result;
     }
 }

@@ -1,6 +1,6 @@
 
 
-namespace OnlineBanking.Core.Helpers;
+namespace OnlineBanking.Application.Helpers;
 
 public class PagedList<T> : List<T>
 {

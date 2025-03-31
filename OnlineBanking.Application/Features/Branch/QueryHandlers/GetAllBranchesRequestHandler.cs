@@ -1,12 +1,12 @@
 using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.Branch.Queries;
+using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.Branches;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Branch.Responses;
-using OnlineBanking.Core.Helpers;
-
 
 namespace OnlineBanking.Application.Features.Branch.QueryHandlers;
 
@@ -32,10 +32,8 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
 
         var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(branches);
 
-        result.Payload = PagedList<BranchResponse>.Create(mappedBranches, 
-                                                          totalCount,
-                                                          branchParams.PageNumber,
-                                                          branchParams.PageSize);
+        result.Payload = mappedBranches.ToPagedList(totalCount, branchParams.PageNumber, branchParams.PageSize);
+
         return result;
     }
 }

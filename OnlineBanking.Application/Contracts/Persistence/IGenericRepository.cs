@@ -1,7 +1,7 @@
 
 using System.Linq.Expressions;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Specifications;
-using OnlineBanking.Core.Helpers.Params;
 
 namespace OnlineBanking.Application.Contracts.Persistence
 {

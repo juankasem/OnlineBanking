@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
-using OnlineBanking.Infrastructure.Repositories.Base;
-
 
 namespace OnlineBanking.Infrastructure.Repositories;
 
@@ -16,7 +14,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
 
     public async Task<(IReadOnlyList<BankAccount>, int)> GetAllBankAccountsAsync(BankAccountParams bankAccountParams)
     {
-        var query = _dbContext.BankAccounts
+       var query = _dbContext.BankAccounts
                             .Include(c => c.Currency)
                             .Include(c => c.Branch)
                             .Include(b => b.CreditCards)
@@ -25,14 +23,14 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                             .AsQueryable();
 
         var totalCount = await query.CountAsync();
-        var bankAccounts = await DBHelpers<BankAccount>.ApplyPagination(query, bankAccountParams.PageNumber, bankAccountParams.PageSize);
+        var bankAccounts = await ApplyPagination(query, bankAccountParams.PageNumber, bankAccountParams.PageSize);
 
         return (bankAccounts, totalCount);
     }
 
     public async Task<(IReadOnlyList<BankAccount>, int)> GetBankAccountsByCustomerNoAsync(string customerNo, BankAccountParams bankAccountParams)
     {
-        IQueryable<BankAccount> query = _dbContext.CustomerBankAccounts
+        var query = _dbContext.CustomerBankAccounts
                                 .Where(cba => cba.Customer.CustomerNo == customerNo)
                                 .Include(c => c.Customer)
                                 .Include(cba => cba.BankAccount)
@@ -49,7 +47,7 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
                                 .AsQueryable();
 
         var totalCount = await query.CountAsync();
-        var bankAccounts = await DBHelpers<BankAccount>.ApplyPagination(query, bankAccountParams.PageNumber, bankAccountParams.PageSize);
+        var bankAccounts = await ApplyPagination(query, bankAccountParams.PageNumber, bankAccountParams.PageSize);
 
         return (bankAccounts, totalCount);
     }

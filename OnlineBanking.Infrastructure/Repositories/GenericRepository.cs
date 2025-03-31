@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Persistence;
+using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Specifications;
-using OnlineBanking.Core.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Repositories.Base;
 
@@ -106,6 +106,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
     }
 
-    private async Task<IReadOnlyList<T>> ApplyPagination(IQueryable<T> query, int pageNumber, int pageSize) =>
-         await query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+    public async Task<IReadOnlyList<T>> ApplyPagination(IQueryable<T> query, int pageNumber, int pageSize) =>
+         await query.Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .AsNoTracking()
+                    .ToListAsync();
 }

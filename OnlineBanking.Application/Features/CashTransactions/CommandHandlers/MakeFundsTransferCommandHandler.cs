@@ -60,6 +60,8 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
             return result;
         }
 
+        var recipientAccountOwner = recipientAccount.BankAccountOwners.Select(c => c.Customer).FirstOrDefault();
+
         var amountToTransfer = request.BaseCashTransaction.Amount.Value;
         var fees = amountToTransfer * 0.025M;
         var amountWithFees = amountToTransfer + fees;
@@ -74,8 +76,10 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         //Update sender's & Recipient's account
         var updatedFromBalance = senderAccount.Balance - amountWithFees;
         var updatedToBalance = recipientAccount.Balance + amountToTransfer;
+        var sender = $"{senderAccountOwner.FirstName} {senderAccountOwner.LastName}";
+        var recipient = $"{recipientAccountOwner.FirstName} {recipientAccountOwner.LastName}";
 
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, updatedFromBalance, updatedToBalance, fees);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, sender, recipient, updatedFromBalance, updatedToBalance, fees);
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
         //Create transfer transaction 
@@ -84,7 +88,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-
             return result;
         }
         

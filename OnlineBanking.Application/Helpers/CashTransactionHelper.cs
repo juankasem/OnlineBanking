@@ -19,7 +19,7 @@ internal static class CashTransactionHelper
                                         request.To, ct.Amount.Value, ct.Amount.CurrencyId,
                                         0, ct.Description, 0, updatedBalance,
                                         ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                        "Unknown", recipient);
+                                        null, recipient);
     }
 
     public static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, string sender, decimal updatedBalance)
@@ -30,10 +30,11 @@ internal static class CashTransactionHelper
                                       ct.Amount.Value, ct.Amount.CurrencyId, 0,
                                       ct.Description, updatedBalance, 0,
                                       ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                      sender, "Unknown");
+                                      sender, null);
     }
 
-    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, decimal updatedFromBalance, decimal updatedToBalance, decimal fees)
+    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, string sender, string recipient, 
+                                                        decimal updatedFromBalance, decimal updatedToBalance, decimal fees)
     {
         var ct = request.BaseCashTransaction;
 
@@ -41,9 +42,8 @@ internal static class CashTransactionHelper
                                     request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
                                     fees, ct.Description, updatedFromBalance, updatedToBalance,
                                     ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                    request.Sender, request.Recipient);
+                                    sender, recipient);
     }
-
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)
     {
