@@ -1,7 +1,7 @@
 ﻿
-
 using OnlineBanking.Application.Common.Helpers;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
+using OnlineBanking.Application.Models.CashTransaction;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
@@ -33,16 +33,15 @@ internal static class CashTransactionHelper
                                       sender, null);
     }
 
-    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, string sender, string recipient, 
-                                                        decimal updatedFromBalance, decimal updatedToBalance, decimal fees)
+    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, TransferDto transferDto)
     {
         var ct = request.BaseCashTransaction;
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy,
                                     request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
-                                    fees, ct.Description, updatedFromBalance, updatedToBalance,
+                                    transferDto.Fees, ct.Description, transferDto.SenderBalance, transferDto.RecipientBalance,
                                     ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                    sender, recipient);
+                                    transferDto.SenderFullName, transferDto.RecipientFullName);
     }
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)

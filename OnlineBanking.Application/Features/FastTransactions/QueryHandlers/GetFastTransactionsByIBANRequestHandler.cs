@@ -30,7 +30,7 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
         if (!await _uow.BankAccounts.ExistsAsync(request.IBAN))
         {
             result.AddError(ErrorCode.NotFound,
-            string.Format(BankAccountErrorMessages.NotFound, "No.", request.IBAN));
+            string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.IBAN));
 
             return result;
         }
@@ -45,8 +45,8 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
         }
 
         var mappedFastTransactions = fastTransactions.Select(ft => _mapper.Map<FastTransactionResponse>(ft))
-                                                        .ToList()
-                                                        .AsReadOnly();
+                                                    .ToList()
+                                                    .AsReadOnly();
 
         result.Payload = mappedFastTransactions.ToPagedList(totalCount, fastTransactionParams.PageNumber, fastTransactionParams.PageSize);
 

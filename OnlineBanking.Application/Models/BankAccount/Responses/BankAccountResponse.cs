@@ -8,38 +8,23 @@ using System.Collections.ObjectModel;
 
 namespace OnlineBanking.Application.Models.BankAccount.Responses;
 
-public class BankAccountResponse
+public class BankAccountResponse(string accountNo, string iban, BankAccountType type,
+                            BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency,
+                            ReadOnlyCollection<AccountOwnerDto> accountOwners,
+                            ReadOnlyCollection<AccountTransactionDto> cashTransactions,
+                            ReadOnlyCollection<AccountFastTransactionDto> fastTransactions,
+                            ReadOnlyCollection<CreditCardDto> creditCards,
+                            ReadOnlyCollection<DebitCardDto> debitCards)
 {
-    public string AccountNo { get; private set; }
-    public string IBAN { get; private set; }
-    public BankAccountType Type { get; private set; }
-    public BranchDto Branch { get; set; }
-    public AccountBalanceDto AccountBalance { get; set; }
-    public CurrencyDto Currency { get; set; }
-    public ReadOnlyCollection<AccountOwnerDto> AccountOwners { get; set; } 
-    public ReadOnlyCollection<AccountTransactionDto> CashTransactions { get; set; }
-    public ReadOnlyCollection<AccountFastTransactionDto> FastTransactions { get; set; }
-    public ReadOnlyCollection<CreditCardDto> CreditCards { get; set; } 
-    public ReadOnlyCollection<DebitCardDto> DebitCards { get; set; }
-
-    public BankAccountResponse(string accountNo, string iban, BankAccountType type,
-                                BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency,
-                                ReadOnlyCollection<AccountOwnerDto> accountOwners, 
-                                ReadOnlyCollection<AccountTransactionDto> cashTransactions,
-                                ReadOnlyCollection<AccountFastTransactionDto> fastTransactions,
-                                ReadOnlyCollection<CreditCardDto> creditCards, 
-                                ReadOnlyCollection<DebitCardDto> debitCards)
-    {
-        AccountNo = accountNo;
-        IBAN = iban;
-        Type = type;
-        Branch = branch;
-        AccountBalance = accountBalance;
-        Currency = currency;
-        AccountOwners = accountOwners;
-        CashTransactions = cashTransactions;
-        FastTransactions = fastTransactions;
-        CreditCards = creditCards;
-        DebitCards = debitCards;
-    }
+    public string AccountNo { get; private set; } = accountNo;
+    public string IBAN { get; private set; } = iban;
+    public BankAccountType Type { get; private set; } = type;
+    public BranchDto Branch { get; set; } = branch;
+    public AccountBalanceDto AccountBalance { get; set; } = accountBalance;
+    public CurrencyDto Currency { get; set; } = currency;
+    public ReadOnlyCollection<AccountOwnerDto> AccountOwners { get; set; } = accountOwners;
+    public ReadOnlyCollection<AccountTransactionDto> CashTransactions { get; set; } = cashTransactions;
+    public ReadOnlyCollection<AccountFastTransactionDto> FastTransactions { get; set; } = fastTransactions;
+    public ReadOnlyCollection<CreditCardDto> CreditCards { get; set; } = creditCards;
+    public ReadOnlyCollection<DebitCardDto> DebitCards { get; set; } = debitCards;
 }

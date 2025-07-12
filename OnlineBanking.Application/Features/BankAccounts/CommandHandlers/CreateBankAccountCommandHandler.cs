@@ -1,4 +1,3 @@
-using AutoMapper;
 using MediatR;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
@@ -8,7 +7,6 @@ using OnlineBanking.Application.Features.Customers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.BankAccount.CommandHandlers;
 

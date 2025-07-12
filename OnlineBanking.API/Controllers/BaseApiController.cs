@@ -18,6 +18,13 @@ public class BaseApiController : ControllerBase
     protected IMediator _mediator => _mediatorInstance ??= HttpContext.RequestServices.GetService<IMediator>();
     protected IMapper _mapper => _mapperInstance ??= HttpContext.RequestServices.GetService<IMapper>();
 
+    protected async Task<IActionResult> HandleRequest<TResponse>(IRequest<ApiResult<TResponse>> request, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(request, cancellationToken);
+
+        return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
+    }
+
     protected IActionResult HandleErrorResponse(List<Error> errors)
     {
         var apiError = new ErrorResponse();

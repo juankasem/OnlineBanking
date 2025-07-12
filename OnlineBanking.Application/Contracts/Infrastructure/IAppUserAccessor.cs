@@ -1,8 +1,7 @@
 
-namespace OnlineBanking.Application.Contracts.Infrastructure
+namespace OnlineBanking.Application.Contracts.Infrastructure;
+
+public interface IAppUserAccessor
 {
-    public interface IAppUserAccessor
-    {
-        string GetUsername();
-    }
+    string GetUsername();
 }

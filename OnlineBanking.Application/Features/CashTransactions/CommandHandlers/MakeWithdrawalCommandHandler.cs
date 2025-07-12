@@ -64,12 +64,13 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
         var updatedBalance = bankAccount.Balance - amountToWithdraw; 
         var sender = $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}";
 
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, sender, updatedBalance);
-
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, sender, updatedBalance);        
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction.Id, 
-                                                                            amountToWithdraw, 0, CashTransactionType.Withdrawal); 
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, 
+                                                                            cashTransaction.Id, 
+                                                                            amountToWithdraw, 0, 
+                                                                            CashTransactionType.Withdrawal); 
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);

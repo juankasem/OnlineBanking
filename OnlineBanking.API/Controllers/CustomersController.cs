@@ -46,16 +46,12 @@ public class CustomersController : BaseApiController
     [ValidateGuid("id")]
     public async Task<IActionResult> GetCustomerById([FromRoute] string id, CancellationToken cancellationToken = default)
     {
-        var query = new GetCustomerByIdRequest() 
-        { 
+        var query = new GetCustomerByIdRequest()
+        {
             CustomerId = Guid.Parse(id) 
         };
 
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+        return await HandleRequest(query, cancellationToken);
     }
 
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
@@ -64,11 +60,8 @@ public class CustomersController : BaseApiController
                                                                                     CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(id) };
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+       
+        return await HandleRequest(query, cancellationToken);
     }
 
     [HttpPost]
@@ -77,11 +70,8 @@ public class CustomersController : BaseApiController
                                                     CancellationToken cancellationToken = default)
     {
         var query = _mapper.Map<CreateCustomerCommand>(request);
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        
+        return await HandleRequest(query, cancellationToken);
     }
 
     [HttpDelete(ApiRoutes.Customers.IdRoute)]
@@ -95,10 +85,6 @@ public class CustomersController : BaseApiController
             CustomerId = Guid.Parse(customerId) 
         };
 
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+        return await HandleRequest(query, cancellationToken);
     }
 }

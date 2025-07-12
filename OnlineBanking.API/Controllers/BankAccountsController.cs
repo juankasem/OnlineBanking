@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Extensions;
@@ -8,7 +7,6 @@ using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
 using OnlineBanking.Application.Models.BankAccount.Responses;
@@ -87,11 +85,7 @@ public class BankAccountsController : BaseApiController
             AccountTransactionsParams = accountTransactionsParams
         };
 
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+        return await HandleRequest(query, cancellationToken);
     }
 
     [HttpGet(ApiRoutes.BankAccounts.GetByIBAN)]
@@ -107,11 +101,7 @@ public class BankAccountsController : BaseApiController
             AccountTransactionsParams = accountTransactionParams
         };
 
-        var result = await _mediator.Send(query, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+        return await HandleRequest(query, cancellationToken);
     }
 
     [HttpPost]
@@ -120,11 +110,8 @@ public class BankAccountsController : BaseApiController
     public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountRequest request, CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBankAccountCommand>(request);
-        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpDelete(ApiRoutes.BankAccounts.IdRoute)]
@@ -137,11 +124,8 @@ public class BankAccountsController : BaseApiController
         { 
             BankAccountId = Guid.Parse(id) 
         };
-        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPut(ApiRoutes.BankAccounts.Activate)]
@@ -150,12 +134,12 @@ public class BankAccountsController : BaseApiController
     public async Task<IActionResult> ActivateBankAccount([FromQuery] string id,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new ActivateBankAccountCommand { BankAccountId = Guid.Parse(id) };
-        var result = await _mediator.Send(command, cancellationToken);
+        var command = new ActivateBankAccountCommand 
+        { 
+            BankAccountId = Guid.Parse(id) 
+        };
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPut(ApiRoutes.BankAccounts.Deactivate)]
@@ -168,11 +152,7 @@ public class BankAccountsController : BaseApiController
             BankAccountId = Guid.Parse(id) 
         };
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPost(ApiRoutes.BankAccounts.CashTransaction)]
@@ -182,37 +162,23 @@ public class BankAccountsController : BaseApiController
                                                            [FromBody] CreateCashTransactionRequest request,
                                                            CancellationToken cancellationToken = default)
     {
-        var result = new ApiResult<Unit>();
-
         if (iban != request.BaseCashTransaction.IBAN)
-            result.IsError = true;
-        else
+            return BadRequest("IBAN mismatch between route and request body.");
+
+
+        return request.BaseCashTransaction.Type switch
         {
-            switch (request.BaseCashTransaction.Type)
-            {
-                case CashTransactionType.Deposit:
-                    var makeDepositCommand = _mapper.Map<MakeDepositCommand>(request);
-                    result = await _mediator.Send(makeDepositCommand, cancellationToken);
-                    break;
+            CashTransactionType.Deposit =>
+               await HandleRequest(_mapper.Map<MakeDepositCommand>(request), cancellationToken),
 
-                case CashTransactionType.Withdrawal:
-                    var makeWithdrawalCommand = _mapper.Map<MakeWithdrawalCommand>(request);
-                    result = await _mediator.Send(makeWithdrawalCommand, cancellationToken);
-                    break;
+            CashTransactionType.Withdrawal =>
+               await HandleRequest(_mapper.Map<MakeWithdrawalCommand>(request), cancellationToken),
 
-                case CashTransactionType.Transfer or CashTransactionType.FAST:
-                    var makeFundsTransferCommand = _mapper.Map<MakeFundsTransferCommand>(request);
-                    result = await _mediator.Send(makeFundsTransferCommand, cancellationToken);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+            CashTransactionType.Transfer =>
+               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken);
+            
+             _ => BadRequest("Unsupported transaction type.")
+        };
     }
 
     [HttpPost(ApiRoutes.BankAccounts.FastTransaction)]
@@ -223,11 +189,7 @@ public class BankAccountsController : BaseApiController
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPut(ApiRoutes.BankAccounts.IdRoute)]
@@ -236,10 +198,6 @@ public class BankAccountsController : BaseApiController
     {
         var command = _mapper.Map<AddOwnerToBankAccountCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 }

@@ -34,11 +34,7 @@ public class FastTransactionsController : BaseApiController
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     // PUT api/v1/FastTransactions/1234
@@ -50,11 +46,7 @@ public class FastTransactionsController : BaseApiController
     {
         var command = _mapper.Map<UpdateFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     // DELETE api/v1/FastTransactions/1234
@@ -66,10 +58,6 @@ public class FastTransactionsController : BaseApiController
     {
         var command = _mapper.Map<DeleteFastTransactionCommand>(request);
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 }

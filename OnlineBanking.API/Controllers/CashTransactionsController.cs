@@ -14,6 +14,7 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 using OnlineBanking.Core.Domain.Enums;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace OnlineBanking.API.Controllers;
@@ -84,32 +85,23 @@ public class CashTransactionsController : BaseApiController
                                                            [FromBody] CreateCashTransactionRequest request,
                                                            CancellationToken cancellationToken = default)
     {
-        var result = new ApiResult<Unit>();
+        if (iban != request.BaseCashTransaction.IBAN)
+            return BadRequest("IBAN mismatch between route and request body.");
 
-        switch (request.BaseCashTransaction.Type)
+
+        return request.BaseCashTransaction.Type switch
         {
-            case CashTransactionType.Deposit:
-                var makeDepositCommand = _mapper.Map<MakeDepositCommand>(request);
-                result = await _mediator.Send(makeDepositCommand, cancellationToken);
-                break;
+            CashTransactionType.Deposit =>
+               await HandleRequest(_mapper.Map<MakeDepositCommand>(request), cancellationToken),
 
-            case CashTransactionType.Withdrawal:
-                var makeWithdrawalCommand = _mapper.Map<MakeWithdrawalCommand>(request);
-                result = await _mediator.Send(makeWithdrawalCommand, cancellationToken);
-                break;
+            CashTransactionType.Withdrawal =>
+               await HandleRequest(_mapper.Map<MakeWithdrawalCommand>(request), cancellationToken),
 
-            case CashTransactionType.Transfer :
-                var makeFundsTransferCommand = _mapper.Map<MakeFundsTransferCommand>(request);
-                result = await _mediator.Send(makeFundsTransferCommand, cancellationToken);
-                break;
+            CashTransactionType.Transfer =>
+               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken);
             
-            default:
-                break;
-        }
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+             _ => BadRequest("Unsupported transaction type.")
+        };
     }
 
     // PUT api/v1/cash-transactions/1234
@@ -120,15 +112,11 @@ public class CashTransactionsController : BaseApiController
     {
         var command = new UpdateCashTransactionCommand() 
         { 
-            Id = Guid.Parse(request.Id), 
+            Id = Guid.Parse(request.Id),
             CashTransaction = request.CashTransaction
         };
-        
-        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     // DELETE api/v1/cash-transactions/1234
@@ -141,10 +129,7 @@ public class CashTransactionsController : BaseApiController
         { 
             Id = Guid.Parse(id) 
         };
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        
+        return await HandleRequest(command, cancellationToken);
     }
 }

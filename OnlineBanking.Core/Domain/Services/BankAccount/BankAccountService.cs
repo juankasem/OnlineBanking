@@ -52,7 +52,6 @@ public class BankAccountService : IBankAccountService
                     senderAccount.UpdateBalance(amount, OperationType.Subtract);
                 }
                 break;
-
             default:
                 break;
         }

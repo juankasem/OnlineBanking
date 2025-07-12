@@ -10,11 +10,11 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 public class BankAccount : BaseDomainEntity
 {
-    private readonly List<CustomerBankAccount> _bankAccountOwners = new List<CustomerBankAccount>();
-    private readonly List<AccountTransaction> _accountTransactions = new List<AccountTransaction>();
-    private readonly List<FastTransaction> _fastTransactions = new List<FastTransaction>();
-    private readonly List<CreditCard> _creditCards = new List<CreditCard>();
-    private readonly List<DebitCard> _debitCards = new List<DebitCard>();
+    private readonly List<CustomerBankAccount> _bankAccountOwners = [];
+    private readonly List<AccountTransaction> _accountTransactions = [];
+    private readonly List<FastTransaction> _fastTransactions = [];
+    private readonly List<CreditCard> _creditCards = [];
+    private readonly List<DebitCard> _debitCards = [];
 
     /// <summary>
     /// Account Number

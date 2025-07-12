@@ -42,14 +42,13 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(typeof(BranchResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBranchById([FromRoute] int id, CancellationToken cancellationToken = default)
     {
-        var request = new GetBranchByIdRequest() { BranchId = id };
-        var result = await _mediator.Send(request, cancellationToken);
+        var query = new GetBranchByIdRequest() 
+        { 
+            BranchId = id 
+        };
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok(result.Payload);
+        return await HandleRequest(query, cancellationToken);
     }
-
 
     [HttpPost]
     [Authorize(Roles = UserRoles.Admin)]
@@ -58,44 +57,31 @@ public class BranchesController : BaseApiController
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBranchCommand>(request);
-        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPut(ApiRoutes.Branches.IdRoute)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateBranch([FromRoute] int id,
-                                                  [FromBody] UpdateBranchRequest request,
-                                                  CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateBranch([FromRoute] int id, [FromBody] UpdateBranchRequest request, CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateBranchCommand>(request);
         command.BranchId = id;
 
-        var result = await _mediator.Send(command, cancellationToken);
-
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 
     [HttpDelete(ApiRoutes.Branches.IdRoute)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteBranch([FromRoute] int id,
-                                                  CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DeleteBranch([FromRoute] int id, CancellationToken cancellationToken = default)
     {
         var command = new DeleteBranchCommand()
         {
             BranchId = id
         };
-        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
-
-        return Ok();
+        return await HandleRequest(command, cancellationToken);
     }
 }

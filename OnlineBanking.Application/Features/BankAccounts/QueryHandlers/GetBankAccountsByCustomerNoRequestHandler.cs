@@ -47,15 +47,20 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
             var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
             var (cashTransactions, transactionsCount) = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, accountTransactionsParams);
 
-            var cashTransactionsPagedList = cashTransactions.ToPagedList(transactionsCount, accountTransactionsParams.PageNumber, accountTransactionsParams.PageSize);
+            var cashTransactionsPagedList = cashTransactions.ToPagedList(transactionsCount, 
+                                                                        accountTransactionsParams.PageNumber, 
+                                                                        accountTransactionsParams.PageSize, 
+                                                                        cancellationToken);
 
-            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactions);
+            var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactionsPagedList);
 
             customerBankAccounts.Add(customerBankAccount);
         }
 
-        result.Payload = customerBankAccounts.ToPagedList(customerBankAccounts.Count, bankAccountParams.PageNumber, bankAccountParams.PageSize);
-
+        result.Payload = customerBankAccounts.ToPagedList(customerBankAccounts.Count, 
+                                                          bankAccountParams.PageNumber,
+                                                          bankAccountParams.PageSize, 
+                                                          cancellationToken);
         return result;
     }
 }

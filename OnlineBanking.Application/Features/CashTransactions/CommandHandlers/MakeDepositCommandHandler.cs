@@ -38,7 +38,6 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         {
             result.AddError(ErrorCode.BadRequest,
             string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.To));
-
             return result;
         }
 
@@ -48,7 +47,6 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
             string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, request.BaseCashTransaction.IBAN));
-
             return result;
         }
 
@@ -59,15 +57,15 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         var recipient = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
 
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
-
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction.Id, 
-                                                                            amountToDeposit, 0, CashTransactionType.Deposit);
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, 
+                                                                            cashTransaction.Id, 
+                                                                            amountToDeposit, 0,
+                                                                            CashTransactionType.Deposit);
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-
             return result;
         }
 
