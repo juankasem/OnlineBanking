@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
@@ -25,53 +24,38 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
     public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Start creating withdrawal from {request.From}");
+        _logger.LogInformation("Start creating withdrawal from {from}", request.From);
 
         var result = new ApiResult<Unit>();
+        var bankAccountIBAN = request.BaseCashTransaction.IBAN;
 
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
+        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(bankAccountIBAN);
 
-        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
-
-        if (bankAccount is null)
+        if (!await ValidateBankAccount(bankAccount, bankAccountIBAN, result))
         {
-            result.AddError(ErrorCode.BadRequest,
-            string.Format(BankAccountErrorMessages.NotFound, "IBAN", request.From));
-
-            return result;
-        }
-
-        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-        if (bankAccountOwner is null)
-        {
-            result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
-
             return result;
         }
 
         var amountToWithdraw = request.BaseCashTransaction.Amount.Value;
 
-        if (bankAccount.AllowedBalanceToUse < amountToWithdraw)
+        if (!HasSufficientFunds(bankAccount, amountToWithdraw, result))
         {
-            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-
             return result;
         }
-        
-        //Update account balance & Add transaction
-        var updatedBalance = bankAccount.Balance - amountToWithdraw; 
-        var sender = $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}";
 
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, sender, updatedBalance);        
+        //Update account balance & Add transaction
+        var updatedBalance = bankAccount.Balance - amountToWithdraw;
+        var bankAccountOwner = bankAccount.BankAccountOwners[0]?.Customer;
+        var ownerFullName = $"{bankAccountOwner?.FirstName} {bankAccountOwner?.LastName}";
+
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, ownerFullName, updatedBalance);        
         await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(bankAccount, null, 
+        bool transactionCreated = _bankAccountService.CreateCashTransaction(bankAccount, null, 
                                                                             cashTransaction.Id, 
                                                                             amountToWithdraw, 0, 
                                                                             CashTransactionType.Withdrawal); 
-        if (!createdTransaction)
+        if (!transactionCreated)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
 
@@ -87,7 +71,7 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
             await _uow.SaveAsync();
 
-            _logger.LogInformation($"Withdrawal transaction of Id {cashTransaction.Id} of amount {amountToWithdraw} is created");
+            _logger.LogInformation("Withdrawal transaction of Id {cashTransactionId} of amount {amount} is created", cashTransaction.Id, amountToWithdraw);
         }
         else 
         {
@@ -96,5 +80,41 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
         }
 
         return result;
+    }
+
+    private async Task<bool> ValidateBankAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
+                                          string iban,
+                                          ApiResult<Unit> result)
+    {
+        if (bankAccount is null)
+        {
+            result.AddError(ErrorCode.BadRequest, $"Sender account with IBAN {iban} not found.");
+            return false;
+        }
+
+        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
+
+        var senderAccountOwner = bankAccount.BankAccountOwners
+                                            .FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser?.Id)?.Customer;
+
+        if (senderAccountOwner is null)
+        {
+            result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
+            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool HasSufficientFunds(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount, decimal totalAmount, ApiResult<Unit> result)
+    {
+        if (bankAccount.AllowedBalanceToUse < totalAmount)
+        {
+            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
+            return false;
+        }
+
+        return true;
     }
 }

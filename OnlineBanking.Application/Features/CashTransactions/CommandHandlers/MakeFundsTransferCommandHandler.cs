@@ -3,13 +3,14 @@ using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction;
-using OnlineBanking.Core.Domain.Entities;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Services.BankAccount;
+using System.Reflection;
 
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
@@ -30,18 +31,19 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         _logger.LogInformation("Start creating transfer from {from} to {to}", request.From, request.To);
 
         var result = new ApiResult<Unit>();
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
+        var senderIBAN = request.From;
 
-        var senderAccount = await _uow.BankAccounts.GetByIBANAsync(request.From);
+        var senderAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
-        if (!ValidateSenderAccount(senderAccount, loggedInAppUser, result))
+        if (!await ValidateSenderAccount(senderAccount, senderIBAN, result))
         {
             return result;
         }
 
-        var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(request.To);
+        var recipientIBAN = request.To;
+        var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
 
-        if (!ValidateRecipientAccount(recipientAccount, result))
+        if (!ValidateRecipientAccount(recipientAccount, recipientIBAN, result))
         {
             return result;
         }
@@ -64,8 +66,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         //Create transfer transaction 
         bool transactionCreated = _bankAccountService.CreateCashTransaction(senderAccount, 
                                                                             recipientAccount, 
-                                                                            cashTransaction.Id,
-                                                                            amountToTransfer, fees, 
+                                                                            cashTransaction.Id, 
+                                                                            amountToTransfer, 
+                                                                            fees, 
                                                                             CashTransactionType.Transfer);
         if (!transactionCreated)
         {
@@ -87,6 +90,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         }
         else
         {
+
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
             _logger.LogError("Deposit transaction failed...Please try again.");
         }
@@ -94,16 +98,18 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         return result;
     }
 
-    private static bool ValidateSenderAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount, 
-                                            AppUser loggedInAppUser, 
-                                            ApiResult<Unit> result)
+    private async Task<bool> ValidateSenderAccount(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+        string iban,
+        ApiResult<Unit> result)
         {
         if (senderAccount == null)
         {
-            result.AddError(ErrorCode.BadRequest, "Sender account with IBAN not found.");
-
+            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
             return false;
         }
+
+        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
 
         var senderAccountOwner = senderAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
 
@@ -117,17 +123,24 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         return true;
     }
 
-    private static bool ValidateRecipientAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount, ApiResult<Unit> result)
+    private static bool ValidateRecipientAccount(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
+        string iban,
+        ApiResult<Unit> result)
     {
         if (recipientAccount == null)
         {
-            result.AddError(ErrorCode.BadRequest, "Recipient account not found.");
+            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
             return false;
         }
+
         return true;
     }
 
-    private static bool HasSufficientFunds(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount, decimal totalAmount, ApiResult<Unit> result)
+    private static bool HasSufficientFunds(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount, 
+        decimal totalAmount, 
+        ApiResult<Unit> result)
     {
         if (senderAccount.AllowedBalanceToUse < totalAmount)
         {
@@ -143,8 +156,8 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
                                            decimal amountToTransfer, 
                                            decimal fees)
     {
-        var senderOwner = senderAccount.BankAccountOwners[0].Customer;
-        var recipientOwner = recipientAccount.BankAccountOwners[0].Customer;
+        var senderOwner = senderAccount.BankAccountOwners[0]?.Customer;
+        var recipientOwner = recipientAccount.BankAccountOwners[0]?.Customer;
         var updatedSenderAccount = senderAccount.Balance - (amountToTransfer + fees);
         var updatedRecipientAccount = recipientAccount.Balance + amountToTransfer;
 

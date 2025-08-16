@@ -1,11 +1,10 @@
 
 using OnlineBanking.Application.Enums;
 
-namespace OnlineBanking.Application.Models
+namespace OnlineBanking.Application.Models;
+
+public sealed record Error(ErrorCode Code, string Message)
 {
-    public class Error
-    {
-        public ErrorCode Code { get; set; }
-        public string Message { get; set; }
-    }
+    public static readonly Error None = new(ErrorCode.None, string.Empty);
 }
+   

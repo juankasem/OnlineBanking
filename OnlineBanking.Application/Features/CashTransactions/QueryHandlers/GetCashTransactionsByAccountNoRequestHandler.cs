@@ -42,7 +42,8 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         }
 
         var mappedAccountTransactions = accountTransactions.Select(act => _cashTransactionsMapper.MapToResponseModel(act, request.AccountNoOrIBAN))
-                                                           .ToList().AsReadOnly();
+                                                           .ToList()
+                                                           .AsReadOnly();
 
         result.Payload = mappedAccountTransactions.ToPagedList(totalCount, 
                                                                cashTransactionParams.PageNumber, 

@@ -4,7 +4,7 @@ namespace OnlineBanking.Application.Enums;
 
 public enum ErrorCode
 {
-    NoError = 200,
+    None = 200,
     BadRequest = 400,
     NotFound = 404,
     InternalServerError = 500,

@@ -1,5 +1,13 @@
+﻿
+using OnlineBanking.Application.Enums;
+using OnlineBanking.Application.Models;
 
-namespace OnlineBanking.Application.Features.CashTransactions;
+namespace OnlineBanking.Application.Features.CashTransactions.Errors;
+
+    public static class CashTransactionErrors
+    {
+    public static readonly Error BankAccountNotFound = new (ErrorCode.BadRequest, CashTransactionErrorMessages.NotFound); 
+    }
 
 public class CashTransactionErrorMessages
 {
@@ -9,3 +17,5 @@ public class CashTransactionErrorMessages
     public const string InsufficientFunds = "Sorry! You don't have enough funds to complete transaction";
     public const string UnknownError = "Sorry! Unable to complete transaction";
 }
+
+

@@ -19,11 +19,9 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         var errorResponse = new ErrorResponse();
 
-        if (exception is NotValidException)
+        if (exception is NotValidException validationException)
         {
-            var validationException = exception as NotValidException;
-
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.StatusCode = StatusCodes.Status400BadRequest; 
             statusPhrase = exception.GetType().Name;
 
             validationException.ValidationErrors.ForEach(er => errorResponse.Errors.Add(er));

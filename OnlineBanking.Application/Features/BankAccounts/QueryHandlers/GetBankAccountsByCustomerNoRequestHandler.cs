@@ -55,12 +55,13 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
             var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactionsPagedList);
 
             customerBankAccounts.Add(customerBankAccount);
-        }
+        }   
 
-        result.Payload = customerBankAccounts.ToPagedList(customerBankAccounts.Count, 
-                                                          bankAccountParams.PageNumber,
-                                                          bankAccountParams.PageSize, 
-                                                          cancellationToken);
+        result.Payload = customerBankAccounts.AsReadOnly()
+                                             .ToPagedList(customerBankAccounts.Count, 
+                                                        bankAccountParams.PageNumber,
+                                                        bankAccountParams.PageSize, 
+                                                        cancellationToken);
         return result;
     }
 }
