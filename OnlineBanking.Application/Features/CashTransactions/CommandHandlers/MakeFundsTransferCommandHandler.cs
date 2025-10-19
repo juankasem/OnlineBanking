@@ -10,7 +10,6 @@ using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Services.BankAccount;
-using System.Reflection;
 
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
@@ -35,7 +34,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         var senderAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
-        if (!await ValidateSenderAccount(senderAccount, senderIBAN, result))
+        if (!ValidateBankAccount(senderAccount, senderIBAN, result) || !await ValidateBanakAccountOwner(senderAccount, result))
         {
             return result;
         }
@@ -43,7 +42,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         var recipientIBAN = request.To;
         var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
 
-        if (!ValidateRecipientAccount(recipientAccount, recipientIBAN, result))
+        if (!ValidateBankAccount(recipientAccount, recipientIBAN, result))
         {
             return result;
         }
@@ -90,7 +89,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         }
         else
         {
-
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
             _logger.LogError("Deposit transaction failed...Please try again.");
         }
@@ -98,43 +96,39 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         return result;
     }
 
-    private async Task<bool> ValidateSenderAccount(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+    private static bool ValidateBankAccount(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
         string iban,
         ApiResult<Unit> result)
         {
-        if (senderAccount == null)
+        var success = true;
+
+        if (bankAccount == null)
         {
             result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
-            return false;
+            success = false;
         }
 
+        return success;
+    }
+
+    private async Task<bool> ValidateBanakAccountOwner(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
+        ApiResult<Unit> result)
+    {
+        var success = true;
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
 
-        var senderAccountOwner = senderAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+        var senderAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
 
         if (senderAccountOwner is null)
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
             string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
-            return false;
+            success = false;
         }
 
-        return true;
-    }
-
-    private static bool ValidateRecipientAccount(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
-        string iban,
-        ApiResult<Unit> result)
-    {
-        if (recipientAccount == null)
-        {
-            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
-            return false;
-        }
-
-        return true;
+        return success;
     }
 
     private static bool HasSufficientFunds(

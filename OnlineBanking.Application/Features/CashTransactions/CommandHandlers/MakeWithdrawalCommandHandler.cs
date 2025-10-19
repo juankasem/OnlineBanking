@@ -31,7 +31,7 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(bankAccountIBAN);
 
-        if (!await ValidateBankAccount(bankAccount, bankAccountIBAN, result))
+        if (!ValidateBankAccount(bankAccount, bankAccountIBAN, result) || !await ValidateBanakAccountOwner(bankAccount, result))
         {
             return result;
         }
@@ -82,29 +82,37 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
         return result;
     }
 
-    private async Task<bool> ValidateBankAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
+    private static bool ValidateBankAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
                                           string iban,
                                           ApiResult<Unit> result)
     {
+        var success = true;
         if (bankAccount is null)
         {
             result.AddError(ErrorCode.BadRequest, $"Sender account with IBAN {iban} not found.");
-            return false;
+            success = false;
         }
 
+        return success;
+    }
+
+    private async Task<bool> ValidateBanakAccountOwner(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
+        ApiResult<Unit> result)
+    {
+        var success = true;
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
 
-        var senderAccountOwner = bankAccount.BankAccountOwners
-                                            .FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser?.Id)?.Customer;
+        var senderAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
 
         if (senderAccountOwner is null)
         {
             result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
             string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
-            return false;
+            success = false;
         }
 
-        return true;
+        return success;
     }
 
     private static bool HasSufficientFunds(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount, decimal totalAmount, ApiResult<Unit> result)

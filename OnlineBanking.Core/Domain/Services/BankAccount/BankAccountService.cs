@@ -16,8 +16,7 @@ public class BankAccountService : IBankAccountService
                                       CashTransactionType cashTransactionType)
     { 
         var createdTransaction = false;
-
-        if (!Guid.TryParse(cashTransactionId.ToString(), out Guid parsedCashTransactionId) || amount <= 0)
+        if (!Guid.TryParse(cashTransactionId.ToString(), out _) || amount <= 0)
         {
             return createdTransaction;
         }
@@ -71,8 +70,7 @@ public class BankAccountService : IBankAccountService
     public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction)
     {
         bool createdFastTransaction = false;
-
-        if (!Guid.TryParse(fastTransaction.Id.ToString(), out Guid fastTransactionId) || fastTransaction.Amount <= 0)
+        if (!Guid.TryParse(fastTransaction.Id.ToString(), out _) || fastTransaction.Amount <= 0)
         {
             return createdFastTransaction;
         }

@@ -68,9 +68,9 @@ public class CreateFastTransactionCommandHandler(IUnitOfWork uow,
         await _uow.FastTransactions.AddAsync(fastTransaction);
 
         //Add fast transaction to sender's account
-        var createdFastTransaction = _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
+        var fastTransactionCreated = _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
 
-        if (!createdFastTransaction)
+        if (!fastTransactionCreated)
         {
             result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.UnknownError);
 
