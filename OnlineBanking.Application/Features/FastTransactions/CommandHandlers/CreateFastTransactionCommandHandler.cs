@@ -5,7 +5,6 @@ using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts;
-using OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
 using OnlineBanking.Application.Models;
@@ -65,7 +64,6 @@ public class CreateFastTransactionCommandHandler(IUnitOfWork uow,
         }
 
         var fastTransaction = FastTransaction.Create(bankAccount.Id, request.RecipientIBAN, request.RecipientName, request.Amount);
-        await _uow.FastTransactions.AddAsync(fastTransaction);
 
         //Add fast transaction to sender's account
         var fastTransactionCreated = _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
@@ -79,10 +77,6 @@ public class CreateFastTransactionCommandHandler(IUnitOfWork uow,
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _uow.BankAccounts.Update(bankAccount);
-
-            await _uow.SaveAsync();
-
             _logger.LogInformation($"Fast transaction of Id {fastTransaction.Id} of amount " +
                 $"{fastTransaction.Amount}{fastTransaction.BankAccount.Currency.Symbol} for bank account IBAN {fastTransaction.RecipientIBAN} with name " +
                 $"{fastTransaction.RecipientName} is successfully created!");

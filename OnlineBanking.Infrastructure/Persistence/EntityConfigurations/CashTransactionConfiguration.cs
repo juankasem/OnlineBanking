@@ -8,6 +8,9 @@ public class CashTransactionConfiguration : IEntityTypeConfiguration<CashTransac
 {
     public void Configure(EntityTypeBuilder<CashTransaction> builder)
     {
+        builder.Property(e => e.Id)
+         .ValueGeneratedNever();
+
         builder.Property(ct => ct.Amount)
                .HasPrecision(18, 4);
 

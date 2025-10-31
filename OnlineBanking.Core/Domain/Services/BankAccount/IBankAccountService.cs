@@ -9,12 +9,12 @@ public interface IBankAccountService
 {
     bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount, 
                                Aggregates.BankAccountAggregate.BankAccount recipientAccount, 
-                               Guid cashTransactionId, 
-                               decimal amount,
-                               decimal fees,
-                               CashTransactionType cashTransactionType);
+                               CashTransaction cashTransaction, 
+                               decimal fees = 0);
 
     bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction);
+
+    bool DeleteFastTransation(Guid fastTransactionId, Aggregates.BankAccountAggregate.BankAccount bankAccount);
 
     bool CreateCustomer(Aggregates.BankAccountAggregate.BankAccount bankAccount, Customer customer);
 }

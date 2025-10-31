@@ -1,3 +1,4 @@
+
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 public class AccountTransaction
@@ -7,6 +8,10 @@ public class AccountTransaction
 
     public Guid TransactionId { get; set; }
     public CashTransaction Transaction { get; set; }
+
+    public AccountTransaction()
+    {  
+    }
 
     private AccountTransaction(Guid accountId, Guid transactionId)
     {

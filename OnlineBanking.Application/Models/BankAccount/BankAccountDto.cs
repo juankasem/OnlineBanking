@@ -13,6 +13,10 @@ public class BankAccountDto
     public AccountBalanceDto AccountBalance { get; set; }
     public CurrencyDto Currency { get; set; }
 
+    private BankAccountDto()
+    {
+    }
+
     public BankAccountDto(string accountNo, string iban, BankAccountType type,
                           BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
     {

@@ -1,3 +1,4 @@
+
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -7,7 +8,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 public class CashTransaction : BaseDomainEntity
 {
-    private readonly List<AccountTransaction> _accountTransactions = new List<AccountTransaction>();
+    private readonly List<AccountTransaction> _accountTransactions = [];
 
     /// <summary>
     /// unique reference number
@@ -103,7 +104,7 @@ public class CashTransaction : BaseDomainEntity
     /// </summary>
     public string? DebitCardNo { get; private set; }
 
-    public IReadOnlyList<AccountTransaction> AccountTransactions { get { return _accountTransactions; } }
+    public IReadOnlyList<AccountTransaction> AccountTransactions => _accountTransactions; 
 
     private CashTransaction(Guid id, string referenceNo, CashTransactionType type, BankAssetType initiatedBy,
                             string from, string to, decimal amount, int currencyId, decimal fees, string description,

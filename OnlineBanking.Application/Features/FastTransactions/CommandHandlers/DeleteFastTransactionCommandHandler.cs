@@ -1,28 +1,27 @@
-using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
 using OnlineBanking.Application.Models;
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
+using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.FastTransactions.CommandHandlers;
 
-public class DeleteFastTransactionCommandHandler : IRequestHandler<DeleteFastTransactionCommand, ApiResult<Unit>>
+public class DeleteFastTransactionCommandHandler(IUnitOfWork uow,
+                                                 IBankAccountService bankAccountService,
+                                                 ILogger<DeleteFastTransactionCommandHandler> logger,
+                                                 IAppUserAccessor appUserAccessor) : IRequestHandler<DeleteFastTransactionCommand, ApiResult<Unit>>
 {
 
-    private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
-    private readonly IAppUserAccessor _appUserAccessor;
-
-    public DeleteFastTransactionCommandHandler(IUnitOfWork uow, IMapper mapper, IAppUserAccessor appUserAccessor)
-    {
-        _uow = uow;
-        _mapper = mapper;
-        _appUserAccessor = appUserAccessor;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<DeleteFastTransactionCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(DeleteFastTransactionCommand request, CancellationToken cancellationToken)
     {
@@ -52,11 +51,25 @@ public class DeleteFastTransactionCommandHandler : IRequestHandler<DeleteFastTra
             }
 
             //Delete fast transaction from account
-            bankAccount.DelteFastTransaction(request.Id);
+            var fastTransactionDeleted = _bankAccountService.DeleteFastTransation(request.Id, bankAccount);
+
+            if (!fastTransactionDeleted)
+            {
+                result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.UnknownError);
+
+                return result;
+            }
 
             //Update sender's account
-            _uow.BankAccounts.Update(bankAccount);
-            await _uow.SaveAsync();
+            if (await _uow.CompleteDbTransactionAsync() >= 1)
+            {
+                _logger.LogInformation($"Fast transaction of Id {request.Id} is successfully deleted");
+            }
+            else
+            {
+                result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.UnknownError);
+                _logger.LogError($"Ceate fast transaction failed...Please try again.");
+            }
 
             return result;
         }

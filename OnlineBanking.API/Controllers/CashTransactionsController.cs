@@ -98,7 +98,7 @@ public class CashTransactionsController : BaseApiController
                await HandleRequest(_mapper.Map<MakeWithdrawalCommand>(request), cancellationToken),
 
             CashTransactionType.Transfer =>
-               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken);
+               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
             
              _ => BadRequest("Unsupported transaction type.")
         };

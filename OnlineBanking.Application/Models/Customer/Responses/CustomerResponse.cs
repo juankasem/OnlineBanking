@@ -19,5 +19,5 @@ public class CustomerResponse
     public string TaxNumber { get; private set; }
     public AddressDto Address { get; private set; }
 
-    public List<BankAccountDto> BankAccounts { get; set; }
+    public IReadOnlyList<BankAccountDto> BankAccounts { get; set; }
 }

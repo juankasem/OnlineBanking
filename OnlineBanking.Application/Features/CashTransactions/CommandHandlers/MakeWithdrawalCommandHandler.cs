@@ -48,21 +48,16 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
         var bankAccountOwner = bankAccount.BankAccountOwners[0]?.Customer;
         var ownerFullName = $"{bankAccountOwner?.FirstName} {bankAccountOwner?.LastName}";
 
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, ownerFullName, updatedBalance);        
-        await _uow.CashTransactions.AddAsync(cashTransaction);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, ownerFullName, updatedBalance);
 
-        bool transactionCreated = _bankAccountService.CreateCashTransaction(bankAccount, null, 
-                                                                            cashTransaction.Id, 
-                                                                            amountToWithdraw, 0, 
-                                                                            CashTransactionType.Withdrawal); 
+        bool transactionCreated = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction);
+                                            
         if (!transactionCreated)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
 
             return result;
         }
-
-        _uow.BankAccounts.Update(bankAccount);
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

@@ -60,23 +60,17 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
 
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, transferDto);
-        await _uow.CashTransactions.AddAsync(cashTransaction);
 
         //Create transfer transaction 
         bool transactionCreated = _bankAccountService.CreateCashTransaction(senderAccount, 
                                                                             recipientAccount, 
-                                                                            cashTransaction.Id, 
-                                                                            amountToTransfer, 
-                                                                            fees, 
-                                                                            CashTransactionType.Transfer);
+                                                                            cashTransaction, 
+                                                                            fees);
         if (!transactionCreated)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
             return result;
         }
-        
-        _uow.BankAccounts.Update(senderAccount);
-        _uow.BankAccounts.Update(recipientAccount);
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

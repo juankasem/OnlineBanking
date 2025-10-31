@@ -138,7 +138,16 @@ public class BankAccount : BaseDomainEntity
     public void AddOwnerToBankAccount(CustomerBankAccount customerBankAccount) =>
                                     _bankAccountOwners.Add(customerBankAccount);
 
-    public void AddTransaction(AccountTransaction at) => _accountTransactions.Add(at);
+    public void AddAccountTransaction(CashTransaction cashTransaction)
+    {
+        var accountTransaction = new AccountTransaction()
+        {
+            Account = this,
+            Transaction = cashTransaction
+        };
+
+        _accountTransactions.Add(accountTransaction);
+    }
 
     public void UpdateTransaction(CashTransaction cashTransaction)
     {
@@ -164,7 +173,7 @@ public class BankAccount : BaseDomainEntity
         if (index >= 0) _fastTransactions[index] = ft;
     }
 
-    public void DelteFastTransaction(Guid id)
+    public void DeleteFastTransaction(Guid id)
     {
         var index = _fastTransactions.FindIndex(c => c.Id == id);
 

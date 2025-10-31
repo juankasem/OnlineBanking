@@ -91,6 +91,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     public void Update(T entity)
     {
         _dbContext.Set<T>().Attach(entity);
+
         _dbContext.Entry(entity).State = EntityState.Modified;
     }
 

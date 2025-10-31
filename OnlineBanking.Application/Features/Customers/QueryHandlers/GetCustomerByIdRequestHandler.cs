@@ -38,7 +38,7 @@ public class GetCustomerByIdRequestHandler : IRequestHandler<GetCustomerByIdRequ
        
         var customerResponse = _mapper.Map<CustomerResponse>(customer);
 
-        customerResponse.BankAccounts = _mapper.Map<List<BankAccountDto>>(customerBankAccounts);
+        customerResponse.BankAccounts = _mapper.Map<IReadOnlyList<BankAccountDto>>(customerBankAccounts);
 
         result.Payload = customerResponse;
 

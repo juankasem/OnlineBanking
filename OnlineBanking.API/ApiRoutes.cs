@@ -14,8 +14,9 @@ public static class ApiRoutes
         public const string AccountTransactions = "{iban}/account-transactions";
         public const string Activate = "activate/{iban}";
         public const string Deactivate = "deactivate/{iban}";
-        public const string CashTransaction = "{iban}/cash-transaction";
-        public const string FastTransaction = "{iban}/fast-transaction";
+        public const string CashTransaction = "{iban}/cash-transactions";
+        public const string FastTransaction = "{iban}/fast-transactions";
+        public const string FastTransactionById = "{iban}/fast-transactions/{id}";
     }
 
     public static class CashTransactions
@@ -58,7 +59,7 @@ public static class ApiRoutes
         public const string IdRoute = "{id}";
         public const string GetByIBAN = "iban/{iban}";
         public const string GetByAccountNo = "{accountNo}";
-        public const string DeleteById = "account/{bankAccountId:guid}/fast-transactions/{id:guid}";
+        public const string Delete = "bank-accounts/{bankAccountId:guid}/fast-transactions/{id:guid}";
     }
 
     public static class AppUsers

@@ -10,25 +10,25 @@ public class BankAccountService : IBankAccountService
 {
     public bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount, 
                                       Aggregates.BankAccountAggregate.BankAccount recipientAccount,
-                                      Guid cashTransactionId,
-                                      decimal amount,
-                                      decimal fees,
-                                      CashTransactionType cashTransactionType)
+                                      CashTransaction cashTransaction,
+                                      decimal fees = 0)
     { 
-        var createdTransaction = false;
-        if (!Guid.TryParse(cashTransactionId.ToString(), out _) || amount <= 0)
+        var transactionCreated = false;
+        var amount = cashTransaction.Amount;
+
+        if (!Guid.TryParse(cashTransaction.Id.ToString(), out _) || amount <= 0)
         {
-            return createdTransaction;
+            return transactionCreated;
         }
 
-        switch (cashTransactionType)
+        switch (cashTransaction.Type)
         {
             case CashTransactionType.Transfer or CashTransactionType.FAST:
              
                 if (senderAccount is not null && recipientAccount is not null)
                 {
-                    senderAccount.AddTransaction(AccountTransaction.Create(senderAccount.Id, cashTransactionId));
-                    recipientAccount.AddTransaction(AccountTransaction.Create(recipientAccount.Id, cashTransactionId));
+                    senderAccount.AddAccountTransaction(cashTransaction);
+                    recipientAccount.AddAccountTransaction(cashTransaction);
 
                     senderAccount.UpdateBalance(amount + fees, OperationType.Subtract);
                     recipientAccount.UpdateBalance(amount, OperationType.Add);
@@ -39,7 +39,7 @@ public class BankAccountService : IBankAccountService
 
                 if (recipientAccount is not null)
                 {
-                    recipientAccount.AddTransaction(AccountTransaction.Create(recipientAccount.Id, cashTransactionId));
+                    recipientAccount.AddAccountTransaction(cashTransaction);
                     recipientAccount.UpdateBalance(amount, OperationType.Add);
                 }
                 break;
@@ -47,7 +47,7 @@ public class BankAccountService : IBankAccountService
             case CashTransactionType.Withdrawal:
                 if (senderAccount is not null)
                 {
-                    senderAccount.AddTransaction(AccountTransaction.Create(senderAccount.Id, cashTransactionId));
+                    senderAccount.AddAccountTransaction(cashTransaction);
                     senderAccount.UpdateBalance(amount, OperationType.Subtract);
                 }
                 break;
@@ -55,9 +55,9 @@ public class BankAccountService : IBankAccountService
                 break;
         }
 
-       createdTransaction = true;
+        transactionCreated = true;
 
-        return createdTransaction;
+        return transactionCreated;
     }
 
     public bool CreateCustomer(Aggregates.BankAccountAggregate.BankAccount bankAccount, Customer customer)
@@ -69,16 +69,31 @@ public class BankAccountService : IBankAccountService
 
     public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction)
     {
-        bool createdFastTransaction = false;
+        bool fastTransactionCreated = false;
         if (!Guid.TryParse(fastTransaction.Id.ToString(), out _) || fastTransaction.Amount <= 0)
         {
-            return createdFastTransaction;
+            return fastTransactionCreated;
         }
 
         bankAccount.AddFastTransaction(fastTransaction);
 
-        createdFastTransaction = true;
+        fastTransactionCreated = true;
 
-        return createdFastTransaction;
+        return fastTransactionCreated;
+    }
+
+    public bool DeleteFastTransation(Guid fastTransactionId, Aggregates.BankAccountAggregate.BankAccount bankAccount)
+    {
+        bool fastTransactionDeleted = false;
+        if (!Guid.TryParse(fastTransactionId.ToString(), out _))
+        {
+            return fastTransactionDeleted;
+        }
+
+        bankAccount.DeleteFastTransaction(fastTransactionId);
+
+        fastTransactionDeleted = true;
+
+        return fastTransactionDeleted;
     }
 }

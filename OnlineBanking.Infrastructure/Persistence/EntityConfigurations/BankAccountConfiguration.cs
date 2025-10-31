@@ -19,5 +19,27 @@ public class BankAccountConfiguration : IEntityTypeConfiguration<BankAccount>
 
         builder.Property(ct => ct.Debt)
             .HasPrecision(18, 4);
+
+
+        // Use field access for private collections
+        builder.Metadata
+            .FindNavigation(nameof(BankAccount.BankAccountOwners))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(BankAccount.AccountTransactions))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(BankAccount.FastTransactions))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(BankAccount.CreditCards))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.Metadata
+            .FindNavigation(nameof(BankAccount.DebitCards))!
+            .SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

@@ -57,7 +57,7 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
     [ProducesResponseType(typeof(List<BankAccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCustomerBankAccounts([FromRoute] string id, 
-                                                                                    CancellationToken cancellationToken = default)
+                                                             CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(id) };
        

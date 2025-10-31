@@ -38,7 +38,7 @@ namespace OnlineBanking.Application.Models;
     #region Private methods
     private void HandleError(ErrorCode code, string message)
     {
-        Errors.Add(new Error { Code = code, Message = message });
+        Errors.Add(new Error(code, message));
         IsError = true;
     }
     #endregion

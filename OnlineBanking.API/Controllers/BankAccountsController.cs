@@ -175,7 +175,7 @@ public class BankAccountsController : BaseApiController
                await HandleRequest(_mapper.Map<MakeWithdrawalCommand>(request), cancellationToken),
 
             CashTransactionType.Transfer =>
-               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken);
+               await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
             
              _ => BadRequest("Unsupported transaction type.")
         };
@@ -188,6 +188,23 @@ public class BankAccountsController : BaseApiController
                                                            CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
+
+        return await HandleRequest(command, cancellationToken);
+    }
+
+    // DELETE api/v1/FastTransactions/1234
+    [HttpDelete(ApiRoutes.BankAccounts.FastTransactionById)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteFastTransaction([FromRoute] string iban,
+                                                           [FromRoute] Guid id,
+                                                           CancellationToken cancellationToken = default)
+    {
+        var command = new DeleteFastTransactionCommand()
+        {
+            Id = id,
+            IBAN = iban
+        };
 
         return await HandleRequest(command, cancellationToken);
     }

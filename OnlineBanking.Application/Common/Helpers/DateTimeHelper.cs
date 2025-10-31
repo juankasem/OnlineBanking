@@ -11,7 +11,7 @@ public static class DateTimeHelper
                             "dd/MM/yyyy",
                             CultureInfo.InvariantCulture,
                             DateTimeStyles.None,
-                            out DateTime parsedDate) ? parsedDate : DateTime.Now;
+                            out DateTime parsedDate) ? parsedDate : DateTime.UtcNow;
     }
    
 }

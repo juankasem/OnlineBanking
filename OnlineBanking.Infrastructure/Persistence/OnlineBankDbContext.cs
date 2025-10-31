@@ -35,6 +35,7 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(OnlineBankDbContext).Assembly);
 
+
         modelBuilder.Entity<CustomerBankAccount>().HasKey(cba => new { cba.CustomerId, cba.BankAccountId });
 
         modelBuilder.Entity<CustomerBankAccount>()

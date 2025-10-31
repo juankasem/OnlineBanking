@@ -40,6 +40,6 @@ public class CashTransactionValidator : AbstractValidator<CashTransaction>
         .NotNull().WithMessage("{PropertyName} is required");
 
         RuleFor(c => c.TransactionDate)
-        .GreaterThanOrEqualTo(DateTime.Now.AddMinutes(-60)).WithMessage("{PropertyName} must not be before {ComparisonValue}");
+        .GreaterThanOrEqualTo(DateTime.UtcNow.AddMinutes(-60)).WithMessage("{PropertyName} must not be before {ComparisonValue}");
     }
 }

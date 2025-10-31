@@ -19,7 +19,7 @@ internal static class CashTransactionHelper
                                         request.To, ct.Amount.Value, ct.Amount.CurrencyId,
                                         0, ct.Description, 0, updatedBalance,
                                         ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                        null, recipient);
+                                        "Unknown", recipient);
     }
 
     public static CashTransaction CreateCashTransaction(MakeWithdrawalCommand request, string sender, decimal updatedBalance)
@@ -30,7 +30,7 @@ internal static class CashTransactionHelper
                                       ct.Amount.Value, ct.Amount.CurrencyId, 0,
                                       ct.Description, updatedBalance, 0,
                                       ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                      sender, null);
+                                      sender, "Unknown");
     }
 
     public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, TransferDto transferDto)

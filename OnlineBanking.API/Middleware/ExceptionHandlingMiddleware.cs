@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using OnlineBanking.API.Common;
 using OnlineBanking.Core.Domain.Exceptions;
 
@@ -25,6 +27,12 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
             statusPhrase = exception.GetType().Name;
 
             validationException.ValidationErrors.ForEach(er => errorResponse.Errors.Add(er));
+        }
+        else if (exception is DbUpdateException sqlException)
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            statusPhrase = "Sql Exception";
+            errorResponse.Errors.Add(exception.InnerException.Message);
         }
         else
         {

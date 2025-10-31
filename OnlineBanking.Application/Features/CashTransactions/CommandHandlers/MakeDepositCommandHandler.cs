@@ -1,3 +1,4 @@
+
 using MediatR;
 using Microsoft.Extensions.Logging;
 using OnlineBanking.Application.Contracts.Infrastructure;
@@ -57,12 +58,9 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         var recipient = bankAccountOwner.FirstName + " " + bankAccountOwner.LastName;
 
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
-        await _uow.CashTransactions.AddAsync(cashTransaction);
 
-        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, 
-                                                                            cashTransaction.Id, 
-                                                                            amountToDeposit, 0,
-                                                                            CashTransactionType.Deposit);
+        bool createdTransaction = _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction);
+
         if (!createdTransaction)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
