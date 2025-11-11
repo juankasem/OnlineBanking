@@ -1,3 +1,4 @@
+
 namespace OnlineBanking.API;
 
 public static class ApiRoutes
@@ -10,7 +11,7 @@ public static class ApiRoutes
         public const string IdRoute = "{id}";
         public const string GetByCustomerNo = "customers/{customerNo}";
         public const string GetByIBAN = "iban/{iban}";
-        public const string GetByAccountNo = "{accountNo}";
+        public const string GetByAccountNo = "account-no/{account-no}";
         public const string AccountTransactions = "{iban}/account-transactions";
         public const string Activate = "activate/{iban}";
         public const string Deactivate = "deactivate/{iban}";
@@ -42,7 +43,7 @@ public static class ApiRoutes
         public const string BankAccounts = "{id}/bank-accounts";
     }
 
-    
+
     public static class CreditCards
     {
         public const string All = "all";

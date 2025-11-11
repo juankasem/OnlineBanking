@@ -12,8 +12,8 @@ public class FastTransaction : BaseDomainEntity
     public Guid BankAccountId { get; set; }
     public BankAccount BankAccount { get; set; }
 
-    private FastTransaction(Guid id, Guid bankAccountId, 
-                            string recipientIBAN, string recipientName, 
+    private FastTransaction(Guid id, Guid bankAccountId,
+                            string recipientIBAN, string recipientName,
                             decimal amount)
     {
         Id = id;
@@ -23,16 +23,16 @@ public class FastTransaction : BaseDomainEntity
         Amount = amount;
     }
 
-        public static FastTransaction Create(Guid bankAccountId, string recipientIBAN, string recipientName,
-                                            decimal amount, Guid? id = null)
+    public static FastTransaction Create(Guid bankAccountId, string recipientIBAN, string recipientName,
+                                        decimal amount, Guid? id = null)
     {
         var validator = new FastTransactionValidator();
-        
+
         var objectToValidate = new FastTransaction(
         id ?? Guid.NewGuid(),
         bankAccountId,
         recipientIBAN,
-        recipientName, 
+        recipientName,
         amount
         );
 

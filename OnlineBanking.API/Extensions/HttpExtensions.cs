@@ -1,8 +1,6 @@
 
-using Microsoft.Net.Http.Headers;
-using System.Text.Json;
-
 namespace OnlineBanking.API.Extensions;
+
 public static class HttpExtensions
 {
     public static void AddPaginationHeader(this HttpResponse response, int currentPage, int itemsPerpage, int totalItems, int totalPages)

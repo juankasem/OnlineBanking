@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using OnlineBanking.Application.Models.Address;
 using OnlineBanking.Application.Models.BankAccount;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.Customer.Base;
+
 public class BaseCustomerDto
 {
     public string IdentificationNo { get; private set; }

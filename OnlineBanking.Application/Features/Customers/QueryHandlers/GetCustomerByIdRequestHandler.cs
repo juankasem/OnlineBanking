@@ -1,9 +1,5 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Customers.Queries;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.Customer.Responses;
 
@@ -35,7 +31,7 @@ public class GetCustomerByIdRequestHandler : IRequestHandler<GetCustomerByIdRequ
         }
 
         var customerBankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(customer.Id);
-       
+
         var customerResponse = _mapper.Map<CustomerResponse>(customer);
 
         customerResponse.BankAccounts = _mapper.Map<IReadOnlyList<BankAccountDto>>(customerBankAccounts);

@@ -1,21 +1,11 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Enums;
-using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
-    public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
-                                                IBankAccountService bankAccountService,
-                                                IAppUserAccessor appUserAccessor,
-                                                ILogger<MakeWithdrawalCommandHandler> logger) : 
-                                                IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
+public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
+                                            IBankAccountService bankAccountService,
+                                            IAppUserAccessor appUserAccessor,
+                                            ILogger<MakeWithdrawalCommandHandler> logger) :
+                                            IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
@@ -31,11 +21,12 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(bankAccountIBAN);
 
-        if (!ValidateBankAccount(bankAccount, bankAccountIBAN, result) || !await ValidateBanakAccountOwner(bankAccount, result))
+        if (!ValidateBankAccount(bankAccount, bankAccountIBAN, result))
         {
             return result;
         }
 
+        var bankAccountOwnerName = await GetBankAccountOwner(bankAccount);
         var amountToWithdraw = request.BaseCashTransaction.Amount.Value;
 
         if (!HasSufficientFunds(bankAccount, amountToWithdraw, result))
@@ -45,13 +36,11 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
         //Update account balance & Add transaction
         var updatedBalance = bankAccount.Balance - amountToWithdraw;
-        var bankAccountOwner = bankAccount.BankAccountOwners[0]?.Customer;
-        var ownerFullName = $"{bankAccountOwner?.FirstName} {bankAccountOwner?.LastName}";
 
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, ownerFullName, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, bankAccountOwnerName, updatedBalance);
 
         bool transactionCreated = _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction);
-                                            
+
         if (!transactionCreated)
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
@@ -66,9 +55,11 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
             await _uow.SaveAsync();
 
-            _logger.LogInformation("Withdrawal transaction of Id {cashTransactionId} of amount {amount} is created", cashTransaction.Id, amountToWithdraw);
+            _logger.LogInformation("Withdrawal transaction of Id {cashTransactionId} of amount {amount} is created",
+                                    cashTransaction.Id,
+                                    amountToWithdraw);
         }
-        else 
+        else
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
             _logger.LogError($"Withdrawal transaction failed...Please try again.");
@@ -91,23 +82,20 @@ namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
         return success;
     }
 
-    private async Task<bool> ValidateBanakAccountOwner(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
-        ApiResult<Unit> result)
+    private async Task<string> GetBankAccountOwner(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount)
     {
-        var success = true;
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
 
-        var senderAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-        if (senderAccountOwner is null)
+        if (loggedInAppUser is null)
         {
-            result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-            string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, loggedInAppUser.UserName));
-            success = false;
+            return string.Empty;
         }
 
-        return success;
+        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+        return bankAccountOwner is not null ? bankAccountOwner.FirstName + " " + bankAccountOwner.LastName :
+                string.Empty;
     }
 
     private static bool HasSufficientFunds(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount, decimal totalAmount, ApiResult<Unit> result)

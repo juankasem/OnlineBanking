@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Infrastructure.Repositories;
 
 namespace OnlineBanking.Infrastructure.Persistence;
@@ -8,11 +6,11 @@ namespace OnlineBanking.Infrastructure.Persistence;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly OnlineBankDbContext _dbContext;
-   
+
     private IDbContextTransaction _dbContextTransaction;
 
     public IAddressRepository Addresses { get; private set; }
-    
+
     public IAppUserRepository AppUsers { get; private set; }
 
     public IBankAccountRepository BankAccounts { get; private set; }
@@ -29,7 +27,7 @@ public class UnitOfWork : IUnitOfWork
 
     public ICustomerRepository Customers { get; private set; }
 
-    public ICustomerAccountRepository CustomerAccounts { get; private set;}
+    public ICustomerAccountRepository CustomerAccounts { get; private set; }
 
     public ICreditCardsRepository CreditCards { get; private set; }
 
@@ -49,7 +47,7 @@ public class UnitOfWork : IUnitOfWork
         _dbContext = dbContext;
 
         Addresses ??= new AddressRepository(_dbContext);
-        AppUsers ??= new  AppUserRepository(_dbContext);
+        AppUsers ??= new AppUserRepository(_dbContext);
         BankAccounts ??= new BankAccountRepository(_dbContext);
         Branches ??= new BranchRepository(_dbContext);
         CashTransactions ??= new CashTransactionsRepository(_dbContext);

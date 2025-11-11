@@ -14,12 +14,12 @@ public class Address : BaseDomainEntity
 
     public int DistrictId { get; private set; }
 
-     public District District { get; set; }
+    public District District { get; set; }
 
     public int CityId { get; private set; }
-    
+
     public City City { get; set; }
-    
+
     public int CountryId { get; private set; }
 
     public Country Country { get; set; }
@@ -37,13 +37,13 @@ public class Address : BaseDomainEntity
     }
 
     public static Address Create(string name, string street, string zipCode,
-                    int districtId, int cityId, int countryId, 
+                    int districtId, int cityId, int countryId,
                     string appUserId, bool isDeleted = false)
     {
         var validator = new AddressValidator();
 
         var objectToValidate = new Address(
-            name, street, zipCode, districtId, 
+            name, street, zipCode, districtId,
             cityId, countryId, isDeleted);
 
         var validationResult = validator.Validate(objectToValidate);
@@ -51,7 +51,7 @@ public class Address : BaseDomainEntity
         if (validationResult.IsValid) return objectToValidate;
 
 
-       var exception = new AddressNotValidException("Address is not valid");
+        var exception = new AddressNotValidException("Address is not valid");
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
         throw exception;
     }

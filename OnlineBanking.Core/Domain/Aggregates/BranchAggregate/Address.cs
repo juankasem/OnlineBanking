@@ -30,7 +30,7 @@ public class Address
 
     public static Address Create(string name, string street, string zipCode, string district, string city, string country)
     {
-          var validator = new BranchAddressValidator();
+        var validator = new BranchAddressValidator();
 
         var objectToValidate = new Address(
             name, street, zipCode, district, city, country);
@@ -40,8 +40,8 @@ public class Address
         if (validationResult.IsValid) return objectToValidate;
 
 
-       var exception = new BranchAddressNotValidException("Address is not valid");
+        var exception = new BranchAddressNotValidException("Address is not valid");
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
-        throw exception;    
+        throw exception;
     }
 }

@@ -1,5 +1,4 @@
 using FluentValidation;
-using OnlineBanking.Application.Features.Addresses.Validators;
 using OnlineBanking.Application.Features.Branch.Commands;
 
 namespace OnlineBanking.Application.Features.Branch.Validators;

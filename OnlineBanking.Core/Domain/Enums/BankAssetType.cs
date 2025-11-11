@@ -4,7 +4,6 @@ namespace OnlineBanking.Core.Domain.Enums
     {
         ATM = 1,
         BankAccount = 2,
-        Branch = 3,
-        POS = 4,
+        POS = 3,
     }
 }

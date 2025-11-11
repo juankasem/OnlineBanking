@@ -1,7 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
 namespace OnlineBanking.Infrastructure.Repositories;

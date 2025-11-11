@@ -8,11 +8,11 @@ namespace OnlineBanking.Core.Domain.Services.BankAccount;
 
 public class BankAccountService : IBankAccountService
 {
-    public bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount, 
+    public bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount,
                                       Aggregates.BankAccountAggregate.BankAccount recipientAccount,
                                       CashTransaction cashTransaction,
                                       decimal fees = 0)
-    { 
+    {
         var transactionCreated = false;
         var amount = cashTransaction.Amount;
 
@@ -24,7 +24,7 @@ public class BankAccountService : IBankAccountService
         switch (cashTransaction.Type)
         {
             case CashTransactionType.Transfer or CashTransactionType.FAST:
-             
+
                 if (senderAccount is not null && recipientAccount is not null)
                 {
                     senderAccount.AddAccountTransaction(cashTransaction);

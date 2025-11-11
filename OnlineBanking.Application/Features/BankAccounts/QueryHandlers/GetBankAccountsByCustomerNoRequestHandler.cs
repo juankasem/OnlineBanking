@@ -1,14 +1,5 @@
-
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
-using OnlineBanking.Application.Features.Customers;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Mappings.BankAccounts;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Application.Models.BankAccount.Responses;
 
 namespace OnlineBanking.Application.Features.BankAccounts.QueryHandlers;
 
@@ -35,7 +26,7 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
 
             return result;
         }
-        
+
         var bankAccountParams = request.BankAccountParams;
         var accountTransactionsParams = request.AccountTransactionsParams;
         var customerBankAccounts = new List<BankAccountResponse>();
@@ -47,20 +38,20 @@ public class GetBankAccountsByCustomerNoRequestHandler : IRequestHandler<GetBank
             var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
             var (cashTransactions, transactionsCount) = await _uow.CashTransactions.GetByIBANAsync(bankAccount.IBAN, accountTransactionsParams);
 
-            var cashTransactionsPagedList = cashTransactions.ToPagedList(transactionsCount, 
-                                                                        accountTransactionsParams.PageNumber, 
-                                                                        accountTransactionsParams.PageSize, 
+            var cashTransactionsPagedList = cashTransactions.ToPagedList(transactionsCount,
+                                                                        accountTransactionsParams.PageNumber,
+                                                                        accountTransactionsParams.PageSize,
                                                                         cancellationToken);
 
             var customerBankAccount = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactionsPagedList);
 
             customerBankAccounts.Add(customerBankAccount);
-        }   
+        }
 
         result.Payload = customerBankAccounts.AsReadOnly()
-                                             .ToPagedList(customerBankAccounts.Count, 
+                                             .ToPagedList(customerBankAccounts.Count,
                                                         bankAccountParams.PageNumber,
-                                                        bankAccountParams.PageSize, 
+                                                        bankAccountParams.PageSize,
                                                         cancellationToken);
         return result;
     }

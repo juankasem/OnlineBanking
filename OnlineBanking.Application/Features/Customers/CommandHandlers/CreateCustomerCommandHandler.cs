@@ -1,9 +1,5 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Customers.Commands;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
@@ -23,7 +19,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
     public async Task<ApiResult<Unit>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-    
+
         var address = _mapper.Map<Address>(request.Address);
 
         if (await _uow.Customers.ExistsAsync(request.CustomerNo))
@@ -36,10 +32,10 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         var customer = CreateCustomer(request);
         customer.SetAddress(address);
-  
+
         await _uow.Customers.AddAsync(customer);
-        await _uow.SaveAsync();   
-      
+        await _uow.SaveAsync();
+
         return result;
     }
 

@@ -1,12 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Extensions;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.FastTransactions.Queries;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.FastTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.FastTransactions.QueryHandlers;

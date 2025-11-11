@@ -1,20 +1,19 @@
-using System;
 using FluentValidation;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Core.Domain.Validators;
+
 public class CashTransactionValidator : AbstractValidator<CashTransaction>
 {
     public CashTransactionValidator()
     {
         RuleFor(c => c.Id)
          .NotNull().WithMessage("{PropertyName} is required")
-         .NotEmpty().WithMessage("{PropertyName} is required"); 
-        
-       RuleFor(c => c.ReferenceNo)
-        .NotNull().WithMessage("Reference No is required")
-        .NotEmpty().WithMessage("Reference No is required");
+         .NotEmpty().WithMessage("{PropertyName} is required");
+
+        RuleFor(c => c.ReferenceNo)
+         .NotNull().WithMessage("Reference No is required")
+         .NotEmpty().WithMessage("Reference No is required");
 
         RuleFor(c => c.Type)
         .NotNull().WithMessage("{PropertyName} is required")

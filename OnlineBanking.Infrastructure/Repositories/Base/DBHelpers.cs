@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace OnlineBanking.Infrastructure.Repositories.Base;
 
 public static class DBHelpers<T> where T : class

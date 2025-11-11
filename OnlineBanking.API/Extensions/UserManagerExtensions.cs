@@ -1,7 +1,4 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Core.Domain.Entities;
+global using Microsoft.AspNetCore.Identity;
 
 namespace OnlineBanking.API.Extensions;
 

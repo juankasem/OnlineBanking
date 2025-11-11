@@ -1,13 +1,3 @@
-using System.Net;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Filters;
-using OnlineBanking.Application.Features.CreditCards.Commands;
-using OnlineBanking.Application.Features.CreditCards.Queries;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models.CreditCard;
-using OnlineBanking.Application.Models.CreditCard.Requests;
-using OnlineBanking.Application.Models.CreditCard.Responses;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -96,7 +86,7 @@ public class CreditCardsController : BaseApiController
     public async Task<IActionResult> ActivateCreditCard([FromRoute] string creditCardNo,
                                                         CancellationToken cancellationToken = default)
     {
-        var command =  new ActivateCreditCardCommand() { CreditCardNo = creditCardNo };
+        var command = new ActivateCreditCardCommand() { CreditCardNo = creditCardNo };
 
         var result = await _mediator.Send(command);
 
@@ -105,14 +95,14 @@ public class CreditCardsController : BaseApiController
         return Ok();
     }
 
-    
+
     // PUT api/v1/credit-cards/deactivate/TR12345678
     [HttpPut(ApiRoutes.CreditCards.Deactivate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeactivateCreditCard([FromRoute] string creditCardNo,
                                                         CancellationToken cancellationToken = default)
     {
-        var command =  new DeactivateCreditCardCommand() { CreditCardNo = creditCardNo };
+        var command = new DeactivateCreditCardCommand() { CreditCardNo = creditCardNo };
 
         var result = await _mediator.Send(command);
 

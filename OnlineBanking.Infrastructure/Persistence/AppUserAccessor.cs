@@ -1,6 +1,6 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using OnlineBanking.Application.Contracts.Infrastructure;
+using System.Security.Claims;
 
 namespace OnlineBanking.Infrastructure.Persistence;
 

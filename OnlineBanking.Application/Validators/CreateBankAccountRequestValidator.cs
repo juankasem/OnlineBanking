@@ -7,6 +7,6 @@ public class CreateBankAccountRequestValidator : AbstractValidator<CreateBankAcc
 {
     public CreateBankAccountRequestValidator()
     {
-        
+
     }
 }

@@ -1,13 +1,11 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OnlineBanking.Core.Domain.Entities;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Security;
+using System.Text;
 
 namespace OnlineBanking.Infrastructure;
 
@@ -27,7 +25,8 @@ public static class IdentityServiceRegistration
             .AddDefaultTokenProviders();
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]));
-        var tokenValidationParameters = new TokenValidationParameters(){
+        var tokenValidationParameters = new TokenValidationParameters()
+        {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = key,
             ValidIssuer = configuration["Jwt:Issuer"],
@@ -49,12 +48,13 @@ public static class IdentityServiceRegistration
                 });
 
         services.AddAuthorization(
-            opt => {
-            opt.AddPolicy("IsAccountOwner", policy => 
+            opt =>
             {
-                policy.Requirements.Add(new IsAccountOwnerRequirement());
+                opt.AddPolicy("IsAccountOwner", policy =>
+                {
+                    policy.Requirements.Add(new IsAccountOwnerRequirement());
+                });
             });
-        });
         services.AddTransient<IAuthorizationHandler, IsAccountOwnerRequirementHandler>();
 
         return services;

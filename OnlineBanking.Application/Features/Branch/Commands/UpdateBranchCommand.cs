@@ -1,5 +1,3 @@
-using MediatR;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Branch;
 
 namespace OnlineBanking.Application.Features.Branch.Commands;

@@ -7,6 +7,6 @@ public enum PaymentType
     Withdrawal,
     Housing,
     Rent,
-    ECommerce, 
-    Gift  
+    ECommerce,
+    Gift
 }

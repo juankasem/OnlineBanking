@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 namespace OnlineBanking.Application.Contracts.Persistence;

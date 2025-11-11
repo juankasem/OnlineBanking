@@ -1,6 +1,5 @@
 
 using OnlineBanking.Application.Models.Address;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.Customer.Requests;
 

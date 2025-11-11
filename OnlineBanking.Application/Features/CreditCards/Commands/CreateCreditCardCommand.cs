@@ -1,6 +1,3 @@
-using MediatR;
-using OnlineBanking.Application.Models;
-
 namespace OnlineBanking.Application.Features.CreditCards.Commands;
 
 public class CreateCreditCardCommand : IRequest<ApiResult<Unit>>
@@ -11,7 +8,7 @@ public class CreateCreditCardCommand : IRequest<ApiResult<Unit>>
     public int SecurityCode { get; set; }
     public Guid BankAccountId { get; set; }
 
-    public CreateCreditCardCommand(string creditCardNo, string customerNo, 
+    public CreateCreditCardCommand(string creditCardNo, string customerNo,
                                     DateTime validTo, int securityCode, Guid bankAccountId)
     {
         CreditCardNo = creditCardNo;

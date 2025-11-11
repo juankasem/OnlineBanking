@@ -12,7 +12,7 @@ public class CustomerBankAccount
 
     private CustomerBankAccount(Guid bankAccountId, Guid customerId)
     {
-       BankAccountId = bankAccountId;
+        BankAccountId = bankAccountId;
         CustomerId = customerId;
     }
 

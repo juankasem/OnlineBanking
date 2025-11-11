@@ -1,5 +1,3 @@
-using System;
-
 namespace OnlineBanking.Application.Models.Customer;
 
 public class AccountOwnerDto

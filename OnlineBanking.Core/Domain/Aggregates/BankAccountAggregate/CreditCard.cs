@@ -19,7 +19,7 @@ public class CreditCard : BaseDomainEntity
                         int securityCode, Guid bankAccountId, string pIN = null, bool isActive = false)
     {
         Id = id;
-        CreditCardNo = 	creditCardNo;
+        CreditCardNo = creditCardNo;
         PIN = pIN;
         CustomerNo = customerNo;
         ValidTo = validTo;
@@ -35,7 +35,7 @@ public class CreditCard : BaseDomainEntity
         var objectToValidate = new CreditCard(
             id ?? Guid.NewGuid(),
             creditCardNo,
-            customerNo, 
+            customerNo,
             validTo,
             securityCode,
             bankAccountId,

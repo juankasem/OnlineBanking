@@ -1,10 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.CreditCards.Queries;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CreditCard;
 
 namespace OnlineBanking.Application.Features.CreditCards.QueryHandlers;

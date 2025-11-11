@@ -13,7 +13,7 @@ public class Branch : BaseDomainEntity
     public string Name { get; private set; }
     public Address Address { get; private set; }
 
-    public IReadOnlyList<BankAccount> BankAccounts => _bankAccounts.AsReadOnly(); 
+    public IReadOnlyList<BankAccount> BankAccounts => _bankAccounts.AsReadOnly();
 
     private Branch(string name)
     {
@@ -39,6 +39,6 @@ public class Branch : BaseDomainEntity
     }
 
     public void AddBankAccount(BankAccount bankAccount) => _bankAccounts.Add(bankAccount);
-   
+
     public void SetAddress(Address address) => Address = address;
 }

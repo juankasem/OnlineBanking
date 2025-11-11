@@ -1,6 +1,3 @@
-using MediatR;
-using OnlineBanking.Application.Models;
-
 namespace OnlineBanking.Application.Features.FastTransactions.Commands;
 
 public class CreateFastTransactionCommand : IRequest<ApiResult<Unit>>

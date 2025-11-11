@@ -1,7 +1,6 @@
 using AutoMapper;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.Branch.Commands;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
 using OnlineBanking.Application.Features.Customers.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Models.Address;
@@ -29,8 +28,8 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         //bank Accounts
-        CreateMap<CreateBankAccountRequest, CreateBankAccountCommand>();        
-        CreateMap<BankAccountDto,BankAccountResponse>().ReverseMap();
+        CreateMap<CreateBankAccountRequest, CreateBankAccountCommand>();
+        CreateMap<BankAccountDto, BankAccountResponse>().ReverseMap();
         CreateMap<BankAccount, BankAccountDto>()
             .ForPath(d => d.Branch.Id, o => o.MapFrom(s => s.Branch.Id))
             .ForPath(d => d.Branch.BranchName, o => o.MapFrom(s => s.Branch.Name))
@@ -44,7 +43,7 @@ public class MappingProfile : Profile
             .ForPath(d => d.Currency.Symbol, o => o.MapFrom(s => s.Currency.Symbol))
 
             .ReverseMap();
-               
+
         CreateMap<AppUser, AuthResponse>().ReverseMap();
 
         //Branches

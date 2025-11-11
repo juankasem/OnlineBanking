@@ -1,7 +1,6 @@
 using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Application.Models.Branch;
-using OnlineBanking.Application.Models.CashTransaction;
 using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
 using OnlineBanking.Application.Models.Customer;
@@ -15,7 +14,7 @@ namespace OnlineBanking.Application.Mappings.BankAccounts;
 
 public class BankAccountMapper : IBankAccountMapper
 {
-    
+
     public BankAccountDto MapToDtoModel(BankAccount bankAccount)
     {
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
@@ -48,20 +47,20 @@ public class BankAccountMapper : IBankAccountMapper
     #region Private helper methods
     private static CurrencyDto MapToAccountCurrencyDTO(Currency currency) =>
         new(currency.Id, currency.Code, currency.Name, currency.Symbol);
-    
+
     private static BranchDto MapToAccountBranchDTO(Branch branch) =>
         new(branch.Id, branch.Name);
 
     private static AccountBalanceDto MapToAccountBalanceDTO(decimal balance, decimal allowedBalanceToUse,
-                                                    decimal minimumAllowedBalance, decimal debt ) =>
-        new (balance, allowedBalanceToUse, minimumAllowedBalance, debt);
+                                                    decimal minimumAllowedBalance, decimal debt) =>
+        new(balance, allowedBalanceToUse, minimumAllowedBalance, debt);
 
     private ReadOnlyCollection<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<Customer> customers)
     {
         var bankAccountOwners = new List<AccountOwnerDto>();
 
         if (customers == null || customers.Count == 0)
-            return bankAccountOwners.AsReadOnly(); 
+            return bankAccountOwners.AsReadOnly();
 
         foreach (var customer in customers)
         {
@@ -78,13 +77,13 @@ public class BankAccountMapper : IBankAccountMapper
         var accountTransactions = new List<AccountTransactionDto>();
 
         if (cashTransactions == null || cashTransactions.Count == 0)
-        return accountTransactions.AsReadOnly();
+            return accountTransactions.AsReadOnly();
 
         foreach (var ct in cashTransactions)
         {
             var accountTransaction = new AccountTransactionDto(Enum.GetName(ct.Type),
                                                                 Enum.GetName(ct.InitiatedBy),
-                                                                CreateMoney(ct.Amount, currency), 
+                                                                CreateMoney(ct.Amount, currency),
                                                                 CreateMoney(ct.Fees, currency),
                                                                 ct.Description,
                                                                 Enum.GetName(ct.PaymentType),
@@ -93,21 +92,21 @@ public class BankAccountMapper : IBankAccountMapper
                                                                 ct.From, ct.To, ct.Sender, ct.Recipient);
             accountTransactions.Add(accountTransaction);
         }
-        
+
         return accountTransactions.AsReadOnly();
     }
-        
+
 
     private ReadOnlyCollection<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(IReadOnlyList<FastTransaction> fastTransactions, CurrencyDto currency)
     {
         var accountFastTransactions = new List<AccountFastTransactionDto>();
 
         if (fastTransactions == null || fastTransactions.Count == 0)
-        return accountFastTransactions.AsReadOnly();
+            return accountFastTransactions.AsReadOnly();
 
         foreach (var ft in fastTransactions)
         {
-            var accountFastTransaction = new AccountFastTransactionDto(ft.BankAccount.IBAN, ft.RecipientIBAN, ft.RecipientName, 
+            var accountFastTransaction = new AccountFastTransactionDto(ft.BankAccount.IBAN, ft.RecipientIBAN, ft.RecipientName,
                                                                        ft.BankAccount.Branch.Name, CreateMoney(ft.Amount, currency));
 
             accountFastTransactions.Add(accountFastTransaction);

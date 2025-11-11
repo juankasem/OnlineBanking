@@ -1,7 +1,4 @@
-using MediatR;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Address;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Features.Customers.Commands;
 

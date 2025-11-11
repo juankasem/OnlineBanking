@@ -1,11 +1,7 @@
 
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Branch.Commands;
 using OnlineBanking.Application.Features.Branch.Messages;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
 namespace OnlineBanking.Application.Features.Branch.CommandHandlers;

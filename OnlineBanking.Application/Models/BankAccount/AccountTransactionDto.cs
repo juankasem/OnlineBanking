@@ -1,6 +1,3 @@
-using OnlineBanking.Application.Models.CashTransaction;
-using OnlineBanking.Core.Domain.Enums;
-
 namespace OnlineBanking.Application.Models.BankAccount;
 
 #nullable enable

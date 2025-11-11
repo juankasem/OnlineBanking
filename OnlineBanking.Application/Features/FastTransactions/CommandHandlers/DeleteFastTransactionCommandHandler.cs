@@ -1,14 +1,6 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
-using OnlineBanking.Core.Domain.Services.BankAccount;
 
 namespace OnlineBanking.Application.Features.FastTransactions.CommandHandlers;
 

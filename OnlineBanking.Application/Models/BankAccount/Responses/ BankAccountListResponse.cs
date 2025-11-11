@@ -6,7 +6,7 @@ public class BankAccountListResponse
 {
     public ImmutableList<BankAccountResponse> BankAccounts { get; set; }
 
-    public  BankAccountListResponse(ImmutableList<BankAccountResponse> bankAccounts)
+    public BankAccountListResponse(ImmutableList<BankAccountResponse> bankAccounts)
     {
         BankAccounts = bankAccounts;
     }

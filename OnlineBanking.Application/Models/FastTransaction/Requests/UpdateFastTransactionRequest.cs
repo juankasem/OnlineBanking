@@ -4,6 +4,6 @@ namespace OnlineBanking.Application.Models.FastTransaction.Requests;
 
 public class UpdateFastTransactionRequest : BaseFastTransactionDto
 {
-  public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
 }

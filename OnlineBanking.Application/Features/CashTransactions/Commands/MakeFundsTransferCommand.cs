@@ -1,5 +1,4 @@
-using MediatR;
-using OnlineBanking.Application.Models;
+
 using OnlineBanking.Application.Models.CashTransaction.Base;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Commands;
@@ -12,7 +11,7 @@ public class MakeFundsTransferCommand : IRequest<ApiResult<Unit>>
     public string Sender { get; set; }
     public string Recipient { get; set; }
 
-    public MakeFundsTransferCommand(BaseCashTransactionDto baseCashTransaction, 
+    public MakeFundsTransferCommand(BaseCashTransactionDto baseCashTransaction,
                                     string from, string to,
                                     string sender, string recipient)
     {

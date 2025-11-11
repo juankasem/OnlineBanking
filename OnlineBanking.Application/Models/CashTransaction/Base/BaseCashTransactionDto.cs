@@ -1,4 +1,3 @@
-using OnlineBanking.Core.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Base;
@@ -16,11 +15,11 @@ public class BaseCashTransactionDto
     public string TransactionDate { get; set; }
 
     private BaseCashTransactionDto()
-    {  
+    {
     }
 
     public BaseCashTransactionDto(string iBAN, CashTransactionType type, BankAssetType initiatedBy,
-                                  MoneyDto amount, MoneyDto fees, string description, 
+                                  MoneyDto amount, MoneyDto fees, string description,
                                   PaymentType paymentType, string transactionDate)
     {
         IBAN = iBAN;

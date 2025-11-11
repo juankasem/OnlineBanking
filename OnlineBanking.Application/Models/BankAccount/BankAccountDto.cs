@@ -1,6 +1,5 @@
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.Currency;
-using OnlineBanking.Core.Domain.Enums;
 
 namespace OnlineBanking.Application.Models.BankAccount;
 
@@ -21,7 +20,7 @@ public class BankAccountDto
                           BranchDto branch, AccountBalanceDto accountBalance, CurrencyDto currency)
     {
         AccountNo = accountNo;
-        IBAN = iban;        
+        IBAN = iban;
         Type = type;
         Branch = branch;
         AccountBalance = accountBalance;

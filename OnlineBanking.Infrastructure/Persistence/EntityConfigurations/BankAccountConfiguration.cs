@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 namespace OnlineBanking.Infrastructure.Persistence.EntityConfigurations;
 

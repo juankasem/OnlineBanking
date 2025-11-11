@@ -5,5 +5,5 @@ namespace OnlineBanking.Application.Mappings.Branches;
 
 public interface IBranchMapper
 {
-  BranchResponse MapToResponseModel(Branch branch);
+    BranchResponse MapToResponseModel(Branch branch);
 }

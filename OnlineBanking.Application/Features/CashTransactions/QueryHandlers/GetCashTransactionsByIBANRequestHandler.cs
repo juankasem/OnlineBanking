@@ -1,12 +1,6 @@
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Extensions;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CashTransactions.Queries;
-using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.CashTransactions;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.CashTransactions.QueryHandlers;
@@ -21,7 +15,7 @@ public class GetCashTransactionsByAccountNoOrIBANRequestHandler : IRequestHandle
         _uow = uow;
         _cashTransactionsMapper = cashTransactionsMapper;
     }
-    
+
     public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetCashTransactionsByAccountNoOrIBANRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CashTransactionResponse>>();
@@ -45,7 +39,7 @@ public class GetCashTransactionsByAccountNoOrIBANRequestHandler : IRequestHandle
                                                             .ToList().AsReadOnly();
 
         result.Payload = mappedAccountTransactions.ToPagedList(totalCount, cashTransactionParams.PageNumber, cashTransactionParams.PageSize);
-    
+
         return result;
     }
 }

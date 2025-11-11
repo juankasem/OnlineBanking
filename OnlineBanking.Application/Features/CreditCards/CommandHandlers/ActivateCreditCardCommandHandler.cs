@@ -1,8 +1,4 @@
-
-
-using MediatR;
 using OnlineBanking.Application.Features.CreditCards.Commands;
-using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Features.CreditCards.CommandHandlers;
 
@@ -10,7 +6,7 @@ public class ActivateCreditCardCommandHandler : IRequestHandler<ActivateCreditCa
 {
     public ActivateCreditCardCommandHandler()
     {
-        
+
     }
 
     public Task<ApiResult<Unit>> Handle(ActivateCreditCardCommand request, CancellationToken cancellationToken)

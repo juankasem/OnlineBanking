@@ -1,13 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Constants;
-using OnlineBanking.API.Extensions;
-using OnlineBanking.Application.Features.Branch.Commands;
-using OnlineBanking.Application.Features.Branch.Queries;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models.Branch.Requests;
-using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -42,9 +32,9 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(typeof(BranchResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetBranchById([FromRoute] int id, CancellationToken cancellationToken = default)
     {
-        var query = new GetBranchByIdRequest() 
-        { 
-            BranchId = id 
+        var query = new GetBranchByIdRequest()
+        {
+            BranchId = id
         };
 
         return await HandleRequest(query, cancellationToken);

@@ -1,23 +1,10 @@
-using MediatR;
-using Microsoft.Extensions.Logging;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Application.Models.CashTransaction;
-using OnlineBanking.Core.Domain.Enums;
-using OnlineBanking.Core.Domain.Services.BankAccount;
-
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
 public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
                                              IBankAccountService bankAccountService,
                                              IAppUserAccessor appUserAccessor,
-                                             ILogger<MakeFundsTransferCommandHandler> logger) : 
+                                             ILogger<MakeFundsTransferCommandHandler> logger) :
                                              IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
@@ -46,7 +33,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         {
             return result;
         }
-         
+
         var amountToTransfer = request.BaseCashTransaction.Amount.Value;
         var fees = amountToTransfer * 0.025M;
         var totalAmount = amountToTransfer + fees;
@@ -58,13 +45,12 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         //Prepare transfer dto
         var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
-
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, transferDto);
 
         //Create transfer transaction 
-        bool transactionCreated = _bankAccountService.CreateCashTransaction(senderAccount, 
-                                                                            recipientAccount, 
-                                                                            cashTransaction, 
+        bool transactionCreated = _bankAccountService.CreateCashTransaction(senderAccount,
+                                                                            recipientAccount,
+                                                                            cashTransaction,
                                                                             fees);
         if (!transactionCreated)
         {
@@ -76,7 +62,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         {
             cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
             _uow.CashTransactions.Update(cashTransaction);
-                
+
             await _uow.SaveAsync();
 
             _logger.LogInformation("Transfer transaction of Id {transactionId} of amount {amount} is successfully created!", cashTransaction.Id, amountToTransfer);
@@ -94,7 +80,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
         string iban,
         ApiResult<Unit> result)
-        {
+    {
         var success = true;
 
         if (bankAccount == null)
@@ -126,8 +112,8 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     }
 
     private static bool HasSufficientFunds(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount, 
-        decimal totalAmount, 
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+        decimal totalAmount,
         ApiResult<Unit> result)
     {
         if (senderAccount.AllowedBalanceToUse < totalAmount)
@@ -139,9 +125,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         return true;
     }
 
-    private static TransferDto PrepareTransferDto(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount, 
-                                           Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount, 
-                                           decimal amountToTransfer, 
+    private static TransferDto PrepareTransferDto(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+                                           Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
+                                           decimal amountToTransfer,
                                            decimal fees)
     {
         var senderOwner = senderAccount.BankAccountOwners[0]?.Customer;

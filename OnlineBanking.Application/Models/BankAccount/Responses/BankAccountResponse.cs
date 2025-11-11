@@ -3,7 +3,6 @@ using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
 using OnlineBanking.Application.Models.Customer;
 using OnlineBanking.Application.Models.DebitCard;
-using OnlineBanking.Core.Domain.Enums;
 using System.Collections.ObjectModel;
 
 namespace OnlineBanking.Application.Models.BankAccount.Responses;

@@ -1,7 +1,6 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using OnlineBanking.Application.Contracts.Persistence;
+using System.Security.Claims;
 
 namespace OnlineBanking.Infrastructure.Security;
 
@@ -25,10 +24,10 @@ public class IsAccountOwnerRequirementHandler : AuthorizationHandler<IsAccountOw
         var appUserId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         if (appUserId == null) return Task.CompletedTask;
-        
+
         var accountId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
                                                         .SingleOrDefault(x => x.Key == "id").Value.ToString());
-    
+
         var customerId = _uow.Customers.GetByAppUserIdAsync(appUserId).Result.Id;
 
         if (customerId == Guid.Empty) return Task.CompletedTask;

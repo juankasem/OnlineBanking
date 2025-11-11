@@ -1,10 +1,5 @@
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.Customers;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
@@ -55,7 +50,7 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
         await _uow.BankAccounts.AddAsync(bankAccount);
         await _uow.SaveAsync();
-        
+
         return result;
     }
 

@@ -1,8 +1,5 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Features.CreditCards.Queries;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.CreditCard;
 
 namespace OnlineBanking.Application.Features.CreditCards.QueryHandlers;
@@ -32,7 +29,7 @@ public class GetCustomerCreditCardsRequestHandler : IRequestHandler<GetCustomerC
 
         result.Payload = mappedCreditCards;
 
-        return result;    
-        
+        return result;
+
     }
 }

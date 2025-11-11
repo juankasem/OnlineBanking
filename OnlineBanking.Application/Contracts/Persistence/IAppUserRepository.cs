@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using OnlineBanking.Core.Domain.Entities;
 
 namespace OnlineBanking.Application.Contracts.Persistence;

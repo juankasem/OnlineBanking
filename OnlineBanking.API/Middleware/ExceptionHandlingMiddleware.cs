@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.API.Common;
-using OnlineBanking.Core.Domain.Exceptions;
 
 namespace OnlineBanking.API.Middleware;
 
@@ -23,7 +18,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         if (exception is NotValidException validationException)
         {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest; 
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
             statusPhrase = exception.GetType().Name;
 
             validationException.ValidationErrors.ForEach(er => errorResponse.Errors.Add(er));
@@ -46,6 +41,6 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         await context.Response.WriteAsJsonAsync(errorResponse, cancellationToken);
 
-        return true;    
+        return true;
     }
 }

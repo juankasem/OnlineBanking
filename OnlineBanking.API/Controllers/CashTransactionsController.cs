@@ -1,22 +1,4 @@
 
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Common;
-using OnlineBanking.API.Constants;
-using OnlineBanking.API.Extensions;
-using OnlineBanking.API.Filters;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Features.CashTransactions.Queries;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Application.Models.CashTransaction.Requests;
-using OnlineBanking.Application.Models.CashTransaction.Responses;
-using OnlineBanking.Core.Domain.Enums;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
-
 namespace OnlineBanking.API.Controllers;
 
 [Authorize]
@@ -29,9 +11,9 @@ public class CashTransactionsController : BaseApiController
     public async Task<IActionResult> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
                                                              CancellationToken cancellationToken = default)
     {
-        var query = new GetAllCashTransactionsRequest() 
-        { 
-           CashTransactionParams = cashTransactionParams 
+        var query = new GetAllCashTransactionsRequest()
+        {
+            CashTransactionParams = cashTransactionParams
         };
         var result = await _mediator.Send(query, cancellationToken);
 
@@ -99,8 +81,8 @@ public class CashTransactionsController : BaseApiController
 
             CashTransactionType.Transfer =>
                await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
-            
-             _ => BadRequest("Unsupported transaction type.")
+
+            _ => BadRequest("Unsupported transaction type.")
         };
     }
 
@@ -110,8 +92,8 @@ public class CashTransactionsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateCashTransaction(UpdateCashTransactionRequest request, CancellationToken cancellationToken = default)
     {
-        var command = new UpdateCashTransactionCommand() 
-        { 
+        var command = new UpdateCashTransactionCommand()
+        {
             Id = Guid.Parse(request.Id),
             CashTransaction = request.CashTransaction
         };
@@ -125,11 +107,11 @@ public class CashTransactionsController : BaseApiController
     [ValidateGuid("id")]
     public async Task<IActionResult> DeleteCashTransaction([FromQuery] string id, CancellationToken cancellationToken = default)
     {
-        var command = new DeleteCashTransactionCommand() 
-        { 
-            Id = Guid.Parse(id) 
+        var command = new DeleteCashTransactionCommand()
+        {
+            Id = Guid.Parse(id)
         };
-        
+
         return await HandleRequest(command, cancellationToken);
     }
 }

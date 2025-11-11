@@ -1,3 +1,4 @@
+
 namespace OnlineBanking.API.Constants;
 
 public static class UserRoles

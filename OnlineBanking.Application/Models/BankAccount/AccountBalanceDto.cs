@@ -9,7 +9,7 @@ public class AccountBalanceDto
     public decimal Debt { get; private set; }
 
     public AccountBalanceDto()
-    {        
+    {
     }
 
     public AccountBalanceDto(decimal balance, decimal allowedBalanceToUse,

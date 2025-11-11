@@ -1,14 +1,12 @@
-using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineBanking.Application.Common.Behaviors;
 using OnlineBanking.Application.Mappings.BankAccounts;
 using OnlineBanking.Application.Mappings.Branches;
 using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Mappings.CreditCards;
-using OnlineBanking.Core.Domain.Services.BankAccount;
+using System.Reflection;
 
 namespace OnlineBanking.Application;
 
@@ -22,7 +20,8 @@ public static class ApplicationServiceRegistration
         services.AddFluentValidationClientsideAdapters();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
 
-        services.AddMediatR(cfg => {
+        services.AddMediatR(cfg =>
+        {
             cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly());
         });
 

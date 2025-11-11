@@ -1,10 +1,8 @@
-using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Specifications;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Repositories.Base;
+using System.Linq.Expressions;
 
 namespace OnlineBanking.Infrastructure.Repositories;
 
@@ -16,15 +14,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
-    
+
     public async Task<(IReadOnlyList<T>, int)> GetAllAsync(PaginationParams paginationParams)
     {
         var query = _dbContext.Set<T>().AsQueryable();
         var totalCount = await query.CountAsync();
 
-       var items = await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
+        var items = await ApplyPagination(query, paginationParams.PageNumber, paginationParams.PageSize);
 
-      return (items, totalCount);
+        return (items, totalCount);
     }
 
     public async Task<(IReadOnlyList<T>, int)> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams)
@@ -79,10 +77,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
 
     public async Task<T> GetByIdAsync(int id) => await _dbContext.Set<T>().FindAsync(id);
-    
+
 
     public async Task<T> GetByIdAsync(Guid id) => await _dbContext.Set<T>().FindAsync(id);
-    
+
 
     public async Task AddAsync(T entity) => await _dbContext.Set<T>().AddAsync(entity);
 
@@ -96,7 +94,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     }
 
     public void Delete(T entity) => _dbContext.Set<T>().Remove(entity);
-    
+
     public async Task<int> CountAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).CountAsync();

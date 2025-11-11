@@ -1,9 +1,4 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Features.CashTransactions.CommandHandlers;
 
@@ -16,7 +11,7 @@ public class DeleteCashTransactionCommandHandler : IRequestHandler<DeleteCashTra
         _uow = uow;
         _mapper = mapper;
     }
-    
+
     public async Task<ApiResult<Unit>> Handle(DeleteCashTransactionCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();

@@ -13,5 +13,5 @@ public static class DateTimeHelper
                             DateTimeStyles.None,
                             out DateTime parsedDate) ? parsedDate : DateTime.UtcNow;
     }
-   
+
 }

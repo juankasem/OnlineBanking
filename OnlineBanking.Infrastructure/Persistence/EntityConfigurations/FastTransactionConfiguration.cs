@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
 namespace OnlineBanking.Infrastructure.Persistence.EntityConfigurations;
 
@@ -17,7 +15,7 @@ public class FastTransactionConfiguration : IEntityTypeConfiguration<FastTransac
         builder.Property(f => f.BankAccountId).IsRequired();
 
         builder.HasOne(f => f.BankAccount)
-               .WithMany( b => b.FastTransactions) 
+               .WithMany(b => b.FastTransactions)
                .HasForeignKey(f => f.BankAccountId)
                .OnDelete(DeleteBehavior.Cascade);
     }

@@ -5,6 +5,7 @@ using OnlineBanking.Application.Models.Customer.Requests;
 using System.Globalization;
 
 namespace OnlineBanking.Application.Mappings;
+
 public class DateTimeValueResolver : IValueResolver<CreateCustomerRequest, CreateCustomerCommand, DateTime>
 {
 

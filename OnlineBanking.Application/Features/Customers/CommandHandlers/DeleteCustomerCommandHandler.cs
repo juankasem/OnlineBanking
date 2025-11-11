@@ -1,12 +1,5 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.Customers.Commands;
-using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Features.Customers.CommandHandlers;
 

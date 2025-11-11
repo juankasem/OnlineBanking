@@ -1,5 +1,4 @@
 using FluentValidation;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Validators;

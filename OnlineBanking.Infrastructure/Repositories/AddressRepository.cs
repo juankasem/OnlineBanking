@@ -1,4 +1,3 @@
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 

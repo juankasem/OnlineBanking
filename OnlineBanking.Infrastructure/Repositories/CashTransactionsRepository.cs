@@ -1,7 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
 namespace OnlineBanking.Infrastructure.Repositories;
@@ -12,7 +9,7 @@ public class CashTransactionsRepository : GenericRepository<CashTransaction>, IC
     {
     }
 
-    public async Task<(IReadOnlyList<CashTransaction>, int)> GetByAccountNoOrIBANAsync(string accountNoOrIBAN, CashTransactionParams cashTransactionParams) 
+    public async Task<(IReadOnlyList<CashTransaction>, int)> GetByAccountNoOrIBANAsync(string accountNoOrIBAN, CashTransactionParams cashTransactionParams)
     {
         var query = _dbContext.AccountTransactions.Include(at => at.Account)
                                                     .Where(at => at.Account.AccountNo == accountNoOrIBAN || at.Account.IBAN == accountNoOrIBAN)

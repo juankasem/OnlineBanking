@@ -6,7 +6,7 @@ public class BranchDto
     public string BranchName { get; set; }
 
     private BranchDto()
-    { 
+    {
     }
 
     public BranchDto(int id, string branchName)

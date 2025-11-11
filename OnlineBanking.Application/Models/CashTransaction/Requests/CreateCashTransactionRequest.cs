@@ -7,7 +7,7 @@ public class CreateCashTransactionRequest : IValidatableRequest
 {
     public BaseCashTransactionDto BaseCashTransaction { get; set; }
 
-    #nullable enable
+#nullable enable
     public string? From { get; set; }
     public string? To { get; set; }
     public string? Sender { get; set; }

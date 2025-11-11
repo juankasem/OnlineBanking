@@ -1,11 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 using OnlineBanking.Application.Features.Customers;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
@@ -52,7 +47,7 @@ public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBan
         foreach (var accountOwner in accountOwners)
         {
             var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, accountOwner.Id);
-              
+
             bankAccount.AddOwnerToBankAccount(bankAccountOwner);
         }
 

@@ -1,12 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CreditCards.Commands;
 using OnlineBanking.Application.Features.CreditCards.Messages;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
 
@@ -28,7 +22,7 @@ public class UpdateCreditCardCommandHandler : IRequestHandler<UpdateCreditCardCo
 
     public async Task<ApiResult<Unit>> Handle(UpdateCreditCardCommand request, CancellationToken cancellationToken)
     {
-    var result = new ApiResult<Unit>();
+        var result = new ApiResult<Unit>();
 
         var userName = _appUserAccessor.GetUsername();
         var loggedInAppUser = await _uow.AppUsers.GetAppUser(userName);
@@ -54,7 +48,7 @@ public class UpdateCreditCardCommandHandler : IRequestHandler<UpdateCreditCardCo
 
             var creditCard = CreateCreditCard(request.CreditCardId, request.CreditCardNo, request.CustomerNo, request.ValidTo,
                                             request.SecurityCode, request.BankAccountId);
-                        
+
             bankAccount.UpdateCreditCard(request.CreditCardId, creditCard);
 
             _uow.BankAccounts.Update(bankAccount);
@@ -69,12 +63,12 @@ public class UpdateCreditCardCommandHandler : IRequestHandler<UpdateCreditCardCo
         catch (Exception e)
         {
             result.AddUnknownError(e.Message);
-        }    
+        }
 
-        return result;   
+        return result;
     }
 
-        private CreditCard CreateCreditCard( Guid creditCardId, string creditCardNo, string	customerNo, 
-                                    DateTime validTo, int securityCode, Guid bankAccountId) =>
-        CreditCard.Create(creditCardNo, customerNo, validTo, securityCode, bankAccountId, creditCardId);
+    private CreditCard CreateCreditCard(Guid creditCardId, string creditCardNo, string customerNo,
+                                DateTime validTo, int securityCode, Guid bankAccountId) =>
+    CreditCard.Create(creditCardNo, customerNo, validTo, securityCode, bankAccountId, creditCardId);
 }

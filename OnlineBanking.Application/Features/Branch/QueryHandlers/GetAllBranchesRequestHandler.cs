@@ -1,11 +1,7 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Extensions;
 using OnlineBanking.Application.Features.Branch.Queries;
-using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Mappings.Branches;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.Application.Features.Branch.QueryHandlers;

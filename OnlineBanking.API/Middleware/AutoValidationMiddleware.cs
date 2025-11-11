@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using System.Text.Json;
-
+﻿
 namespace OnlineBanking.API.Middleware;
 
 public class AutoValidationMiddleware
@@ -9,7 +7,7 @@ public class AutoValidationMiddleware
     public AutoValidationMiddleware(RequestDelegate next)
     {
         _next = next;
- 
+
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -27,7 +25,7 @@ public class AutoValidationMiddleware
             }
         }
 
-       await _next(context);
+        await _next(context);
     }
 
 

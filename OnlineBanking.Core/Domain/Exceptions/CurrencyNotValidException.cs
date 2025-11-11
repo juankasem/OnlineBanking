@@ -1,6 +1,5 @@
-using System;
-
 namespace OnlineBanking.Core.Domain.Exceptions;
+
 public class CurrencyNotValidException : NotValidException
 {
     internal CurrencyNotValidException() { }

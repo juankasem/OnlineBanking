@@ -1,5 +1,3 @@
-using MediatR;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Customer;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Commands;

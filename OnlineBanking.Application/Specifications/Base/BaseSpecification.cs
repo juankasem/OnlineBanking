@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace OnlineBanking.Application.Specifications.Base;
+
 public abstract class BaseSpecification<T> : ISpecification<T>
 {
     public BaseSpecification()
     {
-        
+
     }
     public BaseSpecification(Expression<Func<T, bool>> criteria)
     {

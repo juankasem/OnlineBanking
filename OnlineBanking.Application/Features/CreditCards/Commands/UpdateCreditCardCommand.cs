@@ -1,6 +1,3 @@
-using MediatR;
-using OnlineBanking.Application.Models;
-
 namespace OnlineBanking.Application.Features.CreditCards.Commands;
 
 public class UpdateCreditCardCommand : IRequest<ApiResult<Unit>>

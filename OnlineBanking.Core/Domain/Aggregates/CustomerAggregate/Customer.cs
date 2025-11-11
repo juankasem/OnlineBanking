@@ -70,7 +70,7 @@ public class Customer : BaseDomainEntity
     /// customer address
     /// </summary>
     public Address Address { get; set; }
-    
+
     //Many-to-many relationship
     public ICollection<CustomerBankAccount> CustomerBankAccounts { get { return _customerBankAccounts; } }
 

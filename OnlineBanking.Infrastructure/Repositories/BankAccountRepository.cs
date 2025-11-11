@@ -1,7 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Contracts.Persistence;
+using Microsoft.Identity.Client;
 using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
 namespace OnlineBanking.Infrastructure.Repositories;
@@ -14,13 +12,13 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
 
     public async Task<(IReadOnlyList<BankAccount>, int)> GetAllBankAccountsAsync(BankAccountParams bankAccountParams)
     {
-       var query = _dbContext.BankAccounts
-                            .Include(c => c.Currency)
-                            .Include(c => c.Branch)
-                            .Include(b => b.CreditCards)
-                            .Include(b => b.DebitCards)
-                            .Include(b => b.FastTransactions)
-                            .AsQueryable();
+        var query = _dbContext.BankAccounts
+                             .Include(c => c.Currency)
+                             .Include(c => c.Branch)
+                             .Include(b => b.CreditCards)
+                             .Include(b => b.DebitCards)
+                             .Include(b => b.FastTransactions)
+                             .AsQueryable();
 
         var totalCount = await query.CountAsync();
         var bankAccounts = await ApplyPagination(query, bankAccountParams.PageNumber, bankAccountParams.PageSize);
@@ -51,6 +49,17 @@ public class BankAccountRepository : GenericRepository<BankAccount>, IBankAccoun
 
         return (bankAccounts, totalCount);
     }
+
+    public async Task<BankAccount> GetByAccountNoOrIBANAsync(string ibanOrAccountNo) =>
+                  await _dbContext.BankAccounts.Where(b => b.AccountNo == ibanOrAccountNo || b.IBAN == ibanOrAccountNo)
+                                        .Include(b => b.Branch)
+                                        .Include(b => b.Currency)
+                                        .Include(b => b.BankAccountOwners)
+                                        .ThenInclude(c => c.Customer)
+                                        .Include(b => b.FastTransactions)
+                                        .Include(b => b.CreditCards)
+                                        .Include(b => b.DebitCards)
+                                        .FirstOrDefaultAsync();
 
     public async Task<BankAccount> GetByAccountNoAsync(string accountNo) =>
              await _dbContext.BankAccounts.Where(b => b.AccountNo == accountNo)

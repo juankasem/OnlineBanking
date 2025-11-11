@@ -1,10 +1,10 @@
-using System.Text.Json.Serialization;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Constants;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
+using System.Text.Json.Serialization;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
@@ -157,7 +157,7 @@ public class BankAccount : BaseDomainEntity
             accountTransaction.Transaction = cashTransaction;
     }
 
-    public void DeleteTransaction(Guid id) 
+    public void DeleteTransaction(Guid id)
     {
         var index = _accountTransactions.FindIndex(c => c.Transaction?.Id == id);
 

@@ -16,7 +16,7 @@ public class RequestValidationProcessor<TRequest> : IRequestPreProcessor<TReques
     public async Task Process(TRequest request, CancellationToken cancellationToken)
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);
-        
+
     }
 }
 

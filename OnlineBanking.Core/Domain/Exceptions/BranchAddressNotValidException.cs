@@ -1,5 +1,3 @@
-using System;
-
 namespace OnlineBanking.Core.Domain.Exceptions;
 
 public class BranchAddressNotValidException : NotValidException

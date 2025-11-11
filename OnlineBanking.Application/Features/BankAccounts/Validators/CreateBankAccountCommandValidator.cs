@@ -1,5 +1,4 @@
 using FluentValidation;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Features.BankAccounts.Commands;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Validators;
@@ -23,7 +22,7 @@ public class CreateBankAccountCommandValidator : AbstractValidator<CreateBankAcc
         .MinimumLength(20).WithMessage("Minimum number of characters of {PropertyName} should be {ComparisonValue} characters");
 
         RuleFor(b => b.Type)
-        .NotNull().WithMessage("{PropertyName} is required");        
+        .NotNull().WithMessage("{PropertyName} is required");
 
         RuleFor(b => b.BranchId)
         .NotNull().WithMessage("{PropertyName} is required");

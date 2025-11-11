@@ -1,9 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Infrastructure.Repositories;
 using OnlineBanking.Infrastructure.Persistence;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using OnlineBanking.Infrastructure.Repositories;
 using StackExchange.Redis;
 
 namespace OnlineBanking.Infrastructure;
@@ -17,8 +13,9 @@ public static class PersistenceServiceRegistration
             options.UseSqlServer(configuration.GetConnectionString("OnlineBankingConnection"));
         });
 
-        services.AddSingleton<IConnectionMultiplexer>(c => {
-            var  options = ConfigurationOptions.Parse(configuration?.GetConnectionString("Redis")!);
+        services.AddSingleton<IConnectionMultiplexer>(c =>
+        {
+            var options = ConfigurationOptions.Parse(configuration?.GetConnectionString("Redis")!);
             return ConnectionMultiplexer.Connect(options);
         });
 

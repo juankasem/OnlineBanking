@@ -1,6 +1,6 @@
-using System.Text.Json;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using StackExchange.Redis;
+using System.Text.Json;
 
 namespace OnlineBanking.Infrastructure.Services;
 
@@ -15,8 +15,8 @@ public class ResponseCacheService : IResponseCacheService
 
     public async Task CacheResponseAsync(string cacheKey, object response, TimeSpan timeToLive)
     {
-        if (response == null) 
-        return;
+        if (response == null)
+            return;
 
         var options = new JsonSerializerOptions()
         {
@@ -33,7 +33,7 @@ public class ResponseCacheService : IResponseCacheService
         var cachedResponse = await _database.StringGetAsync(cacheKey);
 
         if (cachedResponse.IsNullOrEmpty)
-        return null;
+            return null;
 
         return cachedResponse;
     }

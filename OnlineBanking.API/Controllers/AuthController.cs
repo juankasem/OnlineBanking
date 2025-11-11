@@ -1,12 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using OnlineBanking.API.Common;
 using OnlineBanking.API.Constants;
 using OnlineBanking.API.Extensions;
-using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Application.Models.Auth.Requests;
 using OnlineBanking.Application.Models.Auth.Responses;
 using OnlineBanking.Core.Domain.Entities;
@@ -75,7 +72,7 @@ public class AuthController : BaseApiController
     [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
+    public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
     {
         _logger.LogInformation($"Login attempt for {request.Username}");
 
@@ -223,7 +220,7 @@ public class AuthController : BaseApiController
 
         if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             return BadRequest("Invalid access token or refresh token");
-        
+
 
         var newAccessToken = _tokenService.CreateToken(principal.Claims.ToList());
         var newRefreshToken = _tokenService.GenerateRefreshToken();
@@ -297,4 +294,3 @@ public class AuthController : BaseApiController
     }
 }
 
- 

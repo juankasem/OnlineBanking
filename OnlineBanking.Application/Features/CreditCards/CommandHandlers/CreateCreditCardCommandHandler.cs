@@ -1,12 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.CreditCards.Commands;
 using OnlineBanking.Application.Features.CreditCards.Messages;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
 
@@ -52,7 +46,7 @@ public class CreateCreditCardCommandHandler : IRequestHandler<CreateCreditCardCo
 
             var creditCard = CreateCreditCard(request.CreditCardNo, request.CustomerNo, request.ValidTo,
                                             request.SecurityCode, request.BankAccountId);
-                        
+
             bankAccount.AddCreditCard(creditCard);
 
             _uow.BankAccounts.Update(bankAccount);
@@ -67,12 +61,12 @@ public class CreateCreditCardCommandHandler : IRequestHandler<CreateCreditCardCo
         catch (Exception e)
         {
             result.AddUnknownError(e.Message);
-        }    
+        }
 
         return result;
     }
 
-    private CreditCard CreateCreditCard(string creditCardNo, string	customerNo, 
+    private CreditCard CreateCreditCard(string creditCardNo, string customerNo,
                                     DateTime validTo, int securityCode, Guid bankAccountId) =>
         CreditCard.Create(creditCardNo, customerNo, validTo, securityCode, bankAccountId);
 }

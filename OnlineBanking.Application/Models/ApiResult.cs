@@ -1,8 +1,6 @@
-using OnlineBanking.Application.Enums;
-
 namespace OnlineBanking.Application.Models;
 
-    public class ApiResult<T>
+public class ApiResult<T>
 {
     public T Payload { get; set; }
     public bool IsError { get; set; }

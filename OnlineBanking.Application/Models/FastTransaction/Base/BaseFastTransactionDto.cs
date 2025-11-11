@@ -1,5 +1,6 @@
 
 namespace OnlineBanking.Application.Models.FastTransaction.Base;
+
 public class BaseFastTransactionDto
 {
     public string IBAN { get; set; }

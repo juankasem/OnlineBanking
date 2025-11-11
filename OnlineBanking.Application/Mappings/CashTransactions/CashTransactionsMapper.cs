@@ -1,5 +1,3 @@
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Models.CashTransaction;
 using OnlineBanking.Application.Models.CashTransaction.Base;
 using OnlineBanking.Application.Models.CashTransaction.Requests;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
@@ -29,7 +27,7 @@ public class CashTransactionsMapper : ICashTransactionsMapper
                     Enum.GetName(ct.InitiatedBy),
                     ct.From,
                     ct.To,
-                    ct.Sender ?? null, 
+                    ct.Sender ?? null,
                     ct.Recipient ?? null,
                     ct.From != iban
                     ?
@@ -63,6 +61,6 @@ public class CashTransactionsMapper : ICashTransactionsMapper
         new(amount, currency);
 
     private static CurrencyDto CreateCurrency(Currency currency) =>
-     new (currency.Id, currency.Code, currency.Name, currency.Symbol);
+     new(currency.Id, currency.Code, currency.Name, currency.Symbol);
     #endregion
 }

@@ -1,5 +1,3 @@
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using OnlineBanking.Application.Specifications;
 
 namespace OnlineBanking.Infrastructure.Repositories.Base;
@@ -29,7 +27,7 @@ public class SpecificationEvaluator<T> where T : class
         {
             query = query.OrderBy(specification.OrderBy);
         }
-        
+
         if (specification.OrderByDescending != null)
         {
             query = query.OrderByDescending(specification.OrderByDescending);

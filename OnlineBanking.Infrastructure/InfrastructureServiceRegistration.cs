@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Services;
@@ -14,7 +12,7 @@ public static class InfrastructureServiceRegistration
 
         services.AddHttpContextAccessor();
         services.AddScoped<ITokenService, TokenService>();
-        services.AddScoped<IAppUserAccessor,AppUserAccessor>();
+        services.AddScoped<IAppUserAccessor, AppUserAccessor>();
 
         return services;
     }

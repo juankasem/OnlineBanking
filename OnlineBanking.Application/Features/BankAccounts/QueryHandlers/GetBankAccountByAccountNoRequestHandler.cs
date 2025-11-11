@@ -1,10 +1,4 @@
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
 using OnlineBanking.Application.Features.BankAccounts.Queries;
-using OnlineBanking.Application.Mappings.BankAccounts;
-using OnlineBanking.Application.Models;
-using OnlineBanking.Application.Models.BankAccount.Responses;
 
 namespace OnlineBanking.Application.Features.BankAccounts.QueryHandlers;
 

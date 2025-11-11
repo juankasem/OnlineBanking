@@ -1,9 +1,3 @@
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Common;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -62,7 +56,7 @@ public class BaseApiController : ControllerBase
         if (errors.Any(e => e.Code == ErrorCode.InternalServerError ||
                             e.Code == ErrorCode.UnknownError))
         {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.InternalServerError || 
+            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.InternalServerError ||
                         er.Code == ErrorCode.UnknownError);
 
             if (error is not null)

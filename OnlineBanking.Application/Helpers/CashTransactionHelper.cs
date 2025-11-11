@@ -1,11 +1,4 @@
 ﻿
-using OnlineBanking.Application.Common.Helpers;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Models.CashTransaction;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Constants;
-using OnlineBanking.Core.Domain.Enums;
-
 namespace OnlineBanking.Application.Helpers;
 
 internal static class CashTransactionHelper
@@ -46,10 +39,12 @@ internal static class CashTransactionHelper
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)
     {
-        return initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
-                                    initiatedBy == BankAssetType.Branch ? InitiatorCode.Branch :
-                                    initiatedBy == BankAssetType.POS ?
-                                    InitiatorCode.POS : InitiatorCode.Unknown;
+        var code = initiatedBy == BankAssetType.ATM ? InitiatorCode.ATM :
+                initiatedBy == BankAssetType.BankAccount ? InitiatorCode.BankAccount :
+                initiatedBy == BankAssetType.POS ?
+                InitiatorCode.POS : InitiatorCode.Unknown;
+
+        return code;
     }
 }
 

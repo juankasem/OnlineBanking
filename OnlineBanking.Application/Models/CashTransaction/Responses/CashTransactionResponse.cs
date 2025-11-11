@@ -1,5 +1,3 @@
-using OnlineBanking.Core.Domain.Enums;
-
 namespace OnlineBanking.Application.Models.CashTransaction.Responses;
 
 public class CashTransactionResponse

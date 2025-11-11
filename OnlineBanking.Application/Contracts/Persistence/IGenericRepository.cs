@@ -1,11 +1,11 @@
 
-using System.Linq.Expressions;
 using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Application.Specifications;
+using System.Linq.Expressions;
 
 namespace OnlineBanking.Application.Contracts.Persistence
 {
-    public interface IGenericRepository<T> where T: class
+    public interface IGenericRepository<T> where T : class
     {
         Task<(IReadOnlyList<T>, int)> GetAllAsync(PaginationParams paginationParams);
         Task<(IReadOnlyList<T>, int)> GetAsync(Expression<Func<T, bool>> predicate, PaginationParams paginationParams);
@@ -16,9 +16,9 @@ namespace OnlineBanking.Application.Contracts.Persistence
         Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null,
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
         List<Expression<Func<T, object>>> includes = null,
-        bool disableTracking = true);      
+        bool disableTracking = true);
         Task<IReadOnlyList<T>> GetAsync(ISpecification<T> spec);
-        
+
         Task<T> GetEntityWithSpecAsync(ISpecification<T> spec);
 
         Task<T> GetByIdAsync(int id);

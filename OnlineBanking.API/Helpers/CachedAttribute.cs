@@ -1,7 +1,3 @@
-using System.Text;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using OnlineBanking.Application.Contracts.Infrastructure;
 
 namespace OnlineBanking.API.Helpers;
 

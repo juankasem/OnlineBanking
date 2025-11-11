@@ -1,9 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.Application.Features.FastTransactions.Commands;
-using OnlineBanking.Application.Features.FastTransactions.Queries;
-using OnlineBanking.Application.Models.FastTransaction.Requests;
-using OnlineBanking.Application.Models.FastTransaction.Responses;
 
 namespace OnlineBanking.API.Controllers;
 
@@ -28,6 +22,7 @@ public class FastTransactionsController : BaseApiController
 
     // POST api/v1/FastTransactions
     [HttpPost]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request, CancellationToken cancellationToken = default)

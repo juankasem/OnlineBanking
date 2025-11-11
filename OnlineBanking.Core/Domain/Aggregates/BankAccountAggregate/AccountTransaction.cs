@@ -10,7 +10,7 @@ public class AccountTransaction
     public CashTransaction Transaction { get; set; }
 
     public AccountTransaction()
-    {  
+    {
     }
 
     private AccountTransaction(Guid accountId, Guid transactionId)

@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 
 namespace OnlineBanking.API.Extensions;
 

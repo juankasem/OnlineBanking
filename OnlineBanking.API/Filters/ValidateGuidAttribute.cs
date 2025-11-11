@@ -1,17 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using OnlineBanking.API.Common;
 
 namespace OnlineBanking.API.Filters;
 
-public class ValidateGuidAttribute : ActionFilterAttribute
+public class ValidateGuidAttribute(params string[] keys) : ActionFilterAttribute
 {
-    private readonly List<string> _keys;
-
-    public ValidateGuidAttribute(params string[] keys)
-    {
-        _keys = keys.ToList();
-    }
+    private readonly List<string> _keys = [.. keys];
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {

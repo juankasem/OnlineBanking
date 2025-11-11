@@ -1,19 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Extensions;
-using OnlineBanking.Application.Features.BankAccounts.Commands;
-using OnlineBanking.Application.Features.BankAccounts.Queries;
-using OnlineBanking.Application.Features.CashTransactions.Commands;
-using OnlineBanking.Application.Features.FastTransactions.Commands;
-using OnlineBanking.Application.Helpers;
-using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models.BankAccount;
-using OnlineBanking.Application.Models.BankAccount.Requests;
-using OnlineBanking.Application.Models.BankAccount.Responses;
-using OnlineBanking.Application.Models.CashTransaction.Requests;
-using OnlineBanking.Application.Models.FastTransaction.Requests;
-using OnlineBanking.Core.Domain.Enums;
-
 
 namespace OnlineBanking.API.Controllers;
 
@@ -24,9 +8,9 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(PagedList<BankAccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> ListAllBankAccounts([FromQuery] BankAccountParams bankAccountParams, CancellationToken cancellationToken = default)
     {
-         var query = new GetAllBankAccountsRequest() 
-        { 
-            BankAccountParams = bankAccountParams 
+        var query = new GetAllBankAccountsRequest()
+        {
+            BankAccountParams = bankAccountParams
         };
         var result = await _mediator.Send(query, cancellationToken);
 
@@ -48,14 +32,14 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountsByCustomerNo([FromRoute] string customerNo,
                                                                  [FromQuery] BankAccountParams bankAccountParams,
-                                                                 [FromQuery] CashTransactionParams accountTransactionsParams,                                                
+                                                                 [FromQuery] CashTransactionParams accountTransactionsParams,
                                                                  CancellationToken cancellationToken = default)
     {
-        var query = new GetBankAccountsByCustomerNoRequest() 
-        { 
+        var query = new GetBankAccountsByCustomerNoRequest()
+        {
             CustomerNo = customerNo,
             BankAccountParams = bankAccountParams,
-            AccountTransactionsParams = accountTransactionsParams 
+            AccountTransactionsParams = accountTransactionsParams
         };
         var result = await _mediator.Send(query, cancellationToken);
 
@@ -73,15 +57,16 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.BankAccounts.GetByAccountNo)]
+    [ValidateBankAccountOwner("account-no")]
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetBankAccountByAccountNo([FromRoute] string accountNo,
-                                                                [FromQuery] CashTransactionParams accountTransactionsParams,                                                
-                                                                CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetBankAccountByAccountNo([FromRoute(Name = "account-no")] string accountNo,
+                                                               [FromQuery] CashTransactionParams accountTransactionsParams,
+                                                               CancellationToken cancellationToken = default)
     {
-        var query = new GetBankAccountByAccountNoRequest() 
-        { 
-            AccountNo = accountNo, 
+        var query = new GetBankAccountByAccountNoRequest()
+        {
+            AccountNo = accountNo,
             AccountTransactionsParams = accountTransactionsParams
         };
 
@@ -89,10 +74,11 @@ public class BankAccountsController : BaseApiController
     }
 
     [HttpGet(ApiRoutes.BankAccounts.GetByIBAN)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountByIBAN([FromRoute] string iban,
-                                                          [FromQuery] CashTransactionParams accountTransactionParams,                                                
+                                                          [FromQuery] CashTransactionParams accountTransactionParams,
                                                            CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest()
@@ -120,9 +106,9 @@ public class BankAccountsController : BaseApiController
     public async Task<IActionResult> DeleteBankAccount([FromQuery] string id,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new DeleteBankAccountCommand 
-        { 
-            BankAccountId = Guid.Parse(id) 
+        var command = new DeleteBankAccountCommand
+        {
+            BankAccountId = Guid.Parse(id)
         };
 
         return await HandleRequest(command, cancellationToken);
@@ -134,9 +120,9 @@ public class BankAccountsController : BaseApiController
     public async Task<IActionResult> ActivateBankAccount([FromQuery] string id,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new ActivateBankAccountCommand 
-        { 
-            BankAccountId = Guid.Parse(id) 
+        var command = new ActivateBankAccountCommand
+        {
+            BankAccountId = Guid.Parse(id)
         };
 
         return await HandleRequest(command, cancellationToken);
@@ -147,15 +133,16 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeactivateBankAccount([FromQuery] string id, CancellationToken cancellationToken = default)
     {
-        var command = new DeactivateBankAccountCommand 
-        { 
-            BankAccountId = Guid.Parse(id) 
+        var command = new DeactivateBankAccountCommand
+        {
+            BankAccountId = Guid.Parse(id)
         };
 
         return await HandleRequest(command, cancellationToken);
     }
 
     [HttpPost(ApiRoutes.BankAccounts.CashTransaction)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateCashTransaction([FromRoute] string iban,
@@ -163,8 +150,8 @@ public class BankAccountsController : BaseApiController
                                                            CancellationToken cancellationToken = default)
     {
         if (iban != request.BaseCashTransaction.IBAN)
-            return BadRequest("IBAN mismatch between route and request body.");
-
+            return HandleErrorResponse([new Error(ErrorCode.BadRequest, "IBAN mismatch between route and request body.")]
+           );
 
         return request.BaseCashTransaction.Type switch
         {
@@ -176,12 +163,13 @@ public class BankAccountsController : BaseApiController
 
             CashTransactionType.Transfer =>
                await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
-            
-             _ => BadRequest("Unsupported transaction type.")
+
+            _ => HandleErrorResponse([new Error(ErrorCode.BadRequest, "Unsupported transaction type.")])
         };
     }
 
     [HttpPost(ApiRoutes.BankAccounts.FastTransaction)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateFastTransaction([FromRoute] string iban,
                                                            [FromBody] CreateFastTransactionRequest request,
@@ -194,6 +182,7 @@ public class BankAccountsController : BaseApiController
 
     // DELETE api/v1/FastTransactions/1234
     [HttpDelete(ApiRoutes.BankAccounts.FastTransactionById)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteFastTransaction([FromRoute] string iban,

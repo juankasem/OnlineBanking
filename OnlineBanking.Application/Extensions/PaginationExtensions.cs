@@ -1,10 +1,9 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using OnlineBanking.Application.Helpers;
 
 namespace OnlineBanking.Application.Extensions;
 
-public static class PaginationExtensions 
+public static class PaginationExtensions
 {
     public static async Task<PagedList<T>> ToPagedList<T>(this IQueryable<T> source, int pageNumber, int pageSize, CancellationToken token = default)
     {

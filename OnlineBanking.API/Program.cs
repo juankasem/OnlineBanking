@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using OnlineBanking.API.Extensions;
-using OnlineBanking.API.Middleware;
-using OnlineBanking.Application;
-using OnlineBanking.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

@@ -1,12 +1,10 @@
 using FluentValidation;
-using MediatR;
-using OnlineBanking.Application.Models;
 
 namespace OnlineBanking.Application.Common.Behaviors;
 
 public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
-    where TResponse: ApiResult<Unit>, new()
+    where TResponse : ApiResult<Unit>, new()
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -15,7 +13,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         _validators = validators;
     }
 
-    public async Task<TResponse> Handle(TRequest request, 
+    public async Task<TResponse> Handle(TRequest request,
                                         RequestHandlerDelegate<TResponse> next,
                                         CancellationToken cancellationToken)
     {

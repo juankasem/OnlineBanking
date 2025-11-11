@@ -1,9 +1,6 @@
 
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Persistence;
 using OnlineBanking.Application.Features.Branch.Commands;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
 namespace OnlineBanking.Application.Features.Branch.CommandHandlers;
@@ -22,7 +19,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     public async Task<ApiResult<Unit>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-        
+
         var address = _mapper.Map<Address>(request.Address);
 
         var branch = CreateBranch(request);
@@ -35,7 +32,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     }
 
     #region Private helper methods
-    private  Core.Domain.Aggregates.BranchAggregate.Branch CreateBranch(CreateBranchCommand request) =>
+    private Core.Domain.Aggregates.BranchAggregate.Branch CreateBranch(CreateBranchCommand request) =>
         Core.Domain.Aggregates.BranchAggregate.
             Branch.Create(request.Name);
     #endregion

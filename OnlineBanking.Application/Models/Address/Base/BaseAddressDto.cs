@@ -1,4 +1,5 @@
 namespace OnlineBanking.Application.Models.Address.Base;
+
 public class BaseAddressDto
 {
     public string Name { get; set; }

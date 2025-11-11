@@ -1,8 +1,4 @@
-
-using MediatR;
-using OnlineBanking.Application.Helpers;
 using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Application.Models.Customer.Responses;
 
 namespace OnlineBanking.Application.Features.Customers.Queries;

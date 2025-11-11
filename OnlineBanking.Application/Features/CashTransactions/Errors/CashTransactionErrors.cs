@@ -1,13 +1,9 @@
-﻿
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Models;
+﻿namespace OnlineBanking.Application.Features.CashTransactions.Errors;
 
-namespace OnlineBanking.Application.Features.CashTransactions.Errors;
-
-    public static class CashTransactionErrors
-    {
-    public static readonly Error BankAccountNotFound = new (ErrorCode.BadRequest, CashTransactionErrorMessages.NotFound); 
-    }
+public static class CashTransactionErrors
+{
+    public static readonly Error BankAccountNotFound = new(ErrorCode.BadRequest, CashTransactionErrorMessages.NotFound);
+}
 
 public class CashTransactionErrorMessages
 {

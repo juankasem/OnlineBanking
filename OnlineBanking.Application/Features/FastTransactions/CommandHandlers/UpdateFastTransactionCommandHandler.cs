@@ -1,12 +1,6 @@
 using AutoMapper;
-using MediatR;
-using OnlineBanking.Application.Contracts.Infrastructure;
-using OnlineBanking.Application.Contracts.Persistence;
-using OnlineBanking.Application.Enums;
-using OnlineBanking.Application.Features.BankAccounts;
 using OnlineBanking.Application.Features.FastTransactions.Commands;
 using OnlineBanking.Application.Features.FastTransactions.Messages;
-using OnlineBanking.Application.Models;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Exceptions;
 
@@ -21,7 +15,7 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
     public UpdateFastTransactionCommandHandler(IUnitOfWork uow, IMapper mapper, IAppUserAccessor appUserAccessor)
     {
         _uow = uow;
-        _mapper  = mapper;
+        _mapper = mapper;
         _appUserAccessor = appUserAccessor;
     }
 
