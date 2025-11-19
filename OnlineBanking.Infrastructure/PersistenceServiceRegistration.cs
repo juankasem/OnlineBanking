@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using OnlineBanking.Infrastructure.Persistence;
+using OnlineBanking.Infrastructure.Persistence.Interceptors;
 using OnlineBanking.Infrastructure.Repositories;
 using StackExchange.Redis;
 
@@ -8,8 +10,9 @@ public static class PersistenceServiceRegistration
 {
     public static IServiceCollection ConfigurePersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<OnlineBankDbContext>(options =>
+        services.AddDbContext<OnlineBankDbContext>((sp,options) =>
         {
+            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             options.UseSqlServer(configuration.GetConnectionString("OnlineBankingConnection"));
         });
 
@@ -28,6 +31,8 @@ public static class PersistenceServiceRegistration
         services.AddScoped<IFastTransactionsRepository, FastTransactionsRepository>();
         services.AddScoped<ILoansRepository, LoansRepository>();
         services.AddScoped<IUtilityPaymentRepository, UtilityPaymentRepository>();
+
+        services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventInterceptor>();
 
         return services;
     }

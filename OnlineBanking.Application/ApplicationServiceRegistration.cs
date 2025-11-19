@@ -1,12 +1,5 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.DependencyInjection;
+
 using OnlineBanking.Application.Common.Behaviors;
-using OnlineBanking.Application.Mappings.BankAccounts;
-using OnlineBanking.Application.Mappings.Branches;
-using OnlineBanking.Application.Mappings.CashTransactions;
-using OnlineBanking.Application.Mappings.CreditCards;
-using System.Reflection;
 
 namespace OnlineBanking.Application;
 
