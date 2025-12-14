@@ -1,4 +1,9 @@
 
+using OnlineBanking.Application.Features.FastTransactions.Create;
+using OnlineBanking.Application.Features.FastTransactions.Delete;
+using OnlineBanking.Application.Features.FastTransactions.GetByIBAN;
+using OnlineBanking.Application.Features.FastTransactions.Update;
+
 namespace OnlineBanking.API.Controllers;
 
 [Authorize]

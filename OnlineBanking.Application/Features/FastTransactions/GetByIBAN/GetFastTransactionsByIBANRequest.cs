@@ -1,0 +1,11 @@
+
+using OnlineBanking.Application.Models.FastTransaction.Responses;
+
+namespace OnlineBanking.Application.Features.FastTransactions.GetByIBAN;
+
+public class GetFastTransactionsByIBANRequest : IRequest<ApiResult<PagedList<FastTransactionResponse>>>
+{
+    public string IBAN { get; set; }
+
+    public FastTransactionParams FastTransactionParams { get; set; }
+}

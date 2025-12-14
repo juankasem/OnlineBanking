@@ -1,4 +1,12 @@
 
+using OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
+using OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
+using OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
+using OnlineBanking.Application.Features.CashTransactions.Delete;
+using OnlineBanking.Application.Features.CashTransactions.GetAll;
+using OnlineBanking.Application.Features.CashTransactions.GetByIBAN;
+using OnlineBanking.Application.Features.CashTransactions.Update;
+
 namespace OnlineBanking.API.Controllers;
 
 [Authorize]

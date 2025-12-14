@@ -143,7 +143,7 @@ public class CashTransaction : BaseDomainEntity
         var validator = new CashTransactionValidator();
         var objectToValidate = new CashTransaction(
         id ?? Guid.NewGuid(),
-        referenceNo ?? $"{Guid.NewGuid().ToString().Replace("-", "").Substring(1, 27)}",
+        referenceNo ?? GenerateReferenceNumber(),
         type,
         initiatedBy,
         from,
@@ -171,9 +171,25 @@ public class CashTransaction : BaseDomainEntity
         throw exception;
     }
 
+    #region Public methods
     public void UpdateStatus(CashTransactionStatus status)
     {
         Status = status;
         LastModifiedOn = DateTime.UtcNow;
     }
+    #endregion
+
+    #region Private Helpers
+
+    /// <summary>
+    /// Generates a unique reference number for the transaction
+    /// </summary>
+    private static string GenerateReferenceNumber()
+    {
+        const int referenceLength = 27;
+        var guid = Guid.NewGuid().ToString().Replace("-", "");
+        return guid.Substring(1, Math.Min(referenceLength, guid.Length - 1));
+    }
+
+    #endregion
 }

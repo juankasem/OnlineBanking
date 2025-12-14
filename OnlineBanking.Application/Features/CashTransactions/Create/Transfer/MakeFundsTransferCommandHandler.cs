@@ -1,0 +1,198 @@
+
+namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
+
+/// <summary>
+/// Handles fund transfer command requests.
+/// Validates transfer request, applies domain logic, and persists changes to both accounts.
+/// </summary>
+public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
+                                             IBankAccountService bankAccountService,
+                                             IAppUserAccessor appUserAccessor,
+                                             ILogger<MakeFundsTransferCommandHandler> logger) :
+                                             IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
+{
+    private const decimal TransferFeePercentage = 0.025M;
+
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountService _bankAccountService = bankAccountService;
+    private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly ILogger<MakeFundsTransferCommandHandler> _logger = logger;
+
+    public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Start fund transfer from {from} to {to}", request.From, request.To);
+
+        var result = new ApiResult<Unit>();
+
+        // Validate transfer request
+        if (!ValidateTransferRequest(request, result))
+            return result;
+
+        var senderIBAN = request.From;
+
+        var senderAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
+
+        if (!ValidateBankAccount(senderAccount, senderIBAN, result))
+            return result;
+
+        var recipientIBAN = request.To;
+        var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
+
+        if (!ValidateBankAccount(recipientAccount, recipientIBAN, result))
+            return result;
+
+        var amountToTransfer = decimal.Round(request.BaseCashTransaction.Amount.Value, 2);
+        var fees = decimal.Round(amountToTransfer * TransferFeePercentage, 2);
+        var totalAmount = amountToTransfer + fees;
+
+        if (!HasSufficientFunds(senderAccount, totalAmount, result))
+            return result;
+
+        // Prepare transfer dto
+        var senderName = await GetBankAccountOwner(senderAccount);
+        var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, senderName, transferDto);
+
+        // Apply domain logic to both accounts
+        _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction, fees);
+
+        // mark business result as completed on the object before saving so EF persists it in same transaction
+        cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+
+        // Mark both aggregates as modified for EF Core
+        _uow.BankAccounts.Update(senderAccount);
+        _uow.BankAccounts.Update(recipientAccount);
+
+        if (await _uow.CompleteDbTransactionAsync() >= 1)
+        {
+            _logger.LogInformation(
+                  "Transfer {TransactionId} of amount {Amount} with fees {Fees} from {From} to {To} completed successfully.",
+                  cashTransaction.Id, amountToTransfer, fees, senderIBAN, recipientIBAN);
+        }
+        else
+        {
+            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            _logger.LogError("Transfer from {From} to {To} failed to commit.", senderIBAN, recipientIBAN);
+        }
+
+        return result;
+    }
+
+    #region Validation Methods
+
+    /// <summary>
+    /// Validates the transfer request (amount, IBANs presence)
+    /// </summary>
+    private static bool ValidateTransferRequest(MakeFundsTransferCommand request, ApiResult<Unit> result)
+    {
+        if (request?.BaseCashTransaction == null)
+        {
+            result.AddError(ErrorCode.BadRequest, "Invalid transfer request.");
+            return false;
+        }
+
+        if (request.BaseCashTransaction.Amount.Value <= 0)
+        {
+            result.AddError(ErrorCode.BadRequest, "Transfer amount must be greater than zero.");
+            return false;
+        }
+
+        var senderIBAN = request.From;
+        var recipientIBAN = request.To;
+
+        if (senderIBAN.Equals(recipientIBAN, StringComparison.OrdinalIgnoreCase))
+        {
+            result.AddError(ErrorCode.BadRequest, "Sender and recipient IBANs cannot be the same.");
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Validates that the bank account exists and is valid
+    /// </summary>
+    private static bool ValidateBankAccount(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
+        string iban,
+        ApiResult<Unit> result)
+    {
+        var success = true;
+
+        if (bankAccount == null)
+        {
+            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
+            success = false;
+        }
+
+        return success;
+    }
+
+    /// <summary>
+    /// Validates that the sender has sufficient funds for the transfer including fees
+    /// </summary>
+    private static bool HasSufficientFunds(
+        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+        decimal totalAmount,
+        ApiResult<Unit> result)
+    {
+        if (senderAccount.AllowedBalanceToUse < totalAmount)
+        {
+            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
+            return false;
+        }
+
+        return true;
+    }
+
+    #endregion
+
+    #region Helper Methods
+
+    /// <summary>
+    /// Gets the name of the bank account owner (currently logged-in user)
+    /// Returns empty string if not found
+    /// </summary>
+    private async Task<string> GetBankAccountOwner(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount)
+    {
+        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
+
+        if (loggedInAppUser is null)
+        {
+            return string.Empty;
+        }
+
+        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
+
+        return bankAccountOwner is not null ? $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}" :
+                string.Empty;
+    }
+
+    /// <summary>
+    /// Prepares transfer DTO with updated balances and recipient information
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown when recipient has no owners</exception>
+    private static TransferDto PrepareTransferDto(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
+                                                   Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
+                                                   decimal amountToTransfer,
+                                                   decimal fees)
+    {
+        ArgumentNullException.ThrowIfNull(senderAccount);
+        ArgumentNullException.ThrowIfNull(recipientAccount);
+
+        var recipientOwner = recipientAccount.BankAccountOwners.FirstOrDefault()?.Customer
+            ?? throw new InvalidOperationException("Recipient account has no owners.");
+
+        var updatedSenderBalance = decimal.Round(senderAccount.Balance - (amountToTransfer + fees), 2);
+        var updatedRecipientBalance = decimal.Round(recipientAccount.Balance + amountToTransfer, 2);
+
+        return new TransferDto(
+            $"{recipientOwner.FirstName} {recipientOwner.LastName}",
+            updatedSenderBalance,
+            updatedRecipientBalance,
+            fees
+        );
+    }
+
+    #endregion
+}

@@ -1,4 +1,19 @@
 
+using OnlineBanking.Application.Features.BankAccounts.Activate;
+using OnlineBanking.Application.Features.BankAccounts.AddOwner;
+using OnlineBanking.Application.Features.BankAccounts.Create;
+using OnlineBanking.Application.Features.BankAccounts.Deactivate;
+using OnlineBanking.Application.Features.BankAccounts.Delete;
+using OnlineBanking.Application.Features.BankAccounts.GetAll;
+using OnlineBanking.Application.Features.BankAccounts.GetByAccountNo;
+using OnlineBanking.Application.Features.BankAccounts.GetByCustomerNo;
+using OnlineBanking.Application.Features.BankAccounts.GetWithTransactions;
+using OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
+using OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
+using OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
+using OnlineBanking.Application.Features.FastTransactions.Create;
+using OnlineBanking.Application.Features.FastTransactions.Delete;
+
 namespace OnlineBanking.API.Controllers;
 
 [Authorize]
@@ -106,7 +121,7 @@ public class BankAccountsController : BaseApiController
     public async Task<IActionResult> DeleteBankAccount([FromQuery] string id,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new DeleteBankAccountCommand
+        var command = new DeleteBankAccountCommand()
         {
             BankAccountId = Guid.Parse(id)
         };
@@ -133,7 +148,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeactivateBankAccount([FromQuery] string id, CancellationToken cancellationToken = default)
     {
-        var command = new DeactivateBankAccountCommand
+        var command = new DeactivateBankAccountCommand()
         {
             BankAccountId = Guid.Parse(id)
         };

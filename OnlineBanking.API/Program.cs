@@ -1,4 +1,6 @@
 
+using Azure.Messaging.ServiceBus;
+
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
@@ -23,7 +25,7 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.ConfigureIdentityServices(configuration);
 builder.Services.ConfigureApplicationServices();
-builder.Services.ConfigureInfrastructureServices();
+builder.Services.ConfigureInfrastructureServices(builder.Configuration);
 builder.Services.ConfigurePersistenceServices(configuration);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();

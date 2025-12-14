@@ -2,10 +2,11 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OnlineBanking.Core.Domain.Abstractions;
+using OnlineBanking.Infrastructure.Services;
 
 namespace OnlineBanking.Infrastructure.Persistence.Interceptors;
 
-public class DispatchDomainEventInterceptor(IMediator mediator) : SaveChangesInterceptor
+public class DispatchDomainEventInterceptor(IMediator mediator, IServiceBusPublisher serviceBusPublisher) : SaveChangesInterceptor
 {
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
@@ -45,6 +46,7 @@ public class DispatchDomainEventInterceptor(IMediator mediator) : SaveChangesInt
         foreach (var domainEvent in domainEvents)
         {
             await mediator.Publish(domainEvent);
+            await serviceBusPublisher.PublishEventAsync(domainEvent);
         }
     }
 }

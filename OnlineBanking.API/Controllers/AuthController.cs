@@ -1,12 +1,6 @@
 
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using OnlineBanking.API.Common;
-using OnlineBanking.API.Constants;
-using OnlineBanking.API.Extensions;
 using OnlineBanking.Application.Models.Auth.Requests;
 using OnlineBanking.Application.Models.Auth.Responses;
-using OnlineBanking.Core.Domain.Entities;
 
 namespace OnlineBanking.API.Controllers;
 

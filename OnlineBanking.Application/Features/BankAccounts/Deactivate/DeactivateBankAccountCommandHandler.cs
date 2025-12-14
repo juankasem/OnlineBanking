@@ -1,0 +1,34 @@
+using AutoMapper;
+
+namespace OnlineBanking.Application.Features.BankAccounts.Deactivate;
+
+public class DeactivateBankAccountCommandHandler : IRequestHandler<DeactivateBankAccountCommand, ApiResult<Unit>>
+{
+    private readonly IUnitOfWork _uow;
+    private readonly IMapper _mapper;
+    public DeactivateBankAccountCommandHandler(IUnitOfWork uow, IMapper mapper)
+    {
+        _uow = uow;
+        _mapper = mapper;
+    }
+    public async Task<ApiResult<Unit>> Handle(DeactivateBankAccountCommand request, CancellationToken cancellationToken)
+    {
+        var result = new ApiResult<Unit>();
+
+        var bankAccount = await _uow.BankAccounts.GetByIdAsync(request.BankAccountId);
+        if (bankAccount is null)
+        {
+            result.AddError(ErrorCode.NotFound,
+            string.Format(BankAccountErrorMessages.NotFound, "Id", request.BankAccountId));
+
+            return result;
+        }
+
+        bankAccount.Deactivate();
+
+        _uow.BankAccounts.Add(bankAccount);
+        await _uow.SaveAsync();
+
+        return result;
+    }
+}

@@ -1,4 +1,7 @@
-﻿
+﻿using OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
+using OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
+using OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
+
 namespace OnlineBanking.Application.Helpers;
 
 internal static class CashTransactionHelper
@@ -26,15 +29,15 @@ internal static class CashTransactionHelper
                                       sender, "Unknown");
     }
 
-    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, TransferDto transferDto)
+    public static CashTransaction CreateCashTransaction(MakeFundsTransferCommand request, string senderName, TransferDto transferDto)
     {
         var ct = request.BaseCashTransaction;
 
         return CashTransaction.Create(ct.Type, ct.InitiatedBy,
                                     request.From, request.To, ct.Amount.Value, ct.Amount.CurrencyId,
-                                    transferDto.Fees, ct.Description, transferDto.SenderBalance, transferDto.RecipientBalance,
-                                    ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
-                                    transferDto.SenderFullName, transferDto.RecipientFullName);
+                                    transferDto.Fees, ct.Description, transferDto.SenderBankAccountBalance, 
+                                    transferDto.RecipientBankAccountBalance, ct.PaymentType, DateTimeHelper.ConvertToDate(ct.TransactionDate),
+                                    senderName, transferDto.RecipientFullName);
     }
 
     private static string GetInitiatorCode(BankAssetType initiatedBy)

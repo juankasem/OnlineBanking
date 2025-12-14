@@ -1,4 +1,7 @@
 
+using OnlineBanking.Application.Features.CreditCards.Create;
+using OnlineBanking.Application.Features.CreditCards.Update;
+
 namespace OnlineBanking.API.Controllers;
 
 public class CreditCardsController : BaseApiController

@@ -1,4 +1,10 @@
 
+using OnlineBanking.Application.Features.Customers.Create;
+using OnlineBanking.Application.Features.Customers.Delete;
+using OnlineBanking.Application.Features.Customers.GetAll;
+using OnlineBanking.Application.Features.Customers.GetBankAccounts;
+using OnlineBanking.Application.Features.Customers.GetById;
+
 namespace OnlineBanking.API.Controllers;
 
 [Authorize]
@@ -48,7 +54,10 @@ public class CustomersController : BaseApiController
     public async Task<IActionResult> GetCustomerBankAccounts([FromRoute] string id,
                                                              CancellationToken cancellationToken = default)
     {
-        var query = new GetCustomerBankAccountsRequest() { CustomerId = Guid.Parse(id) };
+        var query = new GetCustomerBankAccountsRequest() 
+        { 
+            CustomerId = Guid.Parse(id) 
+        };
 
         return await HandleRequest(query, cancellationToken);
     }
