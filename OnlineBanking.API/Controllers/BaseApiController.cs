@@ -1,6 +1,10 @@
 
 namespace OnlineBanking.API.Controllers;
 
+/// <summary>
+/// Base controller providing common functionality for API controllers.
+/// Handles request/response processing and error responses with appropriate HTTP status codes.
+/// </summary>
 [ApiController]
 [Route(ApiRoutes.BaseRoute)]
 [ApiVersion("1.0")]
@@ -9,72 +13,112 @@ public class BaseApiController : ControllerBase
     private IMediator _mediatorInstance;
     private IMapper _mapperInstance;
 
+    /// <summary>
+    /// Lazily initializes and returns the MediatR mediator instance.
+    /// </summary>
     protected IMediator _mediator => _mediatorInstance ??= HttpContext.RequestServices.GetService<IMediator>();
+
+    /// <summary>
+    /// Lazily initializes and returns the AutoMapper instance.
+    /// </summary>
     protected IMapper _mapper => _mapperInstance ??= HttpContext.RequestServices.GetService<IMapper>();
 
-    protected async Task<IActionResult> HandleRequest<TResponse>(IRequest<ApiResult<TResponse>> request, CancellationToken cancellationToken)
+    /// <summary>
+    /// Handles a request and returns an appropriate HTTP response.
+    /// </summary>
+    /// <typeparam name="TResponse">Response payload type</typeparam>
+    /// <param name="request">The request to send through the mediator</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>OK response with payload or error response</returns>
+    protected async Task<IActionResult> HandleRequest<TResponse>(IRequest<ApiResult<TResponse>> request, 
+                                                      CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request, cancellationToken);
 
         return result.IsError ? HandleErrorResponse(result.Errors) : Ok(result.Payload);
     }
 
+    /// <summary>
+    /// Handles error responses and maps error codes to appropriate HTTP status codes.
+    /// </summary>
+    /// <param name="errors">List of errors to process</param>
+    /// <returns>IActionResult with appropriate HTTP status code</returns>
     protected IActionResult HandleErrorResponse(List<Error> errors)
     {
-        var apiError = new ErrorResponse();
+        if (errors.Count == 0)
+            return BadRequest(CreateErrorResponse(StatusCodes.Status400BadRequest, ErrorPhrase.BadRequest, []));
 
-        if (errors.Any(e => e.Code == ErrorCode.NotFound))
+        // Determine response based on first error's code (priority-based)
+        var (statusCode, statusPhrase, errorMessages) = errors.FirstOrDefault()?.Code switch
         {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.NotFound);
+            ErrorCode.BadRequest =>
+              (
+                  StatusCodes.Status400BadRequest,
+                  ErrorPhrase.BadRequest,
+                  errors.Where(e => e.Code == ErrorCode.NotFound).Select(e => e.Message).ToList()
+              ),
 
-            if (error is not null)
-            {
-                apiError.StatusCode = (int)ErrorCode.NotFound;
-                apiError.StatusPhrase = "Not Found";
-                apiError.Timestamp = DateTime.UtcNow;
-                apiError.Errors.Add(error.Message);
-            }
+            ErrorCode.NotFound =>
+                (
+                    StatusCodes.Status404NotFound,
+                    ErrorPhrase.NotFound,
+                    errors.Where(e => e.Code == ErrorCode.NotFound).Select(e => e.Message).ToList()
+                ),
 
-            return NotFound(apiError);
-        }
+            ErrorCode.CreateCashTransactionNotAuthorized or ErrorCode.UnAuthorizedOperation =>
+                (
+                    StatusCodes.Status403Forbidden,
+                    ErrorPhrase.Forbidden,
+                    errors.Where(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized ||
+                                     e.Code == ErrorCode.UnAuthorizedOperation)
+                           .Select(e => e.Message)
+                           .ToList()
+                ),
 
-        if (errors.Any(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized))
+            ErrorCode.InSufficintFunds =>
+                (
+                    StatusCodes.Status400BadRequest,
+                    ErrorPhrase.InsufficientFunds,
+                    errors.Where(e => e.Code == ErrorCode.InSufficintFunds)
+                           .Select(e => e.Message)
+                           .ToList()
+                ),
+
+            ErrorCode.InternalServerError or ErrorCode.UnknownError =>
+                (
+                    StatusCodes.Status500InternalServerError,
+                    ErrorPhrase.InternalServerError,
+                    errors.Where(e => e.Code == ErrorCode.InternalServerError ||
+                                     e.Code == ErrorCode.UnknownError)
+                           .Select(e => e.Message)
+                           .ToList()
+                ),
+
+            _ =>
+                (
+                    StatusCodes.Status400BadRequest,
+                    ErrorPhrase.BadRequest,
+                    errors.Select(e => e.Message).ToList()
+                )
+        };
+
+        var errorResponse = CreateErrorResponse(statusCode, statusPhrase, errorMessages);
+        return StatusCode(statusCode, errorResponse);
+    }
+
+    /// <summary>
+    /// Creates an error response object with timestamp and error details.
+    /// </summary>
+    private static ErrorResponse CreateErrorResponse(int statusCode, string statusPhrase, List<string> errorMessages)
+    {
+        var errorResponse = new ErrorResponse
         {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.CreateCashTransactionNotAuthorized);
+            StatusCode = statusCode,
+            StatusPhrase = statusPhrase,
+            Timestamp = DateTime.UtcNow
+        };
 
-            if (error is not null)
-            {
-                apiError.StatusCode = 403;
-                apiError.StatusPhrase = "Forbidden";
-                apiError.Timestamp = DateTime.UtcNow;
-                apiError.Errors.Add(error.Message);
-            }
-
-            return StatusCode(403, apiError);
-        }
-
-        if (errors.Any(e => e.Code == ErrorCode.InternalServerError ||
-                            e.Code == ErrorCode.UnknownError))
-        {
-            var error = errors.FirstOrDefault(er => er.Code == ErrorCode.InternalServerError ||
-                        er.Code == ErrorCode.UnknownError);
-
-            if (error is not null)
-            {
-                apiError.StatusCode = (int)ErrorCode.InternalServerError;
-                apiError.StatusPhrase = "Internal Server Error";
-                apiError.Timestamp = DateTime.UtcNow;
-                apiError.Errors.Add(error.Message);
-            }
-
-            return StatusCode(500, apiError);
-        }
-
-        apiError.StatusCode = (int)ErrorCode.BadRequest;
-        apiError.StatusPhrase = "Bad Request";
-        apiError.Timestamp = DateTime.UtcNow;
-        errors.ForEach(er => apiError.Errors.Add(er.Message));
-
-        return BadRequest(apiError);
+        errorMessages.ForEach(msg => errorResponse.Errors.Add(msg));
+        return errorResponse;
     }
 }

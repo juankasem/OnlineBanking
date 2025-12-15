@@ -4,34 +4,40 @@ using OnlineBanking.Application.Models.Auth.Responses;
 
 namespace OnlineBanking.API.Controllers;
 
-public class AuthController : BaseApiController
+/// <summary>
+/// API controller for authentication and user management.
+/// Handles login, registration, token refresh, role assignment, and user profile operations.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the AuthController.
+/// </remarks>
+public class AuthController(ILogger<AuthController> logger,
+                    UserManager<AppUser> userManager,
+                    SignInManager<AppUser> signInManager,
+                    RoleManager<IdentityRole> roleManager,
+                    ITokenService tokenService) : BaseApiController
 {
-    private readonly ILogger<AuthController> _logger;
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly ITokenService _tokenService;
+    private readonly ILogger<AuthController> _logger = logger;
+    private readonly UserManager<AppUser> _userManager = userManager;
+    private readonly SignInManager<AppUser> _signInManager = signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly ITokenService _tokenService = tokenService;
 
-    public AuthController(ILogger<AuthController> logger,
-                        UserManager<AppUser> userManager,
-                        SignInManager<AppUser> signInManager,
-                        RoleManager<IdentityRole> roleManager,
-                        ITokenService tokenService)
-    {
+    #region User Profile Operations
 
-        _logger = logger;
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _roleManager = roleManager;
-        _tokenService = tokenService;
-    }
-
+    /// <summary>
+    /// Retrieves the current authenticated user's profile.
+    /// </summary>
     [Authorize]
     [HttpGet(ApiRoutes.AppUsers.CurrentUser)]
     [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<AuthResponse>> GetCurrentUser()
     {
         var user = await _userManager.FindByEmailFromClaimsPrincipalAsync(User);
+
+        if (user is null)
+            return Unauthorized("User not found");
 
         var authClaims = new List<Claim>()
         {
@@ -47,174 +53,175 @@ public class AuthController : BaseApiController
         return Ok(userResponse);
     }
 
+    /// <summary>
+    /// Checks if an email address is already registered.
+    /// </summary>
     [HttpGet(ApiRoutes.AppUsers.EmailExists)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<bool>> CheckEmailExists([FromQuery] string email)
     {
-        return await _userManager.FindByEmailAsync(email) != null;
+        if (string.IsNullOrWhiteSpace(email))
+            return BadRequest("Email is required");
+
+        var emailExists = await _userManager.FindByEmailAsync(email) is not null;
+
+        return Ok(emailExists);
     }
 
+    /// <summary>
+    /// Retrieves the phone number of the current authenticated user.
+    /// </summary>
     [Authorize]
     [HttpGet(ApiRoutes.AppUsers.Phone)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<string>> GetUserPhone(CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailFromClaimsPrincipalAsync(User);
 
-        return user.PhoneNumber;
+        if (user is null)
+            return Unauthorized("User not found");
+
+        return Ok(user.PhoneNumber ?? string.Empty);
     }
 
+    #endregion
+
+    #region Authentication Operations
+
+    /// <summary>
+    /// Authenticates a user with username and password.
+    /// Returns JWT access token and refresh token on successful authentication.
+    /// </summary>
     [HttpPost(ApiRoutes.AppUsers.Login)]
     [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<ActionResult<AuthResponse>> Login([FromBody] LoginRequest request)
     {
-        _logger.LogInformation($"Login attempt for {request.Username}");
+        _logger.LogInformation("Login attempt for user: {Username}",  request.Username);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var user = await _userManager.FindByNameAsync(request.Username);
 
-        if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+        if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
         {
-            var userRoles = await _userManager.GetRolesAsync(user);
+            _logger.LogWarning("Invalid login attempt for user: {Username}", request.Username);
+            return Unauthorized("Invalid username or password");
+        }
+        
+        var userRoles = await _userManager.GetRolesAsync(user);
 
-            var authClaims = new List<Claim>()
-            {
-                new(ClaimTypes.Name, user.UserName),
-                new(ClaimTypes.Email, user.Email),
-                new(ClaimTypes.GivenName, user.DisplayName),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+        var authClaims = new List<Claim>()
+        {
+            new(ClaimTypes.Name, user.UserName),
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.GivenName, user.DisplayName),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
-            foreach (var userRole in userRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-            }
-
-            var token = _tokenService.CreateToken(authClaims);
-            user.RefreshToken = _tokenService.GenerateRefreshToken();
-
-            var userResponse = _mapper.Map<AuthResponse>(user);
-            userResponse.Token = token;
-
-            return Ok(userResponse);
+        foreach (var userRole in userRoles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         }
 
-        return Unauthorized();
+        var token = _tokenService.CreateToken(authClaims);
+        user.RefreshToken = _tokenService.GenerateRefreshToken();
+        await _userManager.UpdateAsync(user);
+
+        var userResponse = _mapper.Map<AuthResponse>(user);
+        userResponse.Token = token;
+
+        _logger.LogInformation("User {Username} logged in successfully", user.UserName);
+        return Ok(userResponse);
     }
 
-
+    /// <summary>
+    /// Registers a new user account.
+    /// Assigns User role by default; Admin role if requested.
+    /// </summary>
     [HttpPost(ApiRoutes.AppUsers.Signup)]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult> Signup([FromBody] SignupRequest request)
+    public async Task<ActionResult<AuthResponse>> Signup([FromBody] SignupRequest request)
     {
-        _logger.LogInformation($"Registration attempt for {request.Email}");
-
-        var errorResponse = new ErrorResponse();
-        string logMessage;
+        _logger.LogInformation("Registration attempt for email: {Email}", request.Email);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         if (await _userManager.FindByEmailAsync(request.Email) is not null)
         {
-            logMessage = "Failed to create user.";
-            var errorMessage = $"User with email {request.Email} already exists";
-
-            _logger.LogError($"{logMessage} {errorMessage}");
-            errorResponse.Errors.Add(errorMessage);
-
-            return BadRequest(errorResponse);
+            _logger.LogWarning("Registration failed: Email already exists - {Email}", request.Email);
+            return BadRequest($"User with email {request.Email} already exists");
         }
 
         var appUser = AppUser.Create(request.Username, request.DisplayName, request.Email, request.PhoneNumber);
-
         var createUserResult = await _userManager.CreateAsync(appUser, request.Password);
 
         if (!createUserResult.Succeeded)
         {
-            logMessage = "Failed to create user.";
-
-            return BadRequest(HandleErrorResult(createUserResult, logMessage));
+            return BadRequest(HandleErrorResult(createUserResult, "Failed to create user"));
         }
 
-        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-        {
-            var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-            if (!createRoleResult.Succeeded)
-            {
-                logMessage = $"Failed to create role {UserRoles.User}.";
-
-                return BadRequest(HandleErrorResult(createRoleResult, logMessage));
-            }
-        }
-
-        var addUserToRoleResult = await _userManager.AddToRoleAsync(appUser, UserRoles.User);
-
-        if (!addUserToRoleResult.Succeeded)
-        {
-            logMessage = $"Failed to add user of user name {appUser.UserName} to role {UserRoles.User}";
-
-            return BadRequest(HandleErrorResult(addUserToRoleResult, logMessage));
-        }
+        // Assign User role
+        var userRoleAssigned = await AssignRoleToUser(appUser, UserRoles.User);
+        if (!userRoleAssigned)
+            return BadRequest($"Failed to assign {UserRoles.User} role");
 
         if (request.IsAdmin)
         {
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-
-                if (!createRoleResult.Succeeded)
-                {
-                    logMessage = $"Failed to create role {UserRoles.Admin}.";
-
-                    return BadRequest(HandleErrorResult(createRoleResult, logMessage));
-                }
-            }
-
-            addUserToRoleResult = await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
-
-            if (!addUserToRoleResult.Succeeded)
-            {
-                logMessage = $"Failed to add user of user name {appUser.UserName} to role {UserRoles.Admin}";
-
-                return BadRequest(HandleErrorResult(addUserToRoleResult, logMessage));
-            }
+            var adminRoleAssigned = await AssignRoleToUser(appUser, UserRoles.Admin);
+            if (!adminRoleAssigned)
+                return BadRequest($"Failed to assign {UserRoles.Admin} role");
         }
 
-        _logger.LogInformation($"User of user name {appUser.UserName} was successfully created!");
+        _logger.LogInformation("Role(s) assigned successfully to user: {Username}", appUser.UserName);
 
         var userResponse = _mapper.Map<AuthResponse>(appUser);
 
-        return StatusCode(201, userResponse);
+        return Ok(userResponse);
     }
 
+    #endregion
 
+    #region Token Operations
+
+    /// <summary>
+    /// Refreshes an expired access token using a valid refresh token.
+    /// </summary>
     [HttpPost(ApiRoutes.AppUsers.RefreshToken)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RefreshToken(RefreshTokenRequest request)
     {
         var apiError = new ErrorResponse();
+
+        if (request is null)
+            return BadRequest("Refresh token request is required");
 
         string accessToken = request?.AccessToken;
         string refreshToken = request?.RefreshToken;
 
         var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken);
 
-        if (principal == null)
+        if (principal is null)
+        {
+             _logger.LogWarning("Invalid access token provided for refresh");
             return BadRequest("Invalid access token or refresh token");
+        }
 
         string username = principal.Identity?.Name;
-
         var user = await _userManager.FindByNameAsync(username);
-        _logger.LogInformation($"Refresh Token attempt for user: {user}");
 
-        if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            return BadRequest("Invalid access token or refresh token");
-
+        if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+        {
+            _logger.LogWarning("Invalid or expired refresh token for user: {Username}", username);
+            return BadRequest("Invalid or expired refresh token");
+        }
 
         var newAccessToken = _tokenService.CreateToken(principal.Claims.ToList());
         var newRefreshToken = _tokenService.GenerateRefreshToken();
@@ -229,50 +236,107 @@ public class AuthController : BaseApiController
         });
     }
 
-
+    /// <summary>
+    /// Revokes the refresh token for a user, effectively logging them out.
+    /// </summary>
     [Authorize]
     [HttpPost(ApiRoutes.AppUsers.Revoke)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Revoke(string username)
     {
-        var user = await _userManager.FindByNameAsync(username);
-        if (user == null) return BadRequest("Invalid user name");
+        if (string.IsNullOrWhiteSpace(username))
+            return BadRequest("Username is required");
 
-        user.RefreshToken = null;
+        var user = await _userManager.FindByNameAsync(username);
+        if (user is null)
+        {
+            _logger.LogWarning("Revoke token attempt for non-existent user: {Username}", username);
+            return BadRequest("Invalid username");
+        }
+
+        user.RefreshToken = null; 
+        user.RefreshTokenExpiryTime = DateTime.MinValue;
+
         await _userManager.UpdateAsync(user);
 
+        _logger.LogInformation("Refresh token revoked for user: {Username}", username);
         return NoContent();
     }
 
+    #endregion
 
+    #region Role Management
+
+    /// <summary>
+    /// Assigns role to a user.
+    /// </summary>
     [HttpPost(ApiRoutes.AppUsers.AssignRole)]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AssignRoleToUser(AssignRoleToUserRequest request)
     {
-        _logger.LogInformation($"Attempt to assign role to user: {request.Email}");
+        _logger.LogInformation("Assigning roles to user: {Email}", request.Email);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var appUser = await _userManager.FindByEmailAsync(request.Email);
-
-        if (!await _roleManager.RoleExistsAsync(UserRoles.User))
-            await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
-
-        await _userManager.AddToRoleAsync(appUser, UserRoles.User);
-
-        if (request.IsAdmin)
+        if (appUser is null)
         {
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-
-            await _userManager.AddToRoleAsync(appUser, UserRoles.Admin);
+            _logger.LogWarning("Role assignment failed: User not found - {Email}", request.Email);
+            return BadRequest($"User with email {request.Email} not found");
         }
 
-        return Ok($"Role(s) are assigned Suessfully to username: {appUser.UserName}");
+        var roleName = request.RoleName;
+        if (string.IsNullOrWhiteSpace(roleName))
+        {
+            _logger.LogWarning("Role assignment failed: Role name is required");
+            return BadRequest("Role name is required");
+        }
+
+        // Assign User role
+        var userRoleAssigned = await AssignRoleToUser(appUser, roleName);
+        if (!userRoleAssigned)
+            return BadRequest($"Failed to assign {roleName} role");
+
+        _logger.LogInformation("Role {roleName} assigned successfully to user: {Username}", roleName, appUser.UserName);
+        return Ok($"Role {roleName} is assigned successfully to user: {appUser.UserName}");
     }
 
+    #endregion
 
+    #region Private Helper Methods
+
+    /// <summary>
+    /// Assigns a role to a user, creating the role if it doesn't exist.
+    /// </summary>
+    private async Task<bool> AssignRoleToUser(AppUser user, string roleName)
+    {
+        if (!await _roleManager.RoleExistsAsync(roleName))
+        {
+            var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(roleName));
+            if (!createRoleResult.Succeeded)
+            {
+                _logger.LogError("Failed to create role: {RoleName}", roleName);
+                return false;
+            }
+        }
+
+        var addToRoleResult = await _userManager.AddToRoleAsync(user, roleName);
+        if (!addToRoleResult.Succeeded)
+        {
+            _logger.LogError("Failed to add user {Username} to role {RoleName}", user.UserName, roleName);
+            return false;
+        }
+
+        return true;
+    }
+
+    /// <summary>
+    /// Converts IdentityResult errors to an ErrorResponse.
+    /// </summary>
     private ErrorResponse HandleErrorResult(IdentityResult result, string logMessage = "")
     {
         var errorResponse = new ErrorResponse();
@@ -286,5 +350,7 @@ public class AuthController : BaseApiController
 
         return errorResponse;
     }
+
+    #endregion
 }
 

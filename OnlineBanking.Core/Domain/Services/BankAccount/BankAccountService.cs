@@ -97,31 +97,31 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         recipient.UpdateBalance(amount);
     }
 
-    private static void ApplyDeposit(Aggregates.BankAccountAggregate.BankAccount recipient,
+    private static void ApplyDeposit(Aggregates.BankAccountAggregate.BankAccount bankAccount,
                                      CashTransaction tx,
                                      decimal amount)
     {
-        ArgumentNullException.ThrowIfNull(recipient);
+        ArgumentNullException.ThrowIfNull(bankAccount);
 
-        EnsureSameCurrencyOrThrow(recipient, tx);
+        EnsureSameCurrencyOrThrow(bankAccount, tx);
 
-        recipient.AddAccountTransaction(tx);
-        recipient.UpdateBalance(amount);
+        bankAccount.AddAccountTransaction(tx);
+        bankAccount.UpdateBalance(amount);
     }
 
-    private static void ApplyWithdrawal(Aggregates.BankAccountAggregate.BankAccount sender,
+    private static void ApplyWithdrawal(Aggregates.BankAccountAggregate.BankAccount bankAccount,
                                         CashTransaction tx,
                                         decimal amount,
                                         decimal fees)
     {
-        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(bankAccount);
 
-        EnsureSameCurrencyOrThrow(sender, tx);
+        EnsureSameCurrencyOrThrow(bankAccount, tx);
 
-        EnsureSufficientFundsOrThrow(sender, amount + fees);
+        EnsureSufficientFundsOrThrow(bankAccount, amount + fees);
 
-        sender.AddAccountTransaction(tx);
-        sender.UpdateBalance(amount + fees, isDeposit: false);
+        bankAccount.AddAccountTransaction(tx);
+        bankAccount.UpdateBalance(amount + fees, isDeposit: false);
     }
 
     #endregion
