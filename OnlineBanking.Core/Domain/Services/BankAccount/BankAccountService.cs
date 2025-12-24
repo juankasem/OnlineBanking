@@ -17,7 +17,8 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
                                       decimal fees = 0)
     {
         ArgumentNullException.ThrowIfNull(cashTransaction);
-        if (cashTransaction.Amount <= 0) throw new ArgumentException("Amount must be greater than zero.", nameof(cashTransaction));
+        if (cashTransaction.Amount <= 0) 
+            throw new ArgumentException("Amount must be greater than zero.", nameof(cashTransaction));
 
         _logger.LogDebug("Applying cash transaction {TransactionId} type={Type}", cashTransaction.Id, cashTransaction.Type);
         
@@ -59,7 +60,8 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
         ArgumentNullException.ThrowIfNull(fastTransaction);
-        if (fastTransaction.Amount <= 0) throw new ArgumentException("Amount must be greater than zero.", nameof(fastTransaction));
+        if (fastTransaction.Amount <= 0) 
+            throw new ArgumentException("Amount must be greater than zero.", nameof(fastTransaction));
 
         bankAccount.AddFastTransaction(fastTransaction);
         return true;
@@ -68,7 +70,8 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
     public bool DeleteFastTransation(Guid fastTransactionId, Aggregates.BankAccountAggregate.BankAccount bankAccount)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
-        if (fastTransactionId == Guid.Empty) throw new ArgumentException("Invalid fast transaction id.", nameof(fastTransactionId));
+        if (fastTransactionId == Guid.Empty) 
+            throw new ArgumentException("Invalid fast transaction id.", nameof(fastTransactionId));
 
         bankAccount.DeleteFastTransaction(fastTransactionId);
         return true;
@@ -76,25 +79,25 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
 
     #region Transaction Operations
 
-    private static void ApplyTransfer(Aggregates.BankAccountAggregate.BankAccount sender,
-                                      Aggregates.BankAccountAggregate.BankAccount recipient,
+    private static void ApplyTransfer(Aggregates.BankAccountAggregate.BankAccount senderAccount,
+                                      Aggregates.BankAccountAggregate.BankAccount recipientAccount,
                                       CashTransaction tx,
                                       decimal amount,
                                       decimal fees)
     {
-        ArgumentNullException.ThrowIfNull(sender);
-        ArgumentNullException.ThrowIfNull(recipient);
+        ArgumentNullException.ThrowIfNull(senderAccount);
+        ArgumentNullException.ThrowIfNull(recipientAccount);
 
-        EnsureSameCurrencyOrThrow(sender, tx);
-        EnsureSameCurrencyOrThrow(recipient, tx);
+        EnsureSameCurrencyOrThrow(senderAccount, tx);
+        EnsureSameCurrencyOrThrow(recipientAccount, tx);
 
-        EnsureSufficientFundsOrThrow(sender, amount + fees);
+        EnsureSufficientFundsOrThrow(senderAccount, amount + fees);
 
-        sender.AddAccountTransaction(tx);
-        recipient.AddAccountTransaction(tx);
+        senderAccount.AddAccountTransaction(tx);
+        recipientAccount.AddAccountTransaction(tx);
 
-        sender.UpdateBalance(amount + fees, isDeposit: false);
-        recipient.UpdateBalance(amount);
+        senderAccount.UpdateBalance(amount + fees, isDeposit: false);
+        recipientAccount.UpdateBalance(amount);
     }
 
     private static void ApplyDeposit(Aggregates.BankAccountAggregate.BankAccount bankAccount,
@@ -131,7 +134,7 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
     private static void EnsureSameCurrencyOrThrow(Aggregates.BankAccountAggregate.BankAccount account, CashTransaction tx)
     {
         if (account.CurrencyId != tx.CurrencyId)
-            throw new InvalidOperationException("Transaction currency does not match account currency.");
+            throw new UnmatchedCurrenciesException("Transaction currency does not match account currency.");
     }
 
     private static void EnsureSufficientFundsOrThrow(Aggregates.BankAccountAggregate.BankAccount senderAccount, decimal amountToDeduct)

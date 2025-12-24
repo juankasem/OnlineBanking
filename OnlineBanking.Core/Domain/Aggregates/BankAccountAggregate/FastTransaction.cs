@@ -64,7 +64,7 @@ public class FastTransaction : BaseDomainEntity
     /// <returns>A validated FastTransaction instance</returns>
     /// <exception cref="FastTransactionNotValidException">Thrown when validation fails</exception>
     public static FastTransaction Create(Guid bankAccountId, string recipientIBAN, string recipientName,
-                                        decimal amount, Guid? id = null)
+                                         decimal amount, Guid? id = null)
     {
         var validator = new FastTransactionValidator();
 

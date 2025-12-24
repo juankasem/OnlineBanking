@@ -8,7 +8,8 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
     private readonly IBranchMapper _branchMapper;
-    public GetAllBranchesRequestHandler(IUnitOfWork uow, IMapper mapper,
+    public GetAllBranchesRequestHandler(IUnitOfWork uow, 
+                                        IMapper mapper,
                                         IBranchMapper branchMapper)
     {
         _uow = uow;
@@ -25,7 +26,8 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
 
         var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(branches);
 
-        result.Payload = mappedBranches.ToPagedList(totalCount, branchParams.PageNumber, branchParams.PageSize);
+        result.Payload = mappedBranches.ToPagedList(totalCount, branchParams.PageNumber, 
+                                                    branchParams.PageSize, cancellationToken);
 
         return result;
     }

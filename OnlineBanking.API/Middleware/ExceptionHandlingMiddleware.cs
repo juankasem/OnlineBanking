@@ -43,26 +43,32 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             InsufficientFundsException _ => (
                 StatusCodes.Status400BadRequest,
-                "Insufficient Funds",
+                ErrorPhrase.InsufficientFunds,
                 new List<string> { "Insufficient funds to complete the operation." }
             ),
 
             UnauthorizedAccessException _ => (
                 StatusCodes.Status403Forbidden,
-                "Forbidden",
+                ErrorPhrase.Forbidden,
                 new List<string> { "You are not authorized to perform this action." }
             ),
 
             ArgumentNullException ane => (
                 StatusCodes.Status400BadRequest,
-                "Bad Request",
+                ErrorPhrase.BadRequest,
                 new List<string> { ane.Message }
             ),
 
             ArgumentException ae => (
                 StatusCodes.Status400BadRequest,
-                "Bad Request",
+                ErrorPhrase.BadRequest,
                 new List<string> { ae.Message }
+            ),
+
+            DomainException de => (
+             StatusCodes.Status400BadRequest,
+                ErrorPhrase.BadRequest,
+             new List<string> { de.Message }
             ),
 
             DbUpdateConcurrencyException dce => (
@@ -79,7 +85,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             _ => (
                 StatusCodes.Status500InternalServerError,
-                "Internal Server Error",
+                ErrorPhrase.InternalServerError,
                 BuildDefaultErrorList(exception, includeDetails)
             )
         };

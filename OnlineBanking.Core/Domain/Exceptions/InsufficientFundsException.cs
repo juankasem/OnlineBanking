@@ -1,7 +1,6 @@
 
 namespace OnlineBanking.Core.Domain.Exceptions;
 
-public class InsufficientFundsException : DomainException
+public class InsufficientFundsException(string message) : DomainException(message)
 {
-    public InsufficientFundsException(string message) : base(message) { }
 }

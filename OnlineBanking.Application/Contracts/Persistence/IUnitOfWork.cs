@@ -1,3 +1,4 @@
+
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OnlineBanking.Application.Contracts.Persistence;

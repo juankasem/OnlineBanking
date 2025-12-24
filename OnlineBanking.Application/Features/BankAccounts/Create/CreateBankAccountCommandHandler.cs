@@ -1,5 +1,5 @@
-using OnlineBanking.Application.Features.Customers;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Create;
@@ -7,13 +7,18 @@ namespace OnlineBanking.Application.Features.BankAccounts.Create;
 public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccountCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
-    public CreateBankAccountCommandHandler(IUnitOfWork uow)
+    private readonly ILogger<MakeDepositCommandHandler> _logger;
+
+    public CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDepositCommandHandler> logger)
     {
         _uow = uow;
+        _logger = logger;
     }
 
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Starting creating bank account");
+
         var result = new ApiResult<Unit>();
 
         if (await _uow.BankAccounts.ExistsAsync(request.AccountNo))
@@ -48,8 +53,30 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
         }
 
         await _uow.BankAccounts.AddAsync(bankAccount);
-        await _uow.SaveAsync();
 
+        // Add domain event
+        bankAccount.AddDomainEvent(new BankAccountCreatedEvent(bankAccount.Id,
+            bankAccount.AccountNo,
+            bankAccount.IBAN,
+            bankAccount.Type,
+            bankAccount.Branch.Name,
+            bankAccount.Balance,
+            bankAccount.Currency.Symbol));
+
+        // Persist changes
+        if (await _uow.CompleteDbTransactionAsync() >= 1)
+        {
+            _logger.LogInformation("Bank account of Id {bankAccountId} of account No. {accountNo} & " +
+                                    "IBAN {iban} is created",
+                                   bankAccount.Id,
+                                   bankAccount.AccountNo,
+                                   bankAccount.IBAN);
+        }
+        else
+        {
+            result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
+            _logger.LogError($"Creating bank account failed!");
+        }
         return result;
     }
 

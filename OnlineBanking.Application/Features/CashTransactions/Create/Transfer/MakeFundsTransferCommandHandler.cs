@@ -1,4 +1,7 @@
 
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
+
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 
 /// <summary>
@@ -24,44 +27,49 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         var result = new ApiResult<Unit>();
 
-        // Validate transfer request
         if (!ValidateTransferRequest(request, result))
             return result;
 
         var senderIBAN = request.From;
-
         var senderAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
-        if (!ValidateBankAccount(senderAccount, senderIBAN, result))
+        if (!BankAccountHelper.ValidateBankAccount(senderAccount, senderIBAN, result))
             return result;
 
         var recipientIBAN = request.To;
         var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
 
-        if (!ValidateBankAccount(recipientAccount, recipientIBAN, result))
+        if (!BankAccountHelper.ValidateBankAccount(recipientAccount, recipientIBAN, result))
             return result;
 
         var amountToTransfer = decimal.Round(request.BaseCashTransaction.Amount.Value, 2);
         var fees = decimal.Round(amountToTransfer * TransferFeePercentage, 2);
         var totalAmount = amountToTransfer + fees;
 
-        if (!HasSufficientFunds(senderAccount, totalAmount, result))
+        if (!BankAccountHelper.HasSufficientFunds(senderAccount, totalAmount, result))
             return result;
 
         // Prepare transfer dto
-        var senderName = await GetBankAccountOwner(senderAccount);
+        var accountOwner = _appUserAccessor.GetDisplayName();
         var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, senderName, transferDto);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, transferDto);
 
         // Apply domain logic to both accounts
         _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction, fees);
 
-        // mark business result as completed on the object before saving so EF persists it in same transaction
-        cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
-
         // Mark both aggregates as modified for EF Core
         _uow.BankAccounts.Update(senderAccount);
         _uow.BankAccounts.Update(recipientAccount);
+
+        // mark business result as completed on the object before saving so EF persists it in same transaction
+        cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
+
+        // Add domain event
+        senderAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
+            cashTransaction.Type,
+            cashTransaction.TransactionDate,
+            cashTransaction.From,
+            cashTransaction.To));
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
@@ -109,42 +117,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         return true;
     }
 
-    /// <summary>
-    /// Validates that the bank account exists and is valid
-    /// </summary>
-    private static bool ValidateBankAccount(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
-        string iban,
-        ApiResult<Unit> result)
-    {
-        var success = true;
-
-        if (bankAccount == null)
-        {
-            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
-            success = false;
-        }
-
-        return success;
-    }
-
-    /// <summary>
-    /// Validates that the sender has sufficient funds for the transfer including fees
-    /// </summary>
-    private static bool HasSufficientFunds(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
-        decimal totalAmount,
-        ApiResult<Unit> result)
-    {
-        if (senderAccount.AllowedBalanceToUse < totalAmount)
-        {
-            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-            return false;
-        }
-
-        return true;
-    }
-
     #endregion
 
     #region Helper Methods
@@ -173,9 +145,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown when recipient has no owners</exception>
     private static TransferDto PrepareTransferDto(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
-                                                   Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
-                                                   decimal amountToTransfer,
-                                                   decimal fees)
+                                                Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
+                                                decimal amountToTransfer,
+                                                decimal fees)
     {
         ArgumentNullException.ThrowIfNull(senderAccount);
         ArgumentNullException.ThrowIfNull(recipientAccount);

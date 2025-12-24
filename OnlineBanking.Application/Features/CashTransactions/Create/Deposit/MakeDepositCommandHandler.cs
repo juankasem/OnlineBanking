@@ -1,3 +1,4 @@
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
 
@@ -22,37 +23,49 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
 
         var result = new ApiResult<Unit>();
 
+        if (!ValidateDepositRequest(request, result))
+            return result;
+
         var iban = request.BaseCashTransaction.IBAN;
         var amountToDeposit = request.BaseCashTransaction.Amount.Value;
 
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
 
-        if (!ValidateBankAccount(bankAccount, iban, result))
+        if (!BankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
             return result;
 
         // Prepare deposit transaction
-        var recipient = await GetBankAccountOwner(bankAccount);
+        var recipient = _appUserAccessor.GetDisplayName();
         var updatedBalance = bankAccount.Balance + amountToDeposit;
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
 
         // Apply domain logic
         _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction);
 
+        // Mark aggregate as modified so it will be saved
+        _uow.BankAccounts.Update(bankAccount);
+
         // mark business result as completed on the object before saving so EF persists it in same transaction
         cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
 
-        // Mark aggregate as modified so it will be saved
-        _uow.BankAccounts.Update(bankAccount);
+        // Add domain event
+        bankAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
+            cashTransaction.Type,
+            cashTransaction.TransactionDate,
+            cashTransaction.From,
+            cashTransaction.To));
 
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation($"Deposit transaction of Id {cashTransaction.Id} of amount {amountToDeposit} is created");
+            _logger.LogInformation("Deposit transaction of Id {cashTransactionId} of amount {amount} is created",
+                                   cashTransaction.Id,
+                                   amountToDeposit);
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-            _logger.LogError($"Deposit transactyion failed");
+            _logger.LogError($"Deposit transaction failed!");
         }
 
         return result;
@@ -81,27 +94,6 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         if (string.IsNullOrWhiteSpace(iban))
         {
             result.AddError(ErrorCode.BadRequest, "IBAN is required.");
-            return false;
-        }
-
-        return true;
-    }
-
-    /// <summary>
-    /// Validates that the bank account exists and is active
-    /// </summary>
-    private static bool ValidateBankAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount, string iban, ApiResult<Unit> result)
-    {
-        if (bankAccount is null)
-        {
-            result.AddError(ErrorCode.BadRequest,
-                string.Format(BankAccountErrorMessages.NotFound, "IBAN", iban));
-            return false;
-        }
-
-        if (!bankAccount.IsActive)
-        {
-            result.AddError(ErrorCode.BadRequest, $"Account with IBAN {iban} is not active.");
             return false;
         }
 

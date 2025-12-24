@@ -39,7 +39,7 @@ public class BranchesController : BaseApiController
         if (result.IsError) 
             return HandleErrorResponse(result.Errors);
 
-        var branches = result.Payload.Data;
+        var branches = result.Payload?.Data ?? [];
 
         if (branches.Any())
         {

@@ -1,4 +1,4 @@
-using FluentValidation;
+
 using OnlineBanking.Application.Models.Auth.Requests;
 
 namespace OnlineBanking.Application.Features.Auth.Validators;

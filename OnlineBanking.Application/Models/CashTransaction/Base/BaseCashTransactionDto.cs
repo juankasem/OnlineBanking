@@ -1,3 +1,4 @@
+
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineBanking.Application.Models.CashTransaction.Base;

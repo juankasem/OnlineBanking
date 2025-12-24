@@ -1,4 +1,5 @@
-﻿using Azure.Messaging.ServiceBus;
+﻿
+using Azure.Messaging.ServiceBus;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 
@@ -16,7 +17,7 @@ public class ServiceBusPublisher(ServiceBusClient serviceBusClient, IOptions<Ser
 
     public async Task PublishEventAsync<T>(T eventToPublish)
     {
-       var messageBody = JsonSerializer.Serialize(eventToPublish);
+       var messageBody = JsonSerializer.Serialize((object)eventToPublish);
 
        var message = new ServiceBusMessage(messageBody)
        {

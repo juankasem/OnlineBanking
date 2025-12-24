@@ -1,5 +1,10 @@
 
+using OnlineBanking.Application.Features.CreditCards.Activate;
 using OnlineBanking.Application.Features.CreditCards.Create;
+using OnlineBanking.Application.Features.CreditCards.Deactivate;
+using OnlineBanking.Application.Features.CreditCards.GetAll;
+using OnlineBanking.Application.Features.CreditCards.GetByCustomer;
+using OnlineBanking.Application.Features.CreditCards.GetById;
 using OnlineBanking.Application.Features.CreditCards.Update;
 
 namespace OnlineBanking.API.Controllers;
@@ -89,7 +94,10 @@ public class CreditCardsController : BaseApiController
     public async Task<IActionResult> ActivateCreditCard([FromRoute] string creditCardNo,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new ActivateCreditCardCommand() { CreditCardNo = creditCardNo };
+        var command = new ActivateCreditCardCommand() 
+        { 
+            CreditCardNo = creditCardNo 
+        };
 
         var result = await _mediator.Send(command);
 
@@ -105,7 +113,10 @@ public class CreditCardsController : BaseApiController
     public async Task<IActionResult> DeactivateCreditCard([FromRoute] string creditCardNo,
                                                         CancellationToken cancellationToken = default)
     {
-        var command = new DeactivateCreditCardCommand() { CreditCardNo = creditCardNo };
+        var command = new DeactivateCreditCardCommand() 
+        { 
+            CreditCardNo = creditCardNo 
+        };
 
         var result = await _mediator.Send(command);
 

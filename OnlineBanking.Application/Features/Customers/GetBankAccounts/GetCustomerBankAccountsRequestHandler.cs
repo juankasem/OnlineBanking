@@ -1,5 +1,3 @@
-using AutoMapper;
-using OnlineBanking.Application.Models.BankAccount;
 
 namespace OnlineBanking.Application.Features.Customers.GetBankAccounts;
 
@@ -14,21 +12,23 @@ public class GetCustomerBankAccountsRequestHandler : IRequestHandler<GetCustomer
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<List<BankAccountDto>>> Handle(GetCustomerBankAccountsRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<List<BankAccountDto>>> Handle(GetCustomerBankAccountsRequest request, 
+                                                              CancellationToken cancellationToken)
     {
         var result = new ApiResult<List<BankAccountDto>>();
+        var customerNo = request.CustomerNo;
 
-        var customer = await _uow.Customers.GetByIdAsync(request.CustomerId);
+        var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
 
         if (customer is null)
         {
             result.AddError(ErrorCode.NotFound,
-                string.Format(CustomerErrorMessages.NotFound, "No.", request.CustomerId));
+                string.Format(CustomerErrorMessages.NotFound, "No.", customerNo));
 
             return result;
         }
 
-        var bankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(request.CustomerId);
+        var bankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(customerNo);
 
         result.Payload = _mapper.Map<List<BankAccountDto>>(bankAccounts);
 

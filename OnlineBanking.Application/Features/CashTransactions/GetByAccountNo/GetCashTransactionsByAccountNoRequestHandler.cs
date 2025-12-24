@@ -1,5 +1,5 @@
+
 using OnlineBanking.Application.Extensions;
-using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.CashTransactions.GetByAccountNo;
@@ -15,7 +15,8 @@ public class GetAccountTransactionsRequestHandler : IRequestHandler<GetAccountTr
         _cashTransactionsMapper = cashTransactionsMapper;
     }
 
-    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetAccountTransactionsRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<CashTransactionResponse>>> Handle(GetAccountTransactionsRequest request, 
+                                                                            CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<CashTransactionResponse>>();
 

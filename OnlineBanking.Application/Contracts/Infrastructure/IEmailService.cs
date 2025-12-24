@@ -1,8 +1,7 @@
 
-namespace OnlineBanking.Application.Contracts.Infrastructure
-{
-    public interface IEmailService
-    {
+namespace OnlineBanking.Application.Contracts.Infrastructure;
 
-    }
+public interface IEmailService
+{
+
 }

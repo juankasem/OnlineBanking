@@ -15,7 +15,6 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
         _mapper = mapper;
     }
 
-
     public async Task<ApiResult<PagedList<FastTransactionResponse>>> Handle(GetFastTransactionsByIBANRequest request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<FastTransactionResponse>>();
@@ -38,10 +37,13 @@ public class GetFastTransactionsByIBANRequestHandler : IRequestHandler<GetFastTr
         }
 
         var mappedFastTransactions = fastTransactions.Select(ft => _mapper.Map<FastTransactionResponse>(ft))
-                                                    .ToList()
-                                                    .AsReadOnly();
+                                                     .ToList()
+                                                     .AsReadOnly();
 
-        result.Payload = mappedFastTransactions.ToPagedList(totalCount, fastTransactionParams.PageNumber, fastTransactionParams.PageSize);
+        result.Payload = mappedFastTransactions.ToPagedList(totalCount, 
+                                                            fastTransactionParams.PageNumber, 
+                                                            fastTransactionParams.PageSize,
+                                                            cancellationToken);
 
         return result;
     }

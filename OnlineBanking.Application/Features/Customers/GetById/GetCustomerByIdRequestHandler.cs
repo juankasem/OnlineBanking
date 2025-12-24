@@ -1,5 +1,4 @@
-using AutoMapper;
-using OnlineBanking.Application.Models.BankAccount;
+
 using OnlineBanking.Application.Models.Customer.Responses;
 
 namespace OnlineBanking.Application.Features.Customers.GetById;
@@ -24,12 +23,12 @@ public class GetCustomerByIdRequestHandler : IRequestHandler<GetCustomerByIdRequ
         if (customer is null)
         {
             result.AddError(ErrorCode.NotFound,
-                string.Format(CustomerErrorMessages.NotFound, request.CustomerId));
+                string.Format(CustomerErrorMessages.NotFound, "Id", request.CustomerId));
 
             return result;
         }
 
-        var customerBankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(customer.Id);
+        var customerBankAccounts = await _uow.Customers.GetCustomerBankAccountsAsync(customer.CustomerNo);
 
         var customerResponse = _mapper.Map<CustomerResponse>(customer);
 

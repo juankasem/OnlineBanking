@@ -1,6 +1,6 @@
 
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
-using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
@@ -13,7 +13,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 /// Represents a bank account aggregate root.
 /// Manages account state, balance, associated cards, transactions, and owners.
 /// </summary>
-public class BankAccount : BaseDomainEntity
+public class BankAccount : AggregateRoot<Guid> 
 {
     #region Private Fields
 
@@ -403,6 +403,6 @@ public class BankAccount : BaseDomainEntity
     /// Deactivates the account
     /// </summary>
     public void Deactivate() => IsActive = false;
-   
+
     #endregion
 }

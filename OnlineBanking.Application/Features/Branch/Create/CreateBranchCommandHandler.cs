@@ -30,7 +30,8 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     }
 
     #region Private helper methods
-    private Core.Domain.Aggregates.BranchAggregate.Branch CreateBranch(CreateBranchCommand request) =>
+
+    private static Core.Domain.Aggregates.BranchAggregate.Branch CreateBranch(CreateBranchCommand request) =>
         Core.Domain.Aggregates.BranchAggregate.
             Branch.Create(request.Name);
     #endregion

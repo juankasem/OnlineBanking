@@ -1,5 +1,4 @@
 
-using Azure.Messaging.ServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

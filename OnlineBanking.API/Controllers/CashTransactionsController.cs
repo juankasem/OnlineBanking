@@ -9,13 +9,30 @@ using OnlineBanking.Application.Features.CashTransactions.Update;
 
 namespace OnlineBanking.API.Controllers;
 
+/// <summary>
+/// API controller for cash transaction management.
+/// Provides endpoints for retrieving, creating, updating, and deleting cash transactions.
+/// Supports transaction types: Deposit, Withdrawal, and Transfer.
+/// All operations require authorization; list operations require Admin role.
+/// </summary>
 [Authorize]
 public class CashTransactionsController : BaseApiController
 {
+    #region GET Operations
+
+    /// <summary>
+    /// Retrieves all cash transactions with pagination.
+    /// Restricted to Admin users only.
+    /// </summary>
+    /// <param name="cashTransactionParams">Pagination parameters</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Paginated list of all cash transactions</returns>
     // GET api/v1/cash-transactions/all?pageNumber=1&pageSize=50
     [Authorize(Roles = UserRoles.Admin)]
     [HttpGet(ApiRoutes.CashTransactions.All)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
                                                              CancellationToken cancellationToken = default)
     {
@@ -23,11 +40,13 @@ public class CashTransactionsController : BaseApiController
         {
             CashTransactionParams = cashTransactionParams
         };
+
         var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            return HandleErrorResponse(result.Errors);
 
-        var cashTransactions = result.Payload.Data;
+        var cashTransactions = result.Payload?.Data ?? [];
 
         if (cashTransactions.Count > 0)
         {
@@ -39,12 +58,12 @@ public class CashTransactionsController : BaseApiController
     }
 
     // GET api/v1/cash-transactions/TR12345678 
-    [HttpGet(ApiRoutes.CashTransactions.GetByIBAN)]
+    [HttpGet(ApiRoutes.CashTransactions.IBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute] string iban,
-                                                               [FromQuery] CashTransactionParams cashTransactionParams,
-                                                               CancellationToken cancellationToken = default)
+                                                                        [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                        CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByAccountNoOrIBANRequest()
         {
@@ -67,17 +86,35 @@ public class CashTransactionsController : BaseApiController
         return Ok(accountTransactions);
     }
 
-    // POST api/v1/cash-transactions
-    [HttpPost]
+    #endregion
+
+    #region POST Operations
+
+    /// <summary>
+    /// Creates a new cash transaction (Deposit, Withdrawal, or Transfer).
+    /// Routes the request to the appropriate handler based on transaction type.
+    /// </summary>
+    /// <param name="iban">IBAN of the account initiating the transaction</param>
+    /// <param name="request">Cash transaction creation request</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>Transaction creation result</returns>
+    [HttpPost(ApiRoutes.CashTransactions.IBAN)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateCashTransaction([FromRoute] string iban,
                                                            [FromBody] CreateCashTransactionRequest request,
                                                            CancellationToken cancellationToken = default)
     {
-        if (iban != request.BaseCashTransaction.IBAN)
-            return BadRequest("IBAN mismatch between route and request body.");
+        if (string.IsNullOrWhiteSpace(iban))
+            return BadRequest("IBAN is required");
 
+        if (!iban.Equals(request.BaseCashTransaction.IBAN, StringComparison.OrdinalIgnoreCase))
+        {
+            var error = new Error(ErrorCode.BadRequest, "IBAN mismatch between route and request body");
+            return HandleErrorResponse([error]);
+        }
 
         return request.BaseCashTransaction.Type switch
         {
@@ -90,15 +127,26 @@ public class CashTransactionsController : BaseApiController
             CashTransactionType.Transfer =>
                await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
 
-            _ => BadRequest("Unsupported transaction type.")
+            _ => HandleErrorResponse([new Error(ErrorCode.BadRequest,
+                $"Unsupported transaction type: {request.BaseCashTransaction.Type}")])
         };
     }
 
-    // PUT api/v1/cash-transactions/1234
-    [HttpPut(ApiRoutes.CashTransactions.IdRoute)]
+    #endregion
+
+    #region PUT Operations
+
+    /// <summary>
+    /// Updates an existing cash transaction.
+    /// </summary>
+    /// <param name="request">Cash transaction update request containing transaction ID</param>
+    /// <param name="cancellationToken">Cancellation token</param>    
+    [HttpPut(ApiRoutes.CashTransactions.IBAN)]
+    [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateCashTransaction(UpdateCashTransactionRequest request, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateCashTransaction(UpdateCashTransactionRequest request, 
+                                                           CancellationToken cancellationToken = default)
     {
         var command = new UpdateCashTransactionCommand()
         {
@@ -109,11 +157,21 @@ public class CashTransactionsController : BaseApiController
         return await HandleRequest(command, cancellationToken);
     }
 
-    // DELETE api/v1/cash-transactions/1234
+    #endregion
+
+    #region DELETE Operations
+
+    /// <summary>
+    /// Deletes a cash transaction by ID.
+    /// </summary>
+    /// <param name="id">Transaction ID to delete (must be a valid GUID)</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>No content on successful deletion</returns>
     [HttpDelete(ApiRoutes.CashTransactions.IdRoute)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ValidateGuid("id")]
-    public async Task<IActionResult> DeleteCashTransaction([FromQuery] string id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DeleteCashTransaction([FromQuery] string id, 
+                                                        CancellationToken cancellationToken = default)
     {
         var command = new DeleteCashTransactionCommand()
         {
@@ -122,4 +180,6 @@ public class CashTransactionsController : BaseApiController
 
         return await HandleRequest(command, cancellationToken);
     }
+
+    #endregion
 }

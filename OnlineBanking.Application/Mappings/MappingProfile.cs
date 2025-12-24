@@ -1,19 +1,11 @@
-using AutoMapper;
-using OnlineBanking.Application.Features.BankAccounts.Create;
+
 using OnlineBanking.Application.Features.Branch.Create;
 using OnlineBanking.Application.Features.Branch.Update;
-using OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
-using OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
-using OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 using OnlineBanking.Application.Features.Customers.Create;
-using OnlineBanking.Application.Features.FastTransactions.Create;
-using OnlineBanking.Application.Features.FastTransactions.Delete;
 using OnlineBanking.Application.Features.FastTransactions.Update;
 using OnlineBanking.Application.Models.Address;
 using OnlineBanking.Application.Models.Auth.Responses;
-using OnlineBanking.Application.Models.BankAccount;
 using OnlineBanking.Application.Models.BankAccount.Requests;
-using OnlineBanking.Application.Models.BankAccount.Responses;
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.Branch.Requests;
 using OnlineBanking.Application.Models.Branch.Responses;
@@ -22,7 +14,6 @@ using OnlineBanking.Application.Models.Customer.Requests;
 using OnlineBanking.Application.Models.Customer.Responses;
 using OnlineBanking.Application.Models.FastTransaction.Requests;
 using OnlineBanking.Application.Models.FastTransaction.Responses;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Entities;
@@ -47,7 +38,6 @@ public class MappingProfile : Profile
             .ForPath(d => d.Currency.Code, o => o.MapFrom(s => s.Currency.Code))
             .ForPath(d => d.Currency.Name, o => o.MapFrom(s => s.Currency.Name))
             .ForPath(d => d.Currency.Symbol, o => o.MapFrom(s => s.Currency.Symbol))
-
             .ReverseMap();
 
         CreateMap<AppUser, AuthResponse>().ReverseMap();
@@ -75,6 +65,7 @@ public class MappingProfile : Profile
         CreateMap<UpdateFastTransactionRequest, UpdateFastTransactionCommand>().ReverseMap();
         CreateMap<DeleteFastTransactionRequest, DeleteFastTransactionCommand>().ReverseMap();
         CreateMap<FastTransaction, FastTransactionResponse>()
+        .ForMember(d => d.IBAN, o => o.MapFrom(s => s.BankAccount.IBAN))
         .ForMember(d => d.RecipientBankName, o => o.MapFrom(s => s.BankAccount.Branch.Name))
         .ReverseMap();
 

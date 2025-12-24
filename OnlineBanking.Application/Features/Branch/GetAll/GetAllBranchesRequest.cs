@@ -1,3 +1,4 @@
+
 using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.Application.Features.Branch.GetAll;

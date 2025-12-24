@@ -1,3 +1,4 @@
+
 using OnlineBanking.Core.Domain.Entities;
 
 namespace OnlineBanking.Application.Contracts.Persistence;

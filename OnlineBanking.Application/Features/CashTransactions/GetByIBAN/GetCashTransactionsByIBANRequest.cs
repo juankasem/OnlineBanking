@@ -1,6 +1,5 @@
-using OnlineBanking.Application.Helpers.Params;
-using OnlineBanking.Application.Models.CashTransaction.Responses;
 
+using OnlineBanking.Application.Models.CashTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.CashTransactions.GetByIBAN;
 

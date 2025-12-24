@@ -1,4 +1,6 @@
 
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
+
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 
 /// <summary>
@@ -6,10 +8,10 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 /// Validates the withdrawal request, applies the domain logic, and persists changes
 /// </summary>
 public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
-                                            IBankAccountService bankAccountService,
-                                            IAppUserAccessor appUserAccessor,
-                                            ILogger<MakeWithdrawalCommandHandler> logger) :
-                                            IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
+                                        IBankAccountService bankAccountService,
+                                        IAppUserAccessor appUserAccessor,
+                                        ILogger<MakeWithdrawalCommandHandler> logger) :
+                                        IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
@@ -22,7 +24,6 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
         var result = new ApiResult<Unit>();
 
-        // Validate request
         if (!ValidateWithdrawalRequest(request, result))
             return result;
 
@@ -30,35 +31,43 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
 
         // Retrieve bank account
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(iban);
+
+        if (!BankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
+            return result;
+
         var amountToWithdraw = decimal.Round(request.BaseCashTransaction.Amount.Value, 2);
 
-        if (!ValidateBankAccount(bankAccount, iban, result))
+        if (!BankAccountHelper.HasSufficientFunds(bankAccount, amountToWithdraw, result))
             return result;
-
-
-        if (!HasSufficientFunds(bankAccount, amountToWithdraw, result))
-            return result;
-        
 
         // Prepare transaction
-        var bankAccountOwnerName = await GetBankAccountOwner(bankAccount);
+        var accountOwner = _appUserAccessor.GetDisplayName();
         var updatedBalance = bankAccount.Balance - amountToWithdraw;
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, bankAccountOwnerName, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, updatedBalance);
 
         // Apply domain logic
         _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction);
 
+        // Mark aggregate as modified so it will be saved
+        _uow.BankAccounts.Update(bankAccount);
+
         // mark business result as completed on the object before saving so EF persists it in same transaction
         cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
 
-        // Mark aggregate as modified so it will be saved
-        _uow.BankAccounts.Update(bankAccount);
+        // Add domain event
+        bankAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
+            cashTransaction.Type,
+            cashTransaction.TransactionDate,
+            cashTransaction.From,
+            cashTransaction.To));
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
                    "Withdrawal transaction {TransactionId} of amount {Amount} from IBAN {IBAN} created successfully.",
-                   cashTransaction.Id, amountToWithdraw, iban);
+                   cashTransaction.Id, 
+                   amountToWithdraw, 
+                   iban);
         }
         else
         {
@@ -89,60 +98,6 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Validates that the bank account exists
-    /// </summary>
-    private static bool ValidateBankAccount(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
-                                          string iban,
-                                          ApiResult<Unit> result)
-    {
-        var success = true;
-        if (bankAccount is null)
-        {
-            result.AddError(ErrorCode.BadRequest, $"Sender account with IBAN {iban} not found.");
-            success = false;
-        }
-
-        return success;
-    }
-
-    /// <summary>
-    /// Validates that the account has sufficient funds for withdrawal
-    /// </summary>
-    private static bool HasSufficientFunds(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount, decimal totalAmount, ApiResult<Unit> result)
-    {
-        if (bankAccount.AllowedBalanceToUse < totalAmount)
-        {
-            result.AddError(ErrorCode.InSufficintFunds, CashTransactionErrorMessages.InsufficientFunds);
-            return false;
-        }
-
-        return true;
-    }
-
-    #endregion
-
-    #region Helper Methods
-
-    /// <summary>
-    /// Validates that the bank account exists
-    /// </summary>
-    private async Task<string> GetBankAccountOwner(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount)
-    {
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
-
-        if (loggedInAppUser is null)
-        {
-            return string.Empty;
-        }
-
-        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-        return bankAccountOwner is not null ? bankAccountOwner.FirstName + " " + bankAccountOwner.LastName :
-                string.Empty;
     }
 
     #endregion

@@ -76,7 +76,7 @@ public class AuthController(ILogger<AuthController> logger,
     [HttpGet(ApiRoutes.AppUsers.Phone)]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<string>> GetUserPhone(CancellationToken cancellationToken = default)
+    public async Task<ActionResult<string>> GetUserPhone()
     {
         var user = await _userManager.FindByEmailFromClaimsPrincipalAsync(User);
 

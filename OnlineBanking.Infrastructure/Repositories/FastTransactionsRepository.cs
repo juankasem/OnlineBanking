@@ -1,3 +1,4 @@
+
 using OnlineBanking.Application.Helpers.Params;
 using OnlineBanking.Infrastructure.Persistence;
 
@@ -12,9 +13,9 @@ public class FastTransactionsRepository : GenericRepository<FastTransaction>, IF
     public async Task<(IReadOnlyList<FastTransaction>, int)> GetByIBANAsync(string iban, FastTransactionParams fastTransactionParams)
     {
         var query = _dbContext.FastTransactions.Include(ft => ft.BankAccount)
-                                                .ThenInclude(b => b.Branch)
-                                                .Where(ft => ft.BankAccount.IBAN == iban)
-                                                .AsQueryable();
+                                               .ThenInclude(b => b.Branch)
+                                               .Where(ft => ft.BankAccount.IBAN == iban)
+                                               .AsQueryable();
 
         var totalCount = await query.CountAsync();
         var fastTransactions = await ApplyPagination(query, fastTransactionParams.PageNumber, fastTransactionParams.PageSize);

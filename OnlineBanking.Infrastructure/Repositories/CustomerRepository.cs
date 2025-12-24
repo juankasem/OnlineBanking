@@ -1,3 +1,4 @@
+
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Infrastructure.Persistence;
 
@@ -9,11 +10,11 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
     {
     }
 
-    public async Task<IReadOnlyList<BankAccount>> GetCustomerBankAccountsAsync(Guid customerId)
+    public async Task<IReadOnlyList<BankAccount>> GetCustomerBankAccountsAsync(string customerNo)
     {
-        return await _dbContext.BankAccounts.Where(ba => ba.BankAccountOwners.Where(c => c.CustomerId == customerId).Any())
-                                             .Include(c => c.Branch)
-                                             .Include(c => c.Currency)
+        return await _dbContext.BankAccounts.Where(ba => ba.BankAccountOwners.Where(c => c.Customer.CustomerNo == customerNo).Any())
+                                            .Include(c => c.Branch)
+                                            .Include(c => c.Currency)
                                             .AsNoTracking()
                                             .ToListAsync();
     }
@@ -25,7 +26,6 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
                                         .Select(c => c.Customer)
                                         .AsNoTracking()
                                         .ToListAsync();
-
         return customers;
     }
 

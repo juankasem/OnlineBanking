@@ -1,10 +1,10 @@
-namespace OnlineBanking.Core.Domain.Enums
+
+namespace OnlineBanking.Core.Domain.Enums;
+    
+public enum CashTransactionType
 {
-    public enum CashTransactionType
-    {
-        Deposit = 1,
-        Withdrawal = 2,
-        Transfer = 3,
-        FAST = 4
-    }
+    Deposit = 1,
+    Withdrawal = 2,
+    Transfer = 3,
+    FAST = 4
 }

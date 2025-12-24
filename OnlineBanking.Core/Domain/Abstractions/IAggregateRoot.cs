@@ -1,12 +1,11 @@
 ﻿
-
 namespace OnlineBanking.Core.Domain.Abstractions;
 
-public interface IAggregate<T> : IAggregate, IEntity<T>
+public interface IAggregateRoot<T> : IAggregateRoot, IEntity<T>
 {
 }
 
-public interface IAggregate
+public interface IAggregateRoot
 {
     IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
     void ClearDomainEvents();

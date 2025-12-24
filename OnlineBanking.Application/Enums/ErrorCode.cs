@@ -1,5 +1,4 @@
 
-
 namespace OnlineBanking.Application.Enums;
 
 public enum ErrorCode

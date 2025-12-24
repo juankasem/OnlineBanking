@@ -1,11 +1,9 @@
-using OnlineBanking.Application.Models.BankAccount;
-using OnlineBanking.Application.Models.BankAccount.Responses;
+
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
 using OnlineBanking.Application.Models.Customer;
 using OnlineBanking.Application.Models.DebitCard;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using System.Collections.ObjectModel;
@@ -14,16 +12,17 @@ namespace OnlineBanking.Application.Mappings.BankAccounts;
 
 public class BankAccountMapper : IBankAccountMapper
 {
-
     public BankAccountDto MapToDtoModel(BankAccount bankAccount)
     {
         var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
 
-        return new(bankAccount.AccountNo, bankAccount.IBAN, bankAccount.Type,
-                    MapToAccountBranchDTO(bankAccount.Branch),
-                    MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
-                    bankAccount.MinimumAllowedBalance, bankAccount.Debt),
-                    currency);
+        return new(bankAccount.AccountNo, bankAccount.IBAN, 
+            CreateFullName(bankAccount.BankAccountOwners.FirstOrDefault().Customer),
+            bankAccount.Type,
+            MapToAccountBranchDTO(bankAccount.Branch),
+            MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
+            bankAccount.MinimumAllowedBalance, bankAccount.Debt),
+            currency);
     }
 
     public BankAccountResponse MapToResponseModel(BankAccount bankAccount,

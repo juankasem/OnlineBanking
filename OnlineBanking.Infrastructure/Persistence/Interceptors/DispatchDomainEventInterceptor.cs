@@ -6,9 +6,11 @@ using OnlineBanking.Infrastructure.Services;
 
 namespace OnlineBanking.Infrastructure.Persistence.Interceptors;
 
-public class DispatchDomainEventInterceptor(IMediator mediator, IServiceBusPublisher serviceBusPublisher) : SaveChangesInterceptor
+public class DispatchDomainEventInterceptor(IMediator mediator, 
+             IServiceBusPublisher serviceBusPublisher
+    ) 
+    : SaveChangesInterceptor
 {
-
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         DispatchDomainEvents(eventData.Context).GetAwaiter().GetResult();
@@ -32,9 +34,9 @@ public class DispatchDomainEventInterceptor(IMediator mediator, IServiceBusPubli
         }
 
         var domainEntities = dbContext.ChangeTracker
-            .Entries<IAggregate>()
-            .Where(e => e.Entity.DomainEvents.Count != 0)
-            .Select(e => e.Entity)
+            .Entries<IAggregateRoot>()
+            .Where(entry => entry.Entity.DomainEvents.Count != 0)
+            .Select(entry => entry.Entity)
             .ToList();
 
         var domainEvents = domainEntities
@@ -45,7 +47,6 @@ public class DispatchDomainEventInterceptor(IMediator mediator, IServiceBusPubli
 
         foreach (var domainEvent in domainEvents)
         {
-            await mediator.Publish(domainEvent);
             await serviceBusPublisher.PublishEventAsync(domainEvent);
         }
     }

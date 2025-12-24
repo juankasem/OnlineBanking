@@ -1,4 +1,4 @@
-using FluentValidation;
+
 using OnlineBanking.Application.Models.CashTransaction.Base;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Validators;
@@ -45,4 +45,3 @@ public class MoneyDtoValidator : AbstractValidator<MoneyDto>
         .GreaterThan(0).WithMessage("{PropertyName} should be greater than {ComparisonValue}");
     }
 }
-

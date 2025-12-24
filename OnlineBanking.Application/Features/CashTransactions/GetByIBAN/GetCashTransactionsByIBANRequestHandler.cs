@@ -1,5 +1,5 @@
+
 using OnlineBanking.Application.Extensions;
-using OnlineBanking.Application.Mappings.CashTransactions;
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 
 namespace OnlineBanking.Application.Features.CashTransactions.GetByIBAN;
@@ -35,10 +35,13 @@ public class GetCashTransactionsByAccountNoOrIBANRequestHandler : IRequestHandle
         }
 
         var mappedAccountTransactions = accountTransactions.Select(at => _cashTransactionsMapper.MapToResponseModel(at, request.IBAN))
-                                                            .ToList().AsReadOnly();
+                                                           .ToList()
+                                                           .AsReadOnly();
 
-        result.Payload = mappedAccountTransactions.ToPagedList(totalCount, cashTransactionParams.PageNumber, cashTransactionParams.PageSize);
-
+        result.Payload = mappedAccountTransactions.ToPagedList(totalCount, 
+                                                               cashTransactionParams.PageNumber, 
+                                                               cashTransactionParams.PageSize, 
+                                                               cancellationToken);
         return result;
     }
 }
