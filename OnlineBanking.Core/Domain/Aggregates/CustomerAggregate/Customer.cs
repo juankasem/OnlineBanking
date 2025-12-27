@@ -1,13 +1,13 @@
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
-public class Customer : BaseDomainEntity
+public class Customer : AggregateRoot<Guid>
 {
     private readonly List<CustomerBankAccount> _customerBankAccounts = new List<CustomerBankAccount>();
 
@@ -73,6 +73,8 @@ public class Customer : BaseDomainEntity
 
     //Many-to-many relationship
     public ICollection<CustomerBankAccount> CustomerBankAccounts { get { return _customerBankAccounts; } }
+
+    public IReadOnlyCollection<IDomainEvent> DomainEvents => throw new NotImplementedException();
 
     private Customer(Guid id, string identificationNo, IdentificationType identificationType,
                         string customerNo, string appUserId,

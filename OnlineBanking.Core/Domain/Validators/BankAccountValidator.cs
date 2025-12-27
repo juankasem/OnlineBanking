@@ -1,3 +1,4 @@
+
 using FluentValidation;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
@@ -7,6 +8,16 @@ public class BankAccountValidator : AbstractValidator<BankAccount>
 {
     public BankAccountValidator()
     {
+        RuleFor(b => b.AccountNo)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} cannot be empty")
+        .MinimumLength(18).WithMessage("Minimum number of characters of {PropertyName} should be 18 characters");
+
+        RuleFor(b => b.IBAN)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} cannot be empty")
+        .MinimumLength(22).WithMessage("Minimum number of characters of {PropertyName} should be 22 characters");
+
         RuleFor(b => b.Type)
             .NotNull().WithMessage("{PropertyName} is required")
             .NotEmpty().WithMessage("{PropertyName} can't be empty");

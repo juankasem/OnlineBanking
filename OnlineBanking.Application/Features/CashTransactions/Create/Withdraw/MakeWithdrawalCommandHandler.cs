@@ -1,4 +1,3 @@
-
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
@@ -64,7 +63,9 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                   "Withdrawal transaction {TransactionId} of amount {Amount} from IBAN {IBAN} created successfully.",
+                   "Withdrawal transaction Id: {TransactionId} of amount: " +
+                   "{Amount} from bank account of IBAN: " +
+                   "{IBAN} created successfully.",
                    cashTransaction.Id, 
                    amountToWithdraw, 
                    iban);

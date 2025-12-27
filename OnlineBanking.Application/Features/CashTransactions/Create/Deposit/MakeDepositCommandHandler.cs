@@ -58,9 +58,13 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation("Deposit transaction of Id {cashTransactionId} of amount {amount} is created",
-                                   cashTransaction.Id,
-                                   amountToDeposit);
+            _logger.LogInformation(
+                  "Disposal transaction Id: {TransactionId} of amount: " +
+                  "{Amount} from bank account of IBAN: " +
+                  "{IBAN} created successfully.",
+                  cashTransaction.Id,
+                  amountToDeposit,
+                  iban);
         }
         else
         {
@@ -101,18 +105,4 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     }
 
     #endregion
-    private async Task<string> GetBankAccountOwner(
-    Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount)
-    {
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
-        if (loggedInAppUser is null)
-        {
-            return string.Empty;
-        }
-
-        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-        return bankAccountOwner is not null ? bankAccountOwner.FirstName + " " + bankAccountOwner.LastName :
-               string.Empty;
-    }
 }

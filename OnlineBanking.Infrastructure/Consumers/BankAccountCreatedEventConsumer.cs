@@ -1,9 +1,9 @@
-﻿
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 using OnlineBanking.Infrastructure.Services;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace OnlineBanking.Infrastructure.Consumers;
@@ -48,6 +48,10 @@ public class BankAccountCreatedEventConsumer(
             {
                 logger.LogError(abandonEx, "Failed to abandon message");
             }
+        }
+        finally
+        {
+            await processor.StopProcessingAsync(stoppingToken);
         }
     }
 

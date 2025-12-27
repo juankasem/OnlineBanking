@@ -37,18 +37,6 @@ public abstract class BaseServiceBusConsumer<TEvent>(
         processor.ProcessErrorAsync += ProcessErrorAsync;
 
         await processor.StartProcessingAsync(stoppingToken);
-        try
-        {
-            await Task.Delay(Timeout.Infinite, stoppingToken);
-        }
-        catch (OperationCanceledException)
-        {
-            // expected on shutdown
-        }
-        finally
-        {
-            await processor.StopProcessingAsync(stoppingToken);
-        }
     }
 
     /// <summary>

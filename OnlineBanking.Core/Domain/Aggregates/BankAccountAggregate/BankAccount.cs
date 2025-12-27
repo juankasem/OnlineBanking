@@ -1,4 +1,3 @@
-
 using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Enums;
@@ -159,7 +158,7 @@ public class BankAccount : AggregateRoot<Guid>
 
         var objectToValidate = new BankAccount(
             id ?? Guid.NewGuid(),
-            accountNo,
+            string.IsNullOrEmpty(accountNo) ? GenerateAccountNo() : accountNo,
             iban,
             type,
             branchId,
@@ -171,6 +170,8 @@ public class BankAccount : AggregateRoot<Guid>
             isActive,
             isDeleted);
 
+        objectToValidate.IBAN ??= "DE34" + objectToValidate.AccountNo;
+
         var validationResult = validator.Validate(objectToValidate);
 
         if (validationResult.IsValid) return objectToValidate;
@@ -178,6 +179,16 @@ public class BankAccount : AggregateRoot<Guid>
         var exception = new BankAccountNotValidException("Bank Account is not valid");
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
         throw exception;
+    }
+
+    private static string GenerateAccountNo()
+    {
+        var random = Random.Shared;
+        string accountNumber = random.Next(0, 100_000_000).ToString("D8") + 
+                               random.Next(0, 100_000_000).ToString("D8") + 
+                               random.Next(0, 100).ToString("D2");
+
+        return accountNumber;
     }
 
     #endregion

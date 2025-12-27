@@ -17,7 +17,7 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting creating bank account");
+        _logger.LogInformation("Starting creating a new {type} bank account", request.Type.ToString());
 
         var result = new ApiResult<Unit>();
 
@@ -25,13 +25,12 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
         {
             result.AddError(ErrorCode.CustomerAlreadyExists,
             string.Format(BankAccountErrorMessages.AlreadyExists, request.AccountNo));
-
             return result;
         }
 
         var bankAccount = CreateBankAccount(request);
 
-        if (request.CustomerNos.Count > 0)
+        if (request.CustomerNos.Length > 0)
         {
             var accountOwners = new List<Customer>();
 
@@ -59,33 +58,40 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
             bankAccount.AccountNo,
             bankAccount.IBAN,
             bankAccount.Type,
-            bankAccount.Branch.Name,
+            bankAccount.BranchId,
             bankAccount.Balance,
-            bankAccount.Currency.Symbol));
+            bankAccount.CurrencyId));
 
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation("Bank account of Id {bankAccountId} of account No. {accountNo} & " +
-                                    "IBAN {iban} is created",
+            _logger.LogInformation("Bank account of Id {bankAccountId} of account No: {accountNo} & " +
+                                    "IBAN: {iban}, type:{type}, balance: {balance} is created",
                                    bankAccount.Id,
                                    bankAccount.AccountNo,
-                                   bankAccount.IBAN);
+                                   bankAccount.IBAN,
+                                   bankAccount.Type,
+                                   bankAccount.Balance);
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
             _logger.LogError($"Creating bank account failed!");
         }
+
         return result;
     }
 
     #region Private helper methods
-    private static Core.Domain.Aggregates.BankAccountAggregate.BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
-                Core.Domain.Aggregates.BankAccountAggregate.
-                BankAccount.Create(request.AccountNo, request.IBAN, request.Type,
-                                    request.BranchId, request.Balance,
-                                    request.AllowedBalanceToUse, request.MinimumAllowedBalance,
-                                    request.Debt, request.CurrencyId);
+    private static BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
+                BankAccount.Create(request.AccountNo, 
+                                    request.IBAN, 
+                                    request.Type,
+                                    request.BranchId, 
+                                    request.Balance,
+                                    request.AllowedBalanceToUse, 
+                                    request.MinimumAllowedBalance,
+                                    request.Debt, 
+                                    request.CurrencyId);
     #endregion
 }

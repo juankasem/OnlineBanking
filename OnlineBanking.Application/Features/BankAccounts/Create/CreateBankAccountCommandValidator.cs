@@ -1,4 +1,3 @@
-using FluentValidation;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Create;
 
@@ -9,16 +8,6 @@ public class CreateBankAccountCommandValidator : AbstractValidator<CreateBankAcc
     public CreateBankAccountCommandValidator(IUnitOfWork uow)
     {
         _uow = uow;
-
-        RuleFor(b => b.AccountNo)
-        .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required")
-        .MinimumLength(16).WithMessage("Minimum number of characters of {b.AccountNo } should be 16 characters");
-
-        RuleFor(b => b.IBAN)
-        .NotNull().WithMessage("{PropertyName} is required")
-        .NotEmpty().WithMessage("{PropertyName} is required")
-        .MinimumLength(20).WithMessage("Minimum number of characters of {PropertyName} should be {ComparisonValue} characters");
 
         RuleFor(b => b.Type)
         .NotNull().WithMessage("{PropertyName} is required");

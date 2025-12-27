@@ -1,4 +1,3 @@
-
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 

@@ -1,9 +1,11 @@
 
+using OnlineBanking.Core.Domain.Abstractions;
+
 namespace OnlineBanking.Core.Domain.Common;
 
-public abstract class BaseDomainEntity
+public abstract class BaseDomainEntity<T> : IAuditableEntity
 {
-    public Guid Id { get; set; }
+    public T Id { get; set; }
 
     public DateTime CreatedOn { get; set; }
 

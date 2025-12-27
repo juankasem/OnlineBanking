@@ -11,5 +11,5 @@ public class CreateBankAccountCommand : IRequest<ApiResult<Unit>>
     public decimal Debt { get; set; }
     public decimal AllowedBalanceToUse { get; set; }
     public decimal MinimumAllowedBalance { get; set; }
-    public List<string> CustomerNos { get; set; }
+    public string[] CustomerNos { get; set; }
 }

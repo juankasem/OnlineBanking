@@ -2,7 +2,7 @@ using OnlineBanking.Core.Domain.Common;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class District : BaseDomainEntity
+public class District : BaseDomainEntity<Guid>
 {
     public new int Id { get; set; }
 

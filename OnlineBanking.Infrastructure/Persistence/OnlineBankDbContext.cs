@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Entities;
 
 namespace OnlineBanking.Infrastructure.Persistence;
@@ -63,22 +62,5 @@ public class OnlineBankDbContext : IdentityDbContext<AppUser>
                     .OnDelete(DeleteBehavior.NoAction);
 
         base.OnModelCreating(modelBuilder);
-    }
-
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        foreach (var entry in ChangeTracker.Entries<BaseDomainEntity>())
-        {
-            entry.Entity.LastModifiedBy = _appUserAccessor.GetUsername();
-            entry.Entity.LastModifiedOn = DateTime.UtcNow;
-
-            if (entry.State == EntityState.Added)
-            {
-                entry.Entity.CreatedBy = _appUserAccessor.GetUsername();
-                entry.Entity.CreatedOn = DateTime.Now;
-            }
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
     }
 }

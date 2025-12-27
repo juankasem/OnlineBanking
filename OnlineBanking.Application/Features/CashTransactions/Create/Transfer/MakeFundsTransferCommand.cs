@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Models.CashTransaction.Base;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;

@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Features.FastTransactions.Create;
 using OnlineBanking.Application.Features.FastTransactions.Delete;
 using OnlineBanking.Application.Features.FastTransactions.GetByIBAN;

@@ -1,4 +1,3 @@
-using FluentValidation;
 using OnlineBanking.Application.Features.CashTransactions.Validators;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;

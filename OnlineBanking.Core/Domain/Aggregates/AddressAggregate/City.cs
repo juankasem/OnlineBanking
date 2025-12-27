@@ -1,11 +1,10 @@
+
 using OnlineBanking.Core.Domain.Common;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class City : BaseDomainEntity
+public class City : BaseDomainEntity<int>
 {
-    public new int Id { get; set; }
-
     public string Name { get; set; }
 
     public int CountryId { get; set; }

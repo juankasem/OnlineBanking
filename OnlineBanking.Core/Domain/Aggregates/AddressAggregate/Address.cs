@@ -4,7 +4,7 @@ using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class Address : BaseDomainEntity
+public class Address : BaseDomainEntity<Guid>
 {
     public string Name { get; private set; }
 

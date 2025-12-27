@@ -1,5 +1,5 @@
-
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
+using OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Events;
 
 namespace OnlineBanking.Application.Features.Branch.Create;
 
@@ -7,11 +7,15 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
+    private readonly ILogger<CreateBranchCommandHandler> _logger;
 
-    public CreateBranchCommandHandler(IUnitOfWork uow, IMapper mapper)
+    public CreateBranchCommandHandler(IUnitOfWork uow, 
+                                    IMapper mapper, 
+                                    ILogger<CreateBranchCommandHandler> logger)
     {
         _uow = uow;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<ApiResult<Unit>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
@@ -25,6 +29,23 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
 
         await _uow.Branches.AddAsync(branch);
         await _uow.SaveAsync();
+
+        // Add domain event
+        branch.AddDomainEvent(new BranchCreatedEvent(branch.Id,
+            branch.Name));
+
+        // Persist changes
+        if (await _uow.CompleteDbTransactionAsync() >= 1)
+        {
+            _logger.LogInformation("Branch of id: {branchId}, name: {name} is created successfully.",
+                                   branch.Id,
+                                   branch.Name);
+        }
+        else
+        {
+            result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
+            _logger.LogError($"Creating bank account failed!");
+        }
 
         return result;
     }

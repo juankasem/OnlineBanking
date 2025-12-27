@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Features.BankAccounts.Activate;
 using OnlineBanking.Application.Features.BankAccounts.AddOwner;
 using OnlineBanking.Application.Features.BankAccounts.Create;
@@ -137,7 +136,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountByIBAN([FromRoute] string iban,
                                                           [FromQuery] CashTransactionParams accountTransactionParams,
-                                                           CancellationToken cancellationToken = default)
+                                                          CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest()
         {
@@ -264,7 +263,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeactivateBankAccount([FromQuery(Name = "id")] string bankAccountId, 
-                                                            CancellationToken cancellationToken = default)
+                                                           CancellationToken cancellationToken = default)
     {
         var command = new DeactivateBankAccountCommand()
         {

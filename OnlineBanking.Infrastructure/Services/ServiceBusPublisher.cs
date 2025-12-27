@@ -29,7 +29,7 @@ public class ServiceBusPublisher(ServiceBusClient serviceBusClient, IOptions<Ser
          }
        };
 
-        // Create a sender for the topic
+        // Create a sender for the topic & Publish the message to it
         await using var topicSender = serviceBusClient.CreateSender(_topicName);
         await topicSender.SendMessageAsync(message);
     }

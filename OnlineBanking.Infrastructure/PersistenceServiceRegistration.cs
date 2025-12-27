@@ -33,6 +33,7 @@ public static class PersistenceServiceRegistration
         services.AddScoped<ILoansRepository, LoansRepository>();
         services.AddScoped<IUtilityPaymentRepository, UtilityPaymentRepository>();
 
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntitiesInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventInterceptor>();
 
         return services;

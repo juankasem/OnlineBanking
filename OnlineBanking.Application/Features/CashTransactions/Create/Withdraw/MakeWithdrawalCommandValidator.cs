@@ -1,4 +1,3 @@
-using FluentValidation;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 

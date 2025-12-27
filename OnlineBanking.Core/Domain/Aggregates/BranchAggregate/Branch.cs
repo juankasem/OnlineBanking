@@ -1,15 +1,14 @@
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Common;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
-public class Branch : BaseDomainEntity
+public class Branch : AggregateRoot<int>
 {
     private readonly List<BankAccount> _bankAccounts = [];
 
-    public new int Id { get; set; }
     public string Name { get; private set; }
     public Address Address { get; private set; }
 

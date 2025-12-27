@@ -1,3 +1,4 @@
+
 namespace OnlineBanking.Application.Models.BankAccount.Requests;
 
 public class CreateBankAccountRequest
@@ -11,5 +12,5 @@ public class CreateBankAccountRequest
     public decimal MinimumAllowedBalance { get; set; }
     public decimal Debt { get; set; }
     public int CurrencyId { get; set; }
-    public List<string> CustomerNos { get; set; }
+    public string[] CustomerNos { get; set; }
 }

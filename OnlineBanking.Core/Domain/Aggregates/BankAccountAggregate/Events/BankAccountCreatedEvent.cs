@@ -8,6 +8,6 @@ public record BankAccountCreatedEvent(Guid Id,
     string AccountNo,
     string IBAN,
     BankAccountType Type,
-    string BranchName,
+    int BranchId,
     decimal Balance,
-    string Currency) : IDomainEvent;
+    int CurrencyId) : IDomainEvent;

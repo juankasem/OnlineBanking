@@ -1,5 +1,3 @@
-
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
@@ -23,7 +21,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Start fund transfer from {from} to {to}", request.From, request.To);
+        _logger.LogInformation("Start creating fund transfer from {from} to {to}", request.From, request.To);
 
         var result = new ApiResult<Unit>();
 
@@ -74,7 +72,8 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                  "Transfer {TransactionId} of amount {Amount} with fees {Fees} from {From} to {To} completed successfully.",
+                  "Transfer {TransactionId} of amount :{Amount} with fees: {Fees} " +
+                  "from bank account of IBAN: {From} to bank account of IBAN {To} completed successfully!",
                   cashTransaction.Id, amountToTransfer, fees, senderIBAN, recipientIBAN);
         }
         else
@@ -120,25 +119,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     #endregion
 
     #region Helper Methods
-
-    /// <summary>
-    /// Gets the name of the bank account owner (currently logged-in user)
-    /// Returns empty string if not found
-    /// </summary>
-    private async Task<string> GetBankAccountOwner(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount)
-    {
-        var loggedInAppUser = await _uow.AppUsers.GetAppUser(_appUserAccessor.GetUsername());
-
-        if (loggedInAppUser is null)
-        {
-            return string.Empty;
-        }
-
-        var bankAccountOwner = bankAccount.BankAccountOwners.FirstOrDefault(c => c.Customer.AppUserId == loggedInAppUser.Id)?.Customer;
-
-        return bankAccountOwner is not null ? $"{bankAccountOwner.FirstName} {bankAccountOwner.LastName}" :
-                string.Empty;
-    }
 
     /// <summary>
     /// Prepares transfer DTO with updated balances and recipient information
