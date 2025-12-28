@@ -1,5 +1,4 @@
-﻿
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;

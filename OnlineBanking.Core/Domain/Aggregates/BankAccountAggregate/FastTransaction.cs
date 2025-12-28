@@ -67,7 +67,7 @@ public class FastTransaction : BaseDomainEntity<Guid>
     {
         var validator = new FastTransactionValidator();
 
-        var objectToValidate = new FastTransaction(
+        var fastTransaction = new FastTransaction(
         id ?? Guid.NewGuid(),
         bankAccountId,
         recipientIBAN,
@@ -75,9 +75,10 @@ public class FastTransaction : BaseDomainEntity<Guid>
         amount
         );
 
-        var validationResult = validator.Validate(objectToValidate);
+        var validationResult = validator.Validate(fastTransaction);
 
-        if (validationResult.IsValid) return objectToValidate;
+        if (validationResult.IsValid) 
+            return fastTransaction;
 
         var exception = new FastTransactionNotValidException("Fast Transaction is not valid");
         validationResult.Errors.ForEach(vr => exception.ValidationErrors.Add(vr.ErrorMessage));

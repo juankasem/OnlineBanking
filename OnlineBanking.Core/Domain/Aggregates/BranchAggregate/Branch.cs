@@ -1,5 +1,6 @@
 using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Events;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
@@ -24,14 +25,20 @@ public class Branch : AggregateRoot<int>
     {
         var validator = new BranchValidator();
 
-        var objectToValidate = new Branch(
+        var branch = new Branch(
             name
         );
 
-        var validationResult = validator.Validate(objectToValidate);
+        var validationResult = validator.Validate(branch);
 
-        if (validationResult.IsValid) return objectToValidate;
+        if (validationResult.IsValid)
+        {
+            // Add domain event
+            branch.AddDomainEvent(new BranchCreatedEvent(branch.Id,
+                branch.Name));
 
+            return branch;
+        }
         var exception = new BranchNotValidException("Branch is not valid");
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
         throw exception;

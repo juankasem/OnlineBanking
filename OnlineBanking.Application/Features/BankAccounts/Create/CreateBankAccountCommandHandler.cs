@@ -53,14 +53,6 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
         await _uow.BankAccounts.AddAsync(bankAccount);
 
-        // Add domain event
-        bankAccount.AddDomainEvent(new BankAccountCreatedEvent(bankAccount.Id,
-            bankAccount.AccountNo,
-            bankAccount.IBAN,
-            bankAccount.Type,
-            bankAccount.BranchId,
-            bankAccount.Balance,
-            bankAccount.CurrencyId));
 
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)

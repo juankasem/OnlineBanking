@@ -1,3 +1,4 @@
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
@@ -61,13 +62,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         // mark business result as completed on the object before saving so EF persists it in same transaction
         cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
-
-        // Add domain event
-        senderAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
-            cashTransaction.Type,
-            cashTransaction.TransactionDate,
-            cashTransaction.From,
-            cashTransaction.To));
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

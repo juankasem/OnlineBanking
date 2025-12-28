@@ -1,7 +1,5 @@
-
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Events;
 
 namespace OnlineBanking.Application.Features.Customers.Create;
 
@@ -40,15 +38,6 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         customer.SetAddress(address);
 
         await _uow.Customers.AddAsync(customer);
-
-        // Add domain event
-        customer.AddDomainEvent(new CustomerCreatedEvent(customer.Id,
-            customer.CustomerNo,
-            customer.FirstName,
-            customer.LastName,
-            customer.BirthDate,
-            customer.Gender,
-            customer.Nationality));
 
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)

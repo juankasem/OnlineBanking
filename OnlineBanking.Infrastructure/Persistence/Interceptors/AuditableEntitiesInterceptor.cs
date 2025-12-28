@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore.Diagnostics;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using OnlineBanking.Application.Contracts.Infrastructure;
 using OnlineBanking.Core.Domain.Abstractions;
 
@@ -12,13 +11,18 @@ public class AuditableEntitiesInterceptor(IAppUserAccessor appUserAccessor) : Sa
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        var context = eventData.Context;
-        if (context == null) 
-            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        UpdateAuditableEntities(eventData.Context);
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
+
+    private void UpdateAuditableEntities(DbContext? context)
+    {
+        if (context == null)
+            return;
 
         var entries = context.ChangeTracker
-            .Entries<IAuditableEntity>()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+        .Entries<IAuditableEntity>()
+        .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
         var currentUser = appUserAccessor.GetDisplayName() ?? "System";
         var currentTime = DateTime.UtcNow;
@@ -30,13 +34,10 @@ public class AuditableEntitiesInterceptor(IAppUserAccessor appUserAccessor) : Sa
                 entry.Entity.CreatedBy = currentUser;
                 entry.Entity.CreatedOn = currentTime;
             }
-
             // Always update modified fields for both Added and Modified states
             entry.Entity.LastModifiedBy = currentUser;
             entry.Entity.LastModifiedOn = currentTime;
         }
-        
-        return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 }
 

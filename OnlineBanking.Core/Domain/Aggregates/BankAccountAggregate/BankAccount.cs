@@ -1,9 +1,11 @@
 using OnlineBanking.Core.Domain.Abstractions;
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 using OnlineBanking.Core.Domain.ValueObjects;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
@@ -156,7 +158,7 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var validator = new BankAccountValidator();
 
-        var objectToValidate = new BankAccount(
+        var bankAccount = new BankAccount(
             id ?? Guid.NewGuid(),
             string.IsNullOrEmpty(accountNo) ? GenerateAccountNo() : accountNo,
             iban,
@@ -170,12 +172,22 @@ public class BankAccount : AggregateRoot<Guid>
             isActive,
             isDeleted);
 
-        objectToValidate.IBAN ??= "DE34" + objectToValidate.AccountNo;
+        bankAccount.IBAN ??= "DE34" + bankAccount.AccountNo;
 
-        var validationResult = validator.Validate(objectToValidate);
+        var validationResult = validator.Validate(bankAccount);
 
-        if (validationResult.IsValid) return objectToValidate;
+        if (validationResult.IsValid)
+        {
+            bankAccount.AddDomainEvent(new BankAccountCreatedEvent(bankAccount.Id,
+                bankAccount.AccountNo,
+                bankAccount.IBAN,
+                bankAccount.Type,
+                bankAccount.BranchId,
+                bankAccount.Balance,
+                bankAccount.CurrencyId));
 
+            return bankAccount;
+        }
         var exception = new BankAccountNotValidException("Bank Account is not valid");
         validationResult.Errors.ForEach(er => exception.ValidationErrors.Add(er.ErrorMessage));
         throw exception;
@@ -280,7 +292,8 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var index = _fastTransactions.FindIndex(c => c.Id == id);
 
-        if (index >= 0) _fastTransactions.Remove(_fastTransactions[index]);
+        if (index >= 0) 
+            _fastTransactions.Remove(_fastTransactions[index]);
     }
 
     #endregion

@@ -51,14 +51,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         _uow.BankAccounts.Update(bankAccount);
 
         // mark business result as completed on the object before saving so EF persists it in same transaction
-        cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
-
-        // Add domain event
-        bankAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
-            cashTransaction.Type,
-            cashTransaction.TransactionDate,
-            cashTransaction.From,
-            cashTransaction.To));
+        cashTransaction.UpdateStatus(CashTransactionStatus.Completed);    
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

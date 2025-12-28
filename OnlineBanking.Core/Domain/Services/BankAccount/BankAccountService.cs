@@ -1,6 +1,6 @@
-
 using Microsoft.Extensions.Logging;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
@@ -17,6 +17,7 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
                                       decimal fees = 0)
     {
         ArgumentNullException.ThrowIfNull(cashTransaction);
+
         if (cashTransaction.Amount <= 0) 
             throw new ArgumentException("Amount must be greater than zero.", nameof(cashTransaction));
 
@@ -47,7 +48,8 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         return true;
     }
 
-    public bool CreateCustomer(Aggregates.BankAccountAggregate.BankAccount bankAccount, Customer customer)
+    public bool CreateCustomer(Aggregates.BankAccountAggregate.BankAccount bankAccount, 
+                            Customer customer)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
         ArgumentNullException.ThrowIfNull(customer);
@@ -56,24 +58,38 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         return true;
     }
 
-    public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, FastTransaction fastTransaction)
+    public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, 
+                                    FastTransaction fastTransaction)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
         ArgumentNullException.ThrowIfNull(fastTransaction);
+
         if (fastTransaction.Amount <= 0) 
             throw new ArgumentException("Amount must be greater than zero.", nameof(fastTransaction));
 
         bankAccount.AddFastTransaction(fastTransaction);
+
+        bankAccount.AddDomainEvent(new FastTransactionCreatedEvent(fastTransaction.Id,
+            fastTransaction.BankAccountId,
+            fastTransaction.RecipientIBAN,
+            fastTransaction.RecipientName,
+            fastTransaction.Amount));
+
         return true;
     }
 
-    public bool DeleteFastTransation(Guid fastTransactionId, Aggregates.BankAccountAggregate.BankAccount bankAccount)
+    public bool DeleteFastTransation(Guid fastTransactionId, 
+                                    Aggregates.BankAccountAggregate.BankAccount bankAccount)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
+
         if (fastTransactionId == Guid.Empty) 
             throw new ArgumentException("Invalid fast transaction id.", nameof(fastTransactionId));
 
         bankAccount.DeleteFastTransaction(fastTransactionId);
+
+        bankAccount.AddDomainEvent(new FastTransactionDeletedEvent(fastTransactionId));
+
         return true;
     }
 
@@ -81,67 +97,89 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
 
     private static void ApplyTransfer(Aggregates.BankAccountAggregate.BankAccount senderAccount,
                                       Aggregates.BankAccountAggregate.BankAccount recipientAccount,
-                                      CashTransaction tx,
+                                      CashTransaction cashTransaction,
                                       decimal amount,
                                       decimal fees)
     {
         ArgumentNullException.ThrowIfNull(senderAccount);
         ArgumentNullException.ThrowIfNull(recipientAccount);
 
-        EnsureSameCurrencyOrThrow(senderAccount, tx);
-        EnsureSameCurrencyOrThrow(recipientAccount, tx);
+        EnsureSameCurrencyOrThrow(senderAccount, cashTransaction);
+        EnsureSameCurrencyOrThrow(recipientAccount, cashTransaction);
 
         EnsureSufficientFundsOrThrow(senderAccount, amount + fees);
 
-        senderAccount.AddAccountTransaction(tx);
-        recipientAccount.AddAccountTransaction(tx);
-
+        senderAccount.AddAccountTransaction(cashTransaction);
         senderAccount.UpdateBalance(amount + fees, isDeposit: false);
+
+        recipientAccount.AddAccountTransaction(cashTransaction);
         recipientAccount.UpdateBalance(amount);
+
+        AddCashTransactionCreatedDomainEvent(senderAccount, cashTransaction, fees);
     }
 
     private static void ApplyDeposit(Aggregates.BankAccountAggregate.BankAccount bankAccount,
-                                     CashTransaction tx,
+                                     CashTransaction cashTransaction,
                                      decimal amount)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
 
-        EnsureSameCurrencyOrThrow(bankAccount, tx);
+        EnsureSameCurrencyOrThrow(bankAccount, cashTransaction);
 
-        bankAccount.AddAccountTransaction(tx);
+        bankAccount.AddAccountTransaction(cashTransaction);
         bankAccount.UpdateBalance(amount);
+
+        AddCashTransactionCreatedDomainEvent(bankAccount, cashTransaction);
     }
 
     private static void ApplyWithdrawal(Aggregates.BankAccountAggregate.BankAccount bankAccount,
-                                        CashTransaction tx,
+                                        CashTransaction cashTransaction,
                                         decimal amount,
                                         decimal fees)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
 
-        EnsureSameCurrencyOrThrow(bankAccount, tx);
+        EnsureSameCurrencyOrThrow(bankAccount, cashTransaction);
 
         EnsureSufficientFundsOrThrow(bankAccount, amount + fees);
 
-        bankAccount.AddAccountTransaction(tx);
+        bankAccount.AddAccountTransaction(cashTransaction);
         bankAccount.UpdateBalance(amount + fees, isDeposit: false);
+
+        AddCashTransactionCreatedDomainEvent(bankAccount, cashTransaction);
     }
 
     #endregion
 
     #region Helpers
 
-    private static void EnsureSameCurrencyOrThrow(Aggregates.BankAccountAggregate.BankAccount account, CashTransaction tx)
+    private static void EnsureSameCurrencyOrThrow(Aggregates.BankAccountAggregate.BankAccount account, 
+                                                    CashTransaction tx)
     {
         if (account.CurrencyId != tx.CurrencyId)
             throw new UnmatchedCurrenciesException("Transaction currency does not match account currency.");
     }
 
-    private static void EnsureSufficientFundsOrThrow(Aggregates.BankAccountAggregate.BankAccount senderAccount, decimal amountToDeduct)
+    private static void EnsureSufficientFundsOrThrow(Aggregates.BankAccountAggregate.BankAccount senderAccount, 
+                                                        decimal amountToDeduct)
     {
         var projectedBalance = decimal.Round(senderAccount.Balance - amountToDeduct, 2);
         if (projectedBalance < senderAccount.MinimumAllowedBalance)
             throw new InsufficientFundsException("Insufficient funds to complete the transaction.");
+    }
+
+    private static void AddCashTransactionCreatedDomainEvent(Aggregates.BankAccountAggregate.BankAccount bankAccount, 
+                                                            CashTransaction cashTransaction, 
+                                                            decimal fees = 0)
+    {
+        bankAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
+          cashTransaction.Type,
+          cashTransaction.TransactionDate,
+          cashTransaction.From,
+          cashTransaction.To,
+          cashTransaction.Amount,
+          bankAccount.Currency.Name,
+          fees));
     }
 
     #endregion

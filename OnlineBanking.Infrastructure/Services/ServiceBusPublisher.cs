@@ -1,5 +1,4 @@
-﻿
-using Azure.Messaging.ServiceBus;
+﻿using Azure.Messaging.ServiceBus;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 
@@ -10,7 +9,8 @@ public interface IServiceBusPublisher
     Task PublishEventAsync<T>(T eventToPublish);
 }
 
-public class ServiceBusPublisher(ServiceBusClient serviceBusClient, IOptions<ServiceBusOptions> options) : IServiceBusPublisher
+public class ServiceBusPublisher(ServiceBusClient serviceBusClient, 
+                                 IOptions<ServiceBusOptions> options) : IServiceBusPublisher
 {
     private readonly ServiceBusClient serviceBusClient = serviceBusClient;
     private readonly string _topicName = options?.Value?.TransactionsTopic ?? throw new ArgumentNullException(nameof(options));

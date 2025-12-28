@@ -1,5 +1,4 @@
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
-using OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Events;
 
 namespace OnlineBanking.Application.Features.Branch.Create;
 
@@ -21,18 +20,12 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     public async Task<ApiResult<Unit>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
-
         var address = _mapper.Map<Address>(request.Address);
 
         var branch = CreateBranch(request);
         branch.SetAddress(address);
 
         await _uow.Branches.AddAsync(branch);
-        await _uow.SaveAsync();
-
-        // Add domain event
-        branch.AddDomainEvent(new BranchCreatedEvent(branch.Id,
-            branch.Name));
 
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)

@@ -140,7 +140,7 @@ public class CashTransaction : BaseDomainEntity<Guid>
                                         string? creditCardNo = null, string? debitCardNo = null, Guid? id = null, string? referenceNo = null)
     {
         var validator = new CashTransactionValidator();
-        var objectToValidate = new CashTransaction(
+        var cashTransaction = new CashTransaction(
         id ?? Guid.NewGuid(),
         referenceNo ?? GenerateReferenceNumber(),
         type,
@@ -161,9 +161,10 @@ public class CashTransaction : BaseDomainEntity<Guid>
         debitCardNo
         );
 
-        var validationResult = validator.Validate(objectToValidate);
+        var validationResult = validator.Validate(cashTransaction);
 
-        if (validationResult.IsValid) return objectToValidate;
+        if (validationResult.IsValid) 
+            return cashTransaction;
 
         var exception = new CashTransactionNotValidException("Transaction is not valid");
         validationResult.Errors.ForEach(vr => exception.ValidationErrors.Add(vr.ErrorMessage));

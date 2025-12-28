@@ -48,13 +48,6 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         // mark business result as completed on the object before saving so EF persists it in same transaction
         cashTransaction.UpdateStatus(CashTransactionStatus.Completed);
 
-        // Add domain event
-        bankAccount.AddDomainEvent(new CashTransactionCreatedEvent(cashTransaction.Id,
-            cashTransaction.Type,
-            cashTransaction.TransactionDate,
-            cashTransaction.From,
-            cashTransaction.To));
-
         // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {

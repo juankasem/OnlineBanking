@@ -1,4 +1,3 @@
-
 using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Enums;
 
@@ -8,4 +7,7 @@ public sealed record CashTransactionCreatedEvent(Guid Id,
     CashTransactionType Type,
     DateTime CashTransactionDate,
     string? SenderAccountIBAN,
-    string? RecipientAccountIBAN) : IDomainEvent;
+    string? RecipientAccountIBAN,
+    decimal Amount,
+    string Currency,
+    decimal Fees = 0) : IDomainEvent;

@@ -1,6 +1,7 @@
 using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
+using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate.Events;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
@@ -104,7 +105,7 @@ public class Customer : AggregateRoot<Guid>
     {
         var validator = new CustomerValidator();
 
-        var objectToValidate = new Customer(
+        var customer = new Customer(
             id ?? Guid.NewGuid(),
             identificationNo,
             identificationType,
@@ -118,9 +119,21 @@ public class Customer : AggregateRoot<Guid>
             birthDate,
             taxNumber);
 
-        var validationResult = validator.Validate(objectToValidate);
+        var validationResult = validator.Validate(customer);
 
-        if (validationResult.IsValid) return objectToValidate;
+        if (validationResult.IsValid)
+        {
+            // Add domain event
+            customer.AddDomainEvent(new CustomerCreatedEvent(customer.Id,
+                customer.CustomerNo,
+                customer.FirstName,
+                customer.LastName,
+                customer.BirthDate,
+                customer.Gender,
+                customer.Nationality));
+
+            return customer;
+        }
         var exception = new CustomerNotValidException("Customer is not valid");
         validationResult.Errors.ForEach(vr => exception.ValidationErrors.Add(vr.ErrorMessage));
 
