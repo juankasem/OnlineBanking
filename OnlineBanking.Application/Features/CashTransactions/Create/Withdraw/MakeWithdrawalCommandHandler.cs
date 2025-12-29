@@ -1,4 +1,3 @@
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 
@@ -56,9 +55,9 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                   "Withdrawal transaction Id: {TransactionId} of amount: " +
-                   "{Amount} from bank account of IBAN: " +
-                   "{IBAN} created successfully.",
+                   "Withdrawal transaction Id: {transactionId} of amount: " +
+                   "{amount} from bank account of IBAN: " +
+                   "{iban} created successfully.",
                    cashTransaction.Id, 
                    amountToWithdraw, 
                    iban);
@@ -66,7 +65,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         else
         {
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-            _logger.LogError("Withdrawal transaction from IBAN {IBAN} failed to commit.", iban);
+            _logger.LogError("Withdrawal transaction from IBAN: {IBAN} failed...Please try again", iban);
         }
 
         return result;

@@ -1,4 +1,3 @@
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
 
@@ -52,9 +51,9 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                  "Disposal transaction Id: {TransactionId} of amount: " +
-                  "{Amount} from bank account of IBAN: " +
-                  "{IBAN} created successfully.",
+                  "Disposal transaction Id: {transactionId} of amount: " +
+                  "{amount} from bank account of IBAN: " +
+                  "{iban} created successfully.",
                   cashTransaction.Id,
                   amountToDeposit,
                   iban);

@@ -1,5 +1,3 @@
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 
@@ -14,7 +12,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
                                              IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
 {
     private const decimal TransferFeePercentage = 0.025M;
-
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
@@ -23,7 +20,6 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Start creating fund transfer from {from} to {to}", request.From, request.To);
-
         var result = new ApiResult<Unit>();
 
         if (!ValidateTransferRequest(request, result))
@@ -66,9 +62,13 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                  "Transfer {TransactionId} of amount :{Amount} with fees: {Fees} " +
-                  "from bank account of IBAN: {From} to bank account of IBAN {To} completed successfully!",
-                  cashTransaction.Id, amountToTransfer, fees, senderIBAN, recipientIBAN);
+                  "Transfer of id: {transactionId} of amount: {amount} with fees: {fees} " +
+                  "from bank account of IBAN: {from} to bank account of IBAN {to} is completed successfully!",
+                  cashTransaction.Id, 
+                  amountToTransfer, 
+                  fees, 
+                  senderIBAN, 
+                  recipientIBAN);
         }
         else
         {

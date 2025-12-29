@@ -13,59 +13,46 @@ public class CreateFastTransactionCommandHandler(IUnitOfWork uow,
 
     public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Start creating fast transaction for {request.IBAN}");
-
+        _logger.LogInformation("Start creating fast transaction for bank account IBAN {iban}", request.IBAN);
         var result = new ApiResult<Unit>();
 
         var senderIBAN = request.IBAN;
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.IBAN);
 
-        if (!ValidateBankAccount(bankAccount, senderIBAN, result))
+        if (!BankAccountHelper.ValidateBankAccount(bankAccount, senderIBAN, result))
             return result;
 
         var recipientIBAN = request.RecipientIBAN;
         var recipientBankAccount = await _uow.BankAccounts.GetByIBANAsync(request.RecipientIBAN);
 
-        if (!ValidateBankAccount(recipientBankAccount, recipientIBAN, result))
+        if (!BankAccountHelper.ValidateBankAccount(recipientBankAccount, recipientIBAN, result))
             return result;
 
-        var fastTransaction = FastTransaction.Create(bankAccount.Id, request.RecipientIBAN, 
-                                                     request.RecipientName, request.Amount);
+        var fastTransaction = FastTransaction.Create(bankAccount.Id, 
+                                                     request.RecipientIBAN, 
+                                                     request.RecipientName, 
+                                                     request.Amount);
 
         //Add fast transaction to sender's account
         _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation($"Fast transaction of Id {fastTransaction.Id} of amount "
-                                   + $"{fastTransaction.Amount}{fastTransaction.BankAccount.Currency.Symbol} for bank account IBAN {fastTransaction.RecipientIBAN} with name "
-                                   + $"{fastTransaction.RecipientName} is successfully created!");
+            _logger.LogInformation("Fast transaction of Id {fastTransactionId} of amount: "
+                         + "{amount}{currency} for bank account IBAN {recipientIBAN} with name: "
+                         + "{recipientName} is successfully created!",
+                         fastTransaction.Id,
+                         fastTransaction.Amount,
+                         fastTransaction.BankAccount.Currency.Symbol,
+                         fastTransaction.RecipientIBAN,
+                         fastTransaction.RecipientName);
         }
         else
         {
             result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.Unknown);
-            _logger.LogError($"Ceate fast transaction failed...Please try again.");
+            _logger.LogError($"Creating fast transaction failed...Please try again.");
         }
 
         return result;
-    }
-
-    /// <summary>
-    /// Validates that the bank account exists and is valid
-    /// </summary>
-    private static bool ValidateBankAccount(
-        Core.Domain.Aggregates.BankAccountAggregate.BankAccount? bankAccount,
-        string iban,
-        ApiResult<Unit> result)
-    {
-        var success = true;
-
-        if (bankAccount == null)
-        {
-            result.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "IBAN.", iban));
-            success = false;
-        }
-
-        return success;
     }
 }

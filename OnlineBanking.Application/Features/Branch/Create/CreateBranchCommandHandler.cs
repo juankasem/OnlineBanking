@@ -37,7 +37,7 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
         else
         {
             result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
-            _logger.LogError($"Creating bank account failed!");
+            _logger.LogError($"Creating a new bank account failed!");
         }
 
         return result;
