@@ -1,5 +1,5 @@
 #nullable enable
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
@@ -8,7 +8,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 /// <summary>
 /// Represents a credit card associated with a bank account.
 /// </summary>
-public class CreditCard : BaseDomainEntity<Guid>
+public class CreditCard : Entity<Guid>
 {
     #region Properties
 

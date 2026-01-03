@@ -2,5 +2,5 @@
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
 
-public record FastTransactionDeletedEvent(Guid Id) : IDomainEvent;
+public record FastTransactionDeletedEvent(Guid Id) : DomainEvent;
 

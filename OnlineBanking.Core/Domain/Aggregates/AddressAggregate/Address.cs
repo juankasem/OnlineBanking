@@ -1,10 +1,10 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class Address : BaseDomainEntity<Guid>
+public class Address : Entity<Guid>
 {
     public string Name { get; private set; }
 

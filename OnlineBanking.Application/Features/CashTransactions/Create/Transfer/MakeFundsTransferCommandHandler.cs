@@ -6,42 +6,48 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 /// Validates transfer request, applies domain logic, and persists changes to both accounts.
 /// </summary>
 public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
-                                             IBankAccountService bankAccountService,
-                                             IAppUserAccessor appUserAccessor,
-                                             ILogger<MakeFundsTransferCommandHandler> logger) :
-                                             IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
+    IBankAccountService bankAccountService,
+    IAppUserAccessor appUserAccessor,
+    IBankAccountHelper bankAccountHelper,
+    ILogger<MakeFundsTransferCommandHandler> logger) :
+    IRequestHandler<MakeFundsTransferCommand, ApiResult<Unit>>
 {
     private const decimal TransferFeePercentage = 0.025M;
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeFundsTransferCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Start creating fund transfer from {from} to {to}", request.From, request.To);
+        ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();
+        var senderIBAN = request.From;
+        var recipientIBAN = request.To;
+
+        _logger.LogInformation("Start creating fund transfer from {senderIBAN} to {recipientIBAN}", 
+         senderIBAN, 
+         recipientIBAN);
 
         if (!ValidateTransferRequest(request, result))
             return result;
 
-        var senderIBAN = request.From;
         var senderAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
-        if (!BankAccountHelper.ValidateBankAccount(senderAccount, senderIBAN, result))
+        if (!_bankAccountHelper.ValidateBankAccount(senderAccount, senderIBAN, result))
             return result;
 
-        var recipientIBAN = request.To;
         var recipientAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
 
-        if (!BankAccountHelper.ValidateBankAccount(recipientAccount, recipientIBAN, result))
+        if (!_bankAccountHelper.ValidateBankAccount(recipientAccount, recipientIBAN, result))
             return result;
 
         var amountToTransfer = decimal.Round(request.BaseCashTransaction.Amount.Value, 2);
         var fees = decimal.Round(amountToTransfer * TransferFeePercentage, 2);
         var totalAmount = amountToTransfer + fees;
 
-        if (!BankAccountHelper.HasSufficientFunds(senderAccount, totalAmount, result))
+        if (!_bankAccountHelper.HasSufficientFunds(senderAccount, totalAmount, result))
             return result;
 
         // Prepare transfer dto
@@ -118,10 +124,11 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     /// Prepares transfer DTO with updated balances and recipient information
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown when recipient has no owners</exception>
-    private static TransferDto PrepareTransferDto(Core.Domain.Aggregates.BankAccountAggregate.BankAccount? senderAccount,
-                                                Core.Domain.Aggregates.BankAccountAggregate.BankAccount? recipientAccount,
-                                                decimal amountToTransfer,
-                                                decimal fees)
+    private static TransferDto PrepareTransferDto(
+        BankAccount? senderAccount,
+        BankAccount? recipientAccount,
+        decimal amountToTransfer,
+        decimal fees)
     {
         ArgumentNullException.ThrowIfNull(senderAccount);
         ArgumentNullException.ThrowIfNull(recipientAccount);

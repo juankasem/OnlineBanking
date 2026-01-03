@@ -1,10 +1,10 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
-public class Currency : BaseDomainEntity<int>
+public class Currency : Entity<int>
 {
     public string Code { get; set; }
     public string Name { get; set; }

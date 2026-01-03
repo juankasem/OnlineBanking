@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Common.Behaviors;
 
 namespace OnlineBanking.Application;
@@ -26,6 +25,7 @@ public static class ApplicationServiceRegistration
         services.AddScoped<ICreditCardsMapper, CreditCardsMapper>();
 
         services.AddScoped<IBankAccountService, BankAccountService>();
+        services.AddScoped<IBankAccountHelper, BankAccountHelper>();
 
         return services;
     }

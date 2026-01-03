@@ -18,20 +18,21 @@ public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCo
           .NotNull().WithMessage("{PropertyName} is required")
           .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
-        RuleFor(c => c.Name)
+        RuleFor(c => c.FirstName)
           .NotNull().WithMessage("{PropertyName} is required")
           .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
-        RuleFor(c => c.Name)
+        RuleFor(c => c.LastName)
           .NotNull().WithMessage("{PropertyName} is required")
           .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
-        RuleFor(c => c.Name)
+        RuleFor(c => c.Nationality)
         .NotNull().WithMessage("{PropertyName} is required")
         .NotEmpty().WithMessage("{PropertyName} can't be empty");
 
-
-
+        RuleFor(c => c.TaxNumber)
+        .NotNull().WithMessage("{PropertyName} is required")
+        .NotEmpty().WithMessage("{PropertyName} can't be empty");
     }
 }
 

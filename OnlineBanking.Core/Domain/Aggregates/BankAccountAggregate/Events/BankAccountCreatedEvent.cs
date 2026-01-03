@@ -10,4 +10,4 @@ public record BankAccountCreatedEvent(Guid Id,
     BankAccountType Type,
     int BranchName,
     decimal Balance,
-    int CurrencyId) : IDomainEvent;
+    int CurrencyId) : DomainEvent;

@@ -1,4 +1,6 @@
 
+using Microsoft.AspNetCore.Http;
+
 namespace OnlineBanking.API.Filters;
 
 
@@ -50,7 +52,17 @@ public class ValidateBankAccountOwnerFilter(string[] keys, IUnitOfWork uow, IApp
         if (string.IsNullOrEmpty(accountNoOrIBAN))
         {
             // No identifier found in route or query — let the action handle validation or return BadRequest
-            context.Result = new BadRequestObjectResult(new ApiResult<Unit> { IsError = true });
+            var errorResponse = ErrorResponse.Create(StatusCodes.Status400BadRequest, 
+                                                     ErrorPhrase.BadRequest,
+                                                    [string.Format(BankAccountErrorMessages.NoIdentifierFound, 
+                                                    "Account No. or IBAN", 
+                                                    accountNoOrIBAN)
+                                                    ]);
+          
+            context.Result = new ObjectResult(errorResponse)
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            };
             return;
         }
 
@@ -58,22 +70,31 @@ public class ValidateBankAccountOwnerFilter(string[] keys, IUnitOfWork uow, IApp
         var bankAccount = await _uow.BankAccounts.GetByAccountNoOrIBANAsync(accountNoOrIBAN);
         if (bankAccount is null)
         {
-            var notFoundResult = new ApiResult<Unit>();
-            notFoundResult.AddError(ErrorCode.BadRequest, string.Format(BankAccountErrorMessages.NotFound, "Account No. or IBAN", accountNoOrIBAN));
-            context.Result = new ObjectResult(notFoundResult) { StatusCode = StatusCodes.Status404NotFound };
+            var errorResponse = ErrorResponse.Create(StatusCodes.Status400BadRequest,
+                                                     ErrorPhrase.BadRequest,
+                                                    [string.Format(BankAccountErrorMessages.NotFound,
+                                                    "Account No. or IBAN",
+                                                    accountNoOrIBAN)
+                                                    ]);
+
+            context.Result = new ObjectResult(errorResponse) 
+            { 
+                StatusCode = StatusCodes.Status404NotFound 
+            };
             return;
         }
 
         // Check if the logged-in user is the owner of the bank account
         var isOwner = bankAccount.BankAccountOwners.Any(c => c.Customer.AppUserId == loggedInAppUser.Id);
-
         if (!isOwner)
         {
-            var result = new ApiResult<Unit>();
-            result.AddError(ErrorCode.CreateCashTransactionNotAuthorized,
-                string.Format(CashTransactionErrorMessages.UnAuthorizedOperation, userName));
+            var errorResponse = ErrorResponse.Create(StatusCodes.Status403Forbidden,
+                                                     ErrorPhrase.Forbidden,
+                                                    [string.Format(BankAccountErrorMessages.UnauthorizedOperation,
+                                                    userName)
+                                                    ]);
 
-            context.Result = new ObjectResult(result)
+            context.Result = new ObjectResult(errorResponse)
             {
                 StatusCode = StatusCodes.Status403Forbidden
             };

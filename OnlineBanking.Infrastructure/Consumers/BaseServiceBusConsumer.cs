@@ -36,6 +36,19 @@ public abstract class BaseServiceBusConsumer<TEvent>(
         processor.ProcessErrorAsync += ProcessErrorAsync;
 
         await processor.StartProcessingAsync(stoppingToken);
+
+        try
+        {
+            await Task.Delay(Timeout.Infinite, stoppingToken);
+        }
+        catch (OperationCanceledException ex)
+        {
+            _logger.LogError("An error occurred while consuming messages: {Message}", ex.Message);
+        }
+        finally
+        {
+            await processor.StopProcessingAsync(stoppingToken);
+        }
     }
 
     /// <summary>

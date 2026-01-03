@@ -1,5 +1,4 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Infrastructure.Services;
@@ -34,8 +33,7 @@ public class DispatchDomainEventInterceptor(IMediator mediator,
             return;
         }
 
-        var domainEntities = dbContext.ChangeTracker
-            .Entries<IAggregateRoot>()
+        var domainEntities = dbContext.ChangeTracker.Entries<IAggregateRoot>()
             .Where(entry => entry.Entity.DomainEvents.Count != 0)
             .Select(entry => entry.Entity)
             .ToList();
@@ -48,8 +46,8 @@ public class DispatchDomainEventInterceptor(IMediator mediator,
 
         foreach (var domainEvent in domainEvents)
         {
+            await mediator.Publish(domainEvent);
             await serviceBusPublisher.PublishEventAsync(domainEvent);
         }
     }
 }
-

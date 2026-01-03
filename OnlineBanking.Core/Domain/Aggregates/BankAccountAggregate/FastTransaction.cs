@@ -1,4 +1,4 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
@@ -8,7 +8,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 /// Represents a fast transaction between bank accounts.
 /// Fast transactions are expedited fund transfers with minimal processing time.
 /// </summary>
-public class FastTransaction : BaseDomainEntity<Guid>
+public class FastTransaction : Entity<Guid>
 {
     #region Properties
 

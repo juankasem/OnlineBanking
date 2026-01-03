@@ -10,4 +10,4 @@ public sealed record CashTransactionCreatedEvent(Guid Id,
     string? RecipientAccountIBAN,
     decimal Amount,
     string Currency,
-    decimal Fees = 0) : IDomainEvent;
+    decimal Fees = 0) : DomainEvent;

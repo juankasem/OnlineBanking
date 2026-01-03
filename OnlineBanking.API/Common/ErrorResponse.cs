@@ -9,4 +9,17 @@ public class ErrorResponse
 
 #nullable enable
     public string? StatusPhrase { get; set; }
+
+    public ErrorResponse()
+    {
+    }
+    private ErrorResponse(int statusCode, string? statusPhrase, List<string> errors)
+    {
+        StatusCode = statusCode;
+        StatusPhrase = statusPhrase;
+        Errors = errors;
+    }
+
+    public static ErrorResponse Create(int statusCode, string statusPhrase, List<string> errors) =>
+    new(statusCode, statusPhrase, errors);
 }

@@ -10,6 +10,7 @@ public class CreateCashTransactionRequestValidator : AbstractValidator<CreateCas
     {
         _uow = uow;
 
-        RuleFor(c => c.BaseCashTransaction).SetValidator(new BaseCashTransactionValidator(_uow));
+        RuleFor(c => c.BaseCashTransaction)
+            .SetValidator(new BaseCashTransactionValidator(_uow));
     }
 }

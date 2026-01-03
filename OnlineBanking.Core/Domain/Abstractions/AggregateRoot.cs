@@ -1,8 +1,7 @@
-﻿using OnlineBanking.Core.Domain.Common;
-
+﻿
 namespace OnlineBanking.Core.Domain.Abstractions;
 
-public abstract class AggregateRoot<TId> : BaseDomainEntity<TId>, IAggregateRoot<TId>
+public abstract class AggregateRoot<TId> : Entity<TId>, IAggregateRoot<TId>
 {
     private readonly List<IDomainEvent> _domainEvents = [];
 

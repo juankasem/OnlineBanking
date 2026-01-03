@@ -10,7 +10,7 @@ namespace OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
 public class Customer : AggregateRoot<Guid>
 {
-    private readonly List<CustomerBankAccount> _customerBankAccounts = new List<CustomerBankAccount>();
+    private readonly List<CustomerBankAccount> _customerBankAccounts = [];
 
     /// <summary>
     /// ID number

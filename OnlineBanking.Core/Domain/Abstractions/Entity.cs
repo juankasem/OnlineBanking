@@ -1,9 +1,7 @@
 
-using OnlineBanking.Core.Domain.Abstractions;
+namespace OnlineBanking.Core.Domain.Abstractions;
 
-namespace OnlineBanking.Core.Domain.Common;
-
-public abstract class BaseDomainEntity<T> : IAuditableEntity
+public abstract class Entity<T> : IAuditableEntity
 {
     public T Id { get; set; }
 

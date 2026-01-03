@@ -6,5 +6,5 @@ public record FastTransactionCreatedEvent(Guid Id,
     Guid BankAccountId,
     string RecipientIBAN,
     string RecipientName, 
-    decimal Amount) : IDomainEvent;
+    decimal Amount) : DomainEvent;
 

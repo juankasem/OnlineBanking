@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OnlineBanking.Application.Contracts.Persistence;
@@ -38,7 +37,10 @@ public interface IUnitOfWork : IDisposable
     IUtilityPaymentRepository UtilityPayments { get; }
 
     IDbContextTransaction CreateDbTransaction();
+
     Task<IDbContextTransaction> CreateDbTransactionAsync();
+
     Task<int> SaveAsync();
+
     Task<int> CompleteDbTransactionAsync();
 }

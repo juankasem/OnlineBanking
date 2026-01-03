@@ -3,5 +3,5 @@
 namespace OnlineBanking.Core.Domain.Aggregates.BranchAggregate.Events;
 
 public record BranchCreatedEvent(int BranchId,
-    string BranchName) : IDomainEvent;
+    string BranchName) : DomainEvent;
 

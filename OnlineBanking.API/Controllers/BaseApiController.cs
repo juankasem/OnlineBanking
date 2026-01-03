@@ -55,14 +55,18 @@ public class BaseApiController : ControllerBase
               (
                   StatusCodes.Status400BadRequest,
                   ErrorPhrase.BadRequest,
-                  errors.Where(e => e.Code == ErrorCode.NotFound).Select(e => e.Message).ToList()
+                  errors.Where(e => e.Code == ErrorCode.NotFound)
+                         .Select(e => e.Message)
+                         .ToList()
               ),
 
             ErrorCode.NotFound =>
                 (
                     StatusCodes.Status404NotFound,
                     ErrorPhrase.NotFound,
-                    errors.Where(e => e.Code == ErrorCode.NotFound).Select(e => e.Message).ToList()
+                    errors.Where(e => e.Code == ErrorCode.NotFound)
+                           .Select(e => e.Message)
+                           .ToList()
                 ),
 
             ErrorCode.CreateCashTransactionNotAuthorized or ErrorCode.UnAuthorizedOperation =>
@@ -70,7 +74,7 @@ public class BaseApiController : ControllerBase
                     StatusCodes.Status403Forbidden,
                     ErrorPhrase.Forbidden,
                     errors.Where(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized ||
-                                     e.Code == ErrorCode.UnAuthorizedOperation)
+                                      e.Code == ErrorCode.UnAuthorizedOperation)
                            .Select(e => e.Message)
                            .ToList()
                 ),

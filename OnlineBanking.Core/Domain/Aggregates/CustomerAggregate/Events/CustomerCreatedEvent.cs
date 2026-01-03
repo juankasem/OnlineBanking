@@ -9,5 +9,5 @@ public record CustomerCreatedEvent(Guid Id,
     string LastName,
     DateTime DateOfBirth,
     Gender Gender,
-    string Nationality) : IDomainEvent;
+    string Nationality) : DomainEvent;
 

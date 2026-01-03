@@ -6,31 +6,33 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
 /// Validates deposit request, applies domain logic, and persists changes to the account.
 /// </summary>
 public class MakeDepositCommandHandler(IUnitOfWork uow,
-                                        IBankAccountService bankAccountService,
-                                        IAppUserAccessor appUserAccessor,
-                                        ILogger<MakeDepositCommandHandler> logger) :
-                                        IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
+    IBankAccountService bankAccountService,
+    IAppUserAccessor appUserAccessor,
+    IBankAccountHelper bankAccountHelper,
+    ILogger<MakeDepositCommandHandler> logger) :
+    IRequestHandler<MakeDepositCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting deposit to IBAN: {IBAN}", request.To);
-
+        ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();
+        var iban = request.To;
+
+        _logger.LogInformation("Starting deposit to IBAN: {IBAN}", iban);
 
         if (!ValidateDepositRequest(request, result))
             return result;
 
-        var iban = request.BaseCashTransaction.IBAN;
         var amountToDeposit = request.BaseCashTransaction.Amount.Value;
+        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(iban);
 
-        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.BaseCashTransaction.IBAN);
-
-        if (!BankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
+        if (!_bankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
             return result;
 
         // Prepare deposit transaction
@@ -39,7 +41,7 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
 
         // Apply domain logic
-        _bankAccountService.CreateCashTransaction(null, bankAccount, cashTransaction);
+        _bankAccountService.CreateCashTransaction(senderAccount: null, bankAccount, cashTransaction);
 
         // Mark aggregate as modified so it will be saved
         _uow.BankAccounts.Update(bankAccount);
@@ -60,8 +62,8 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         }
         else
         {
+            _logger.LogError("Failed to persist deposit transaction for IBAN: {IBAN}", iban);
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-            _logger.LogError($"Deposit transaction failed!");
         }
 
         return result;

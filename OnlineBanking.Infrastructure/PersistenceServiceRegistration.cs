@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using OnlineBanking.Infrastructure.Persistence;
 using OnlineBanking.Infrastructure.Persistence.Interceptors;

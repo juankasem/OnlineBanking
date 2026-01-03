@@ -15,27 +15,18 @@ public class DeleteCashTransactionCommandHandler : IRequestHandler<DeleteCashTra
     {
         var result = new ApiResult<Unit>();
 
-        try
+        var cashTransaction = await _uow.CashTransactions.GetByIdAsync(request.Id);
+
+        if (cashTransaction is null)
         {
-            var cashTransaction = await _uow.CashTransactions.GetByIdAsync(request.Id);
-
-            if (cashTransaction is null)
-            {
-                result.AddError(ErrorCode.NotFound,
-                string.Format(CashTransactionErrorMessages.NotFound, request.Id));
-
-                return result;
-            }
-
-            _uow.CashTransactions.Delete(cashTransaction);
-            await _uow.SaveAsync();
+            result.AddError(ErrorCode.NotFound,
+            string.Format(CashTransactionErrorMessages.NotFound, request.Id));
 
             return result;
         }
-        catch (Exception e)
-        {
-            result.AddUnknownError(e.Message);
-        }
+
+        _uow.CashTransactions.Delete(cashTransaction);
+        await _uow.SaveAsync();       
 
         return result;
     }

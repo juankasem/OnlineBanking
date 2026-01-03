@@ -1,8 +1,8 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
-public class UtilityPayment : BaseDomainEntity<Guid>
+public class UtilityPayment : Entity<Guid>
 {
 
 }

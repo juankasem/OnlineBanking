@@ -37,8 +37,8 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
             NotValidException ve => (
                 StatusCodes.Status400BadRequest,
                 "Validation Error(s)",
-                ve.ValidationErrors is { Count: > 0 } ? new List<string>(ve.ValidationErrors) :
-                    [string.IsNullOrWhiteSpace(ve.Message) ? "Validation failed." : ve.Message]
+                ve.ValidationErrors.Count > 0 ? ve.ValidationErrors :
+                [string.IsNullOrWhiteSpace(ve.Message) ? "Validation failed." : ve.Message]
             ),
 
             InsufficientFundsException _ => (
@@ -93,7 +93,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         errorResponse.StatusCode = httpStatus;
         errorResponse.StatusPhrase = statusPhrase;
 
-        if (messages is { Count: > 0 })
+        if (messages.Count > 0)
             errorResponse.Errors.AddRange(messages);
 
         context.Response.StatusCode = httpStatus;

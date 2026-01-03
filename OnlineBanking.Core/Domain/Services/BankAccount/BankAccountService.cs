@@ -11,10 +11,11 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
 {
     private readonly ILogger<BankAccountService> _logger = logger;
 
-    public bool CreateCashTransaction(Aggregates.BankAccountAggregate.BankAccount senderAccount,
-                                      Aggregates.BankAccountAggregate.BankAccount recipientAccount,
-                                      CashTransaction cashTransaction,
-                                      decimal fees = 0)
+    public bool CreateCashTransaction(
+        Aggregates.BankAccountAggregate.BankAccount senderAccount,
+        Aggregates.BankAccountAggregate.BankAccount recipientAccount,
+        CashTransaction cashTransaction,
+        decimal fees = 0)
     {
         ArgumentNullException.ThrowIfNull(cashTransaction);
 
@@ -48,8 +49,9 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         return true;
     }
 
-    public bool CreateCustomer(Aggregates.BankAccountAggregate.BankAccount bankAccount, 
-                            Customer customer)
+    public bool CreateCustomer(
+        Aggregates.BankAccountAggregate.BankAccount bankAccount, 
+        Customer customer)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
         ArgumentNullException.ThrowIfNull(customer);
@@ -58,8 +60,9 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         return true;
     }
 
-    public bool CreateFastTransaction(Aggregates.BankAccountAggregate.BankAccount bankAccount, 
-                                    FastTransaction fastTransaction)
+    public bool CreateFastTransaction(
+        Aggregates.BankAccountAggregate.BankAccount bankAccount, 
+        FastTransaction fastTransaction)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
         ArgumentNullException.ThrowIfNull(fastTransaction);
@@ -78,8 +81,9 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
         return true;
     }
 
-    public bool DeleteFastTransation(Guid fastTransactionId, 
-                                    Aggregates.BankAccountAggregate.BankAccount bankAccount)
+    public bool DeleteFastTransation(
+        Guid fastTransactionId, 
+        Aggregates.BankAccountAggregate.BankAccount bankAccount)
     {
         ArgumentNullException.ThrowIfNull(bankAccount);
 

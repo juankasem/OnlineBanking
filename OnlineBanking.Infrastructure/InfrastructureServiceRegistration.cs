@@ -1,4 +1,3 @@
-
 using Azure.Identity;
 using Azure.Messaging.ServiceBus;
 using OnlineBanking.Application.Contracts.Infrastructure;

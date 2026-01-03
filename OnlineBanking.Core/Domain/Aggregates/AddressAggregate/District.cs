@@ -1,8 +1,8 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class District : BaseDomainEntity<Guid>
+public class District : Entity<Guid>
 {
     public new int Id { get; set; }
 

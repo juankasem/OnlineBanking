@@ -6,36 +6,37 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 /// Validates the withdrawal request, applies the domain logic, and persists changes
 /// </summary>
 public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
-                                        IBankAccountService bankAccountService,
-                                        IAppUserAccessor appUserAccessor,
-                                        ILogger<MakeWithdrawalCommandHandler> logger) :
-                                        IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
+    IBankAccountService bankAccountService,
+    IAppUserAccessor appUserAccessor,
+    IBankAccountHelper bankAccountHelper,
+    ILogger<MakeWithdrawalCommandHandler> logger) :
+    IRequestHandler<MakeWithdrawalCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IAppUserAccessor _appUserAccessor = appUserAccessor;
+    private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeWithdrawalCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Start creating withdrawal from {from}", request.From);
-
+        var iban = request.From;
         var result = new ApiResult<Unit>();
+
+        _logger.LogInformation("Start creating withdrawal from {from}", iban);
 
         if (!ValidateWithdrawalRequest(request, result))
             return result;
 
-        var iban = request.BaseCashTransaction.IBAN;
-
         // Retrieve bank account
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(iban);
 
-        if (!BankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
+        if (!_bankAccountHelper.ValidateBankAccount(bankAccount, iban, result))
             return result;
 
         var amountToWithdraw = decimal.Round(request.BaseCashTransaction.Amount.Value, 2);
 
-        if (!BankAccountHelper.HasSufficientFunds(bankAccount, amountToWithdraw, result))
+        if (!_bankAccountHelper.HasSufficientFunds(bankAccount, amountToWithdraw, result))
             return result;
 
         // Prepare transaction
@@ -44,7 +45,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, updatedBalance);
 
         // Apply domain logic
-        _bankAccountService.CreateCashTransaction(bankAccount, null, cashTransaction);
+        _bankAccountService.CreateCashTransaction(bankAccount, recipientAccount: null, cashTransaction);
 
         // Mark aggregate as modified so it will be saved
         _uow.BankAccounts.Update(bankAccount);

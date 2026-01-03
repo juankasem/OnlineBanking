@@ -1,11 +1,11 @@
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 
-public class CashTransaction : BaseDomainEntity<Guid>
+public class CashTransaction : Entity<Guid>
 {
     private readonly List<AccountTransaction> _accountTransactions = [];
 

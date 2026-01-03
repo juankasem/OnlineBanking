@@ -1,9 +1,9 @@
 
-using OnlineBanking.Core.Domain.Common;
+using OnlineBanking.Core.Domain.Abstractions;
 
 namespace OnlineBanking.Core.Domain.Aggregates.AddressAggregate;
 
-public class City : BaseDomainEntity<int>
+public class City : Entity<int>
 {
     public string Name { get; set; }
 
