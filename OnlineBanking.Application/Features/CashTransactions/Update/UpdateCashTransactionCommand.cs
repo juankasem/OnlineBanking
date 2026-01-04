@@ -5,5 +5,5 @@ namespace OnlineBanking.Application.Features.CashTransactions.Update;
 public class UpdateCashTransactionCommand : IRequest<ApiResult<Unit>>
 {
     public Guid Id { get; set; }
-    public BaseCashTransactionDto CashTransaction { get; set; }
+    public BaseCashTransaction CashTransaction { get; set; }
 }

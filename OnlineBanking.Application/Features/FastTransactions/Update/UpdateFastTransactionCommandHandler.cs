@@ -1,17 +1,16 @@
 
+using OnlineBanking.Application.Helpers;
+
 namespace OnlineBanking.Application.Features.FastTransactions.Update;
 
-public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTransactionCommand, ApiResult<Unit>>
+public class UpdateFastTransactionCommandHandler(
+    IUnitOfWork uow,
+    IBankAccountHelper bankAccountHelper,
+    ILogger<UpdateFastTransactionCommandHandler> logger) : IRequestHandler<UpdateFastTransactionCommand, ApiResult<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly ILogger<UpdateFastTransactionCommandHandler> _logger;
-
-    public UpdateFastTransactionCommandHandler(IUnitOfWork uow, 
-                                               ILogger<UpdateFastTransactionCommandHandler> logger)
-    {
-        _uow = uow;
-        _logger = logger;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
+    private readonly ILogger<UpdateFastTransactionCommandHandler> _logger = logger;
 
     public async Task<ApiResult<Unit>> Handle(UpdateFastTransactionCommand request, CancellationToken cancellationToken)
     {
@@ -22,13 +21,13 @@ public class UpdateFastTransactionCommandHandler : IRequestHandler<UpdateFastTra
         var senderIBAN = request.IBAN;
         var bankAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
-        if (!BankAccountHelper.ValidateBankAccount(bankAccount, senderIBAN, result))
+        if (!_bankAccountHelper.ValidateBankAccount(bankAccount, senderIBAN, result))
             return result;
 
         var recipientIBAN = request.RecipientIBAN;
         var recipientBankAccount = await _uow.BankAccounts.GetByIBANAsync(recipientIBAN);
 
-        if (!BankAccountHelper.ValidateBankAccount(recipientBankAccount, recipientIBAN, result))
+        if (!_bankAccountHelper.ValidateBankAccount(recipientBankAccount, recipientIBAN, result))
             return result;
 
         var fastTransaction = FastTransaction.Create(bankAccount.Id, 

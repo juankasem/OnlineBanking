@@ -11,12 +11,12 @@ public class MakeWithdrawalCommand : IRequest<ApiResult<Unit>>
     /// <summary>
     /// Gets the base transaction details including amount, fees, and transaction metadata.
     /// </summary>
-    public required BaseCashTransactionDto BaseCashTransaction { get; set; }
+    public BaseCashTransaction BaseCashTransaction { get; set; }
 
     /// <summary>
     /// Gets the IBAN of the account withdrawing funds.
     /// </summary>
-    public required string From { get; set; }
+    public string From { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MakeWithdrawalCommand"/> class.
@@ -25,7 +25,7 @@ public class MakeWithdrawalCommand : IRequest<ApiResult<Unit>>
     /// <param name="from">The IBAN of the account withdrawing funds</param>
     /// <exception cref="ArgumentNullException">Thrown when baseCashTransaction is null</exception>
     /// <exception cref="ArgumentException">Thrown when from is empty or whitespace</exception>
-    public MakeWithdrawalCommand(BaseCashTransactionDto baseCashTransaction, string from)
+    public MakeWithdrawalCommand(BaseCashTransaction baseCashTransaction, string from)
     {
         ArgumentNullException.ThrowIfNull(baseCashTransaction);
         ArgumentException.ThrowIfNullOrWhiteSpace(from);

@@ -2,7 +2,7 @@ using OnlineBanking.Application.Models.CashTransaction.Base;
 
 namespace OnlineBanking.Application.Features.CashTransactions.Validators;
 
-public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactionDto>
+public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransaction>
 {
     private readonly IUnitOfWork _uow;
 

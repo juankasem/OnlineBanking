@@ -11,27 +11,27 @@ public class MakeFundsTransferCommand : IRequest<ApiResult<Unit>>
     /// <summary>
     /// Gets the base transaction details including amount, fees, and transaction metadata.
     /// </summary>
-    public required BaseCashTransactionDto BaseCashTransaction { get; set; }
+    public  BaseCashTransaction BaseCashTransaction { get; set; }
 
     /// <summary>
     /// Gets the IBAN of the sender's bank account.
     /// </summary>
-    public required string From { get; set; }
+    public string From { get; set; }
 
     /// <summary>
     /// Gets the IBAN of the recipient's bank account.
     /// </summary>
-    public required string To { get; set; }
+    public string To { get; set; }
 
     /// <summary>
     /// Gets the name of the sender.
     /// </summary>
-    public required string Sender { get; set; }
+    public string Sender { get; set; }
 
     /// <summary>
     /// Gets the name of the recipient.
     /// </summary>
-    public required string Recipient { get; set; }
+    public string Recipient { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MakeFundsTransferCommand"/> class.
@@ -44,7 +44,7 @@ public class MakeFundsTransferCommand : IRequest<ApiResult<Unit>>
     /// <exception cref="ArgumentNullException">Thrown when any parameter is null</exception>
     /// <exception cref="ArgumentException">Thrown when string parameters are empty or whitespace</exception>
     public MakeFundsTransferCommand(
-        BaseCashTransactionDto baseCashTransaction,
+        BaseCashTransaction baseCashTransaction,
         string from, 
         string to,
         string sender, 

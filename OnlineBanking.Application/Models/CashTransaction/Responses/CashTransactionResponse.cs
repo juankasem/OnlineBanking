@@ -13,14 +13,14 @@ public class CashTransactionResponse
     public Money Fees { get; set; }
     public string Description { get; set; }
     public string PaymentType { get; set; }
-    public DateTime TransactionDate { get; set; }
+    public string TransactionDate { get; set; }
     public string Status { get; set; }
     public Money AvailableBalance { get; set; }
 
 
     public CashTransactionResponse(string id, string type, string initiatedBy,
                                     string from, string to, string sender, string recipient, Money amount,
-                                    Money fees, string description, string paymentType, DateTime transactionDate,
+                                    Money fees, string description, string paymentType, string transactionDate,
                                     string status, Money availableBalance)
     {
         Id = id;

@@ -10,14 +10,14 @@ public class MakeDepositCommand : IRequest<ApiResult<Unit>>
     /// <summary>
     /// Gets the base transaction details including amount, IBAN, fees, and transaction metadata.
     /// </summary>
-    public required BaseCashTransactionDto BaseCashTransaction { get; set; }
+    public BaseCashTransaction BaseCashTransaction { get; set; }
 
     /// <summary>
     /// Gets the IBAN of the account receiving the deposit.
     /// </summary>
-    public required string To { get; set; }
+    public string To { get; set; }
 
-    public MakeDepositCommand(BaseCashTransactionDto baseCashTransaction, string to)
+    public MakeDepositCommand(BaseCashTransaction baseCashTransaction, string to)
     {
         ArgumentNullException.ThrowIfNull(baseCashTransaction);
         ArgumentException.ThrowIfNullOrWhiteSpace(to);

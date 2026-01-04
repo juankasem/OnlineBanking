@@ -5,7 +5,7 @@ namespace OnlineBanking.Application.Models.CashTransaction.Requests;
 
 public class CreateCashTransactionRequest : IValidatableRequest
 {
-    public BaseCashTransactionDto BaseCashTransaction { get; set; }
+    public BaseCashTransaction BaseCashTransaction { get; set; }
 
 #nullable enable
     public string? From { get; set; }
