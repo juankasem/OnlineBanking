@@ -189,7 +189,8 @@ public class BankAccountsController : BaseApiController
                                                            CancellationToken cancellationToken = default)
     {
         if (iban != request.BaseCashTransaction.IBAN)
-            return HandleErrorResponse([new Error(ErrorCode.BadRequest, "IBAN mismatch between route and request body.")]
+            return HandleErrorResponse([new Error(ErrorCode.BadRequest,
+                CashTransactionErrorMessages.IBANMismatch)]
            );
 
         return request.BaseCashTransaction.Type switch
@@ -203,7 +204,9 @@ public class BankAccountsController : BaseApiController
             CashTransactionType.Transfer =>
                await HandleRequest(_mapper.Map<MakeFundsTransferCommand>(request), cancellationToken),
 
-            _ => HandleErrorResponse([new Error(ErrorCode.BadRequest, $"Unsupported transaction type: {request.BaseCashTransaction.Type}")])
+            _ => HandleErrorResponse([new Error(ErrorCode.BadRequest,
+                string.Format(CashTransactionErrorMessages.UnsupportedTransactionType, 
+                request.BaseCashTransaction.Type))])
         };
     }
 

@@ -1,5 +1,4 @@
-﻿
-namespace OnlineBanking.Application.Helpers;
+﻿namespace OnlineBanking.Application.Helpers;
 
 /// <summary>
 /// Helper class for creating cash transactions from command requests.
@@ -38,7 +37,7 @@ internal static class CashTransactionHelper
             senderAvailableBalance: 0,
             recipientAvailableBalance: updatedBalance,
             paymentType: baseTransaction.PaymentType,
-            transactionDate: DateTimeHelper.ConvertToDate(baseTransaction.TransactionDate),
+            transactionDate: baseTransaction.TransactionDate,
             sender: UnknownParticipant,
             recipient: recipient);
     }
@@ -72,7 +71,7 @@ internal static class CashTransactionHelper
                senderAvailableBalance: updatedBalance,
                recipientAvailableBalance: 0,
                paymentType: baseTransaction.PaymentType,
-               transactionDate: DateTimeHelper.ConvertToDate(baseTransaction.TransactionDate),
+               transactionDate: baseTransaction.TransactionDate,
                sender: sender,
                recipient: UnknownParticipant);
     }
@@ -107,7 +106,7 @@ internal static class CashTransactionHelper
             senderAvailableBalance: transferDto.SenderBankAccountBalance,
             recipientAvailableBalance: transferDto.RecipientBankAccountBalance,
             paymentType: baseTransaction.PaymentType,
-            transactionDate: DateTimeHelper.ConvertToDate(baseTransaction.TransactionDate),
+            transactionDate: baseTransaction.TransactionDate,
             sender: senderName,
             recipient: transferDto.RecipientFullName);
     }

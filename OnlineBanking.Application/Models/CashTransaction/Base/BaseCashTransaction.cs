@@ -1,6 +1,4 @@
 
-using System.ComponentModel.DataAnnotations;
-
 namespace OnlineBanking.Application.Models.CashTransaction.Base;
 
 public class BaseCashTransaction
@@ -12,7 +10,7 @@ public class BaseCashTransaction
     public MoneyDto Fees { get; set; }
     public string Description { get; set; }
     public PaymentType PaymentType { get; set; }
-    public string TransactionDate { get; set; }
+    public DateTime TransactionDate { get; set; }
 
     private BaseCashTransaction()
     {
@@ -24,17 +22,17 @@ public class BaseCashTransaction
         MoneyDto amount, 
         MoneyDto fees, 
         string description,
-        PaymentType paymentType, 
-        string transactionDate)
+        PaymentType paymentType,
+        DateTime transactionDate)
     {
         IBAN = iBAN;
         Type = type;
         InitiatedBy = initiatedBy;
         Amount = amount;
-        Fees = fees;
+        Fees = fees ?? new MoneyDto(0, 1);
         Description = description;
         PaymentType = paymentType;
-        TransactionDate = transactionDate ?? DateTime.UtcNow.ToString();
+        TransactionDate = transactionDate == default ? DateTime.UtcNow : transactionDate;
     }
 }
 

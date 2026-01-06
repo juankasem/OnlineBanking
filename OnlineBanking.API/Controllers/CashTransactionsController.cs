@@ -3,7 +3,7 @@ using OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 using OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 using OnlineBanking.Application.Features.CashTransactions.Delete;
 using OnlineBanking.Application.Features.CashTransactions.GetAll;
-using OnlineBanking.Application.Features.CashTransactions.GetByIBAN;
+using OnlineBanking.Application.Features.CashTransactions.GetByAccountNoOrIBAN;
 using OnlineBanking.Application.Features.CashTransactions.Update;
 
 namespace OnlineBanking.API.Controllers;
@@ -57,32 +57,33 @@ public class CashTransactionsController : BaseApiController
     }
 
     // GET api/v1/cash-transactions/TR12345678 
-    [HttpGet(ApiRoutes.CashTransactions.IBAN)]
+    [HttpGet(ApiRoutes.CashTransactions.AccountNoOrIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute] string iban,
-                                                                        [FromQuery] CashTransactionParams cashTransactionParams,
-                                                                        CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute(Name = "iban")] string accountNoOrIBAN,
+                                                                          [FromQuery] CashTransactionParams cashTransactionParams,
+                                                                          CancellationToken cancellationToken = default)
     {
         var query = new GetCashTransactionsByAccountNoOrIBANRequest()
         {
-            IBAN = iban,
+            AccountNoOrIBAN = accountNoOrIBAN,
             CashTransactionParams = cashTransactionParams
         };
 
         var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) return HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            return HandleErrorResponse(result.Errors);
 
-        var accountTransactions = result.Payload.Data;
+        var cashTransactions = result.Payload?.Data ?? [];
 
-        if (accountTransactions.Count > 0)
+        if (cashTransactions.Count > 0)
         {
             Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
                                          result.Payload.TotalCount, result.Payload.TotalPages);
         }
 
-        return Ok(accountTransactions);
+        return Ok(cashTransactions);
     }
 
     #endregion
@@ -97,7 +98,7 @@ public class CashTransactionsController : BaseApiController
     /// <param name="request">Cash transaction creation request</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Transaction creation result</returns>
-    [HttpPost(ApiRoutes.CashTransactions.IBAN)]
+    [HttpPost(ApiRoutes.CashTransactions.AccountNoOrIBAN)]
     [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
@@ -140,7 +141,7 @@ public class CashTransactionsController : BaseApiController
     /// </summary>
     /// <param name="request">Cash transaction update request containing transaction ID</param>
     /// <param name="cancellationToken">Cancellation token</param>    
-    [HttpPut(ApiRoutes.CashTransactions.IBAN)]
+    [HttpPut(ApiRoutes.CashTransactions.AccountNoOrIBAN)]
     [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -8,5 +8,6 @@ public enum PaymentType
     Housing,
     Rent,
     ECommerce,
-    Gift
+    Gift,
+    Other
 }

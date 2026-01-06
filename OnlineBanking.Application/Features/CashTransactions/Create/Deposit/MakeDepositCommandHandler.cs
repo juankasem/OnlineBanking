@@ -18,7 +18,8 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, 
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();
@@ -40,7 +41,7 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         var updatedBalance = bankAccount.Balance + amountToDeposit;
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
 
-        // Apply domain logic
+        // Apply domain logic 
         _bankAccountService.CreateCashTransaction(senderAccount: null, bankAccount, cashTransaction);
 
         // Mark aggregate as modified so it will be saved
@@ -53,7 +54,7 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                  "Disposal transaction Id: {transactionId} of amount: " +
+                  "Deposit transaction Id: {transactionId} of amount: " +
                   "{amount} from bank account of IBAN: " +
                   "{iban} created successfully.",
                   cashTransaction.Id,

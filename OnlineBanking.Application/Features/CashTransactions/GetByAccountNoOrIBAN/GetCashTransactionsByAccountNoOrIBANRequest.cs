@@ -1,10 +1,9 @@
-
 using OnlineBanking.Application.Models.CashTransaction.Responses;
 
-namespace OnlineBanking.Application.Features.CashTransactions.GetByIBAN;
+namespace OnlineBanking.Application.Features.CashTransactions.GetByAccountNoOrIBAN;
 
 public class GetCashTransactionsByAccountNoOrIBANRequest : IRequest<ApiResult<PagedList<CashTransactionResponse>>>
 {
-    public string IBAN { get; set; }
+    public string AccountNoOrIBAN { get; set; }
     public CashTransactionParams CashTransactionParams { get; set; }
 }

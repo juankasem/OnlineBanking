@@ -103,6 +103,9 @@ public class CashTransaction : Entity<Guid>
     /// </summary>
     public string? DebitCardNo { get; private set; }
 
+    /// <summary>
+    /// Navigation property for associated account transactions.
+    /// </summary>
     public IReadOnlyList<AccountTransaction> AccountTransactions => _accountTransactions;
 
     private CashTransaction(Guid id, string referenceNo, CashTransactionType type, BankAssetType initiatedBy,

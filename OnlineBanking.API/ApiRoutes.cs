@@ -24,8 +24,7 @@ public static class ApiRoutes
     {
         public const string All = "all";
         public const string IdRoute = "{id:guid}";
-        public const string IBAN = "{iban}";
-        public const string AccountNo = "{accountNo}";
+        public const string AccountNoOrIBAN = "{iban}";
     }
 
     public static class Branches

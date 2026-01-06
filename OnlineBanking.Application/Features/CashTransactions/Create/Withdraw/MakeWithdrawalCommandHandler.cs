@@ -18,12 +18,13 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeWithdrawalCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, 
+        CancellationToken cancellationToken)
     {
         var iban = request.From;
         var result = new ApiResult<Unit>();
 
-        _logger.LogInformation("Start creating withdrawal from {from}", iban);
+        _logger.LogInformation("Start creating withdrawal from IBAN {iban}", iban);
 
         if (!ValidateWithdrawalRequest(request, result))
             return result;
