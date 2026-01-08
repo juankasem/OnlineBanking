@@ -19,17 +19,18 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeFundsTransferCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, 
-        CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();
         var senderIBAN = request.From;
         var recipientIBAN = request.To;
 
-        _logger.LogInformation("Start creating fund transfer from {senderIBAN} to {recipientIBAN}", 
-         senderIBAN, 
-         recipientIBAN);
+        _logger.LogInformation(
+            "Processing fund transfer: From={SenderIBAN}, To={RecipientIBAN}, Amount={Amount}",
+            senderIBAN,
+            recipientIBAN,
+            request.BaseCashTransaction.Amount.Value);
 
         if (!ValidateTransferRequest(request, result))
             return result; 
@@ -51,7 +52,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (!_bankAccountHelper.HasSufficientFunds(senderAccount, totalAmount, result))
             return result;
 
-        // Prepare transfer dto
+        // Execute transfer
         var accountOwner = _appUserAccessor.GetDisplayName();
         var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
         var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, transferDto);
@@ -69,18 +70,24 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                  "Transfer of id: {transactionId} of amount: {amount} with fees: {fees} " +
-                  "from bank account of IBAN: {from} to bank account of IBAN {to} is completed successfully!",
-                  cashTransaction.Id, 
-                  amountToTransfer, 
-                  fees, 
-                  senderIBAN, 
-                  recipientIBAN);
+                  "Fund transfer completed successfully - TransactionId: {TransactionId}, " +
+                  "From: {From}, To: {To}, Amount: {Amount}, Fees: {Fees}, Status: {Status}",
+                  cashTransaction.Id,
+                  senderIBAN,
+                  recipientIBAN,
+                  amountToTransfer,
+                  fees,
+                  cashTransaction.Status);
         }
         else
         {
+            _logger.LogError(
+                "Failed to persist fund transfer from {SenderIBAN} to {RecipientIBAN}. " +
+                "Database transaction returned 0 rows affected",
+                senderIBAN,
+                recipientIBAN);
+
             result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
-            _logger.LogError("Transfer from {From} to {To} failed to commit.", senderIBAN, recipientIBAN);
         }
 
         return result;

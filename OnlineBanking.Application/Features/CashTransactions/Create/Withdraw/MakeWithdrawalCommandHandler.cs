@@ -18,8 +18,7 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeWithdrawalCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, 
-        CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
     {
         var iban = request.From;
         var result = new ApiResult<Unit>();
@@ -66,8 +65,8 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
         }
         else
         {
-            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
             _logger.LogError("Withdrawal transaction from IBAN: {IBAN} failed...Please try again", iban);
+            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
         }
 
         return result;

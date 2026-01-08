@@ -11,13 +11,9 @@ public class BaseCashTransactionValidator : AbstractValidator<BaseCashTransactio
 {
     private const string DateFormat = "dd/MM/yyyy";
     private const int MaxFutureDays = 30;
-    private readonly IUnitOfWork _uow;
 
-    public BaseCashTransactionValidator(IUnitOfWork uow)
+    public BaseCashTransactionValidator()
     {
-        ArgumentNullException.ThrowIfNull(uow);
-        _uow = uow;
-
         ConfigureIbanValidation();
         ConfigureTransactionTypeValidation();
         ConfigureAssetTypeValidation();

@@ -18,8 +18,7 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, 
-        CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();

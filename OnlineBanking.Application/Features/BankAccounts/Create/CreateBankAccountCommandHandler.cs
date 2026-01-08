@@ -1,74 +1,78 @@
 
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate.Events;
-using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-
 namespace OnlineBanking.Application.Features.BankAccounts.Create;
 
-public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccountCommand, ApiResult<Unit>>
+/// <summary>
+/// Handles bank account creation requests.
+/// Validates account uniqueness, retrieves and associates customers, and persists the new account.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the handler.
+/// </remarks>
+public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDepositCommandHandler> logger) : 
+    IRequestHandler<CreateBankAccountCommand, ApiResult<Unit>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly ILogger<MakeDepositCommandHandler> _logger;
+    private readonly IUnitOfWork _uow = uow;
+    private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
-    public CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDepositCommandHandler> logger)
-    {
-        _uow = uow;
-        _logger = logger;
-    }
-
+    /// <summary>
+    /// Handles the bank account creation request.
+    /// </summary>
     public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Starting creating a new {type} bank account", request.Type.ToString());
+        ArgumentNullException.ThrowIfNull(request);
 
         var result = new ApiResult<Unit>();
+        var accountNo = request.AccountNo;
 
-        if (await _uow.BankAccounts.ExistsAsync(request.AccountNo))
+        _logger.LogInformation(
+                  "Processing bank account creation: AccountNo={AccountNo}, Type={Type}, CurrencyId={CurrencyId}",
+                  accountNo,
+                  request.Type,
+                  request.CurrencyId);
+
+        if (await _uow.BankAccounts.ExistsAsync(accountNo))
         {
             result.AddError(ErrorCode.CustomerAlreadyExists,
-            string.Format(BankAccountErrorMessages.AlreadyExists, request.AccountNo));
+            string.Format(BankAccountErrorMessages.AlreadyExists, accountNo));
             return result;
         }
 
+        // Create bank account aggregate
         var bankAccount = CreateBankAccount(request);
 
-        if (request.CustomerNos.Length > 0)
+        // Retrieve and associate customers
+        if (!await AssociateCustomersWithAccountAsync(bankAccount, 
+            request.CustomerNos, 
+            result, 
+            cancellationToken))
         {
-            var accountOwners = new List<Customer>();
-
-            foreach (var customerNo in request.CustomerNos)
-            {
-                var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
-                if (customer is null)
-                {
-                    result.AddError(ErrorCode.NotFound,
-                    string.Format(CustomerErrorMessages.NotFound, "Id", customer.Id));
-
-                    return result;
-                }
-                accountOwners.Add(customer);
-
-                var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, customer.Id);
-                bankAccount.AddOwnerToBankAccount(bankAccountOwner);
-            }
+            return result;
         }
 
+        // Persist changes
         await _uow.BankAccounts.AddAsync(bankAccount);
 
-
-        // Persist changes
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation("Bank account of Id {bankAccountId} of account No: {accountNo} & " +
-                                    "IBAN: {iban}, type:{type}, balance: {balance} is created",
-                                   bankAccount.Id,
-                                   bankAccount.AccountNo,
-                                   bankAccount.IBAN,
-                                   bankAccount.Type,
-                                   bankAccount.Balance);
+            _logger.LogInformation(
+                "Bank account created successfully - Id: {BankAccountId}, AccountNo: {AccountNo}, " +
+                "IBAN: {IBAN}, Type: {Type}, Balance: {Balance}, Currency: {CurrencyId}, Branch: {BranchId}",
+                bankAccount.Id,
+                bankAccount.AccountNo,
+                bankAccount.IBAN,
+                bankAccount.Type,
+                bankAccount.Balance,
+                bankAccount.CurrencyId,
+                bankAccount.BranchId);
         }
         else
         {
+            _logger.LogError(
+                "Failed to persist bank account creation for account number: {AccountNo}. " +
+                "Database transaction returned 0 rows affected",
+                accountNo);
+
             result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
-            _logger.LogError($"Creating bank account failed!");
         }
 
         return result;
@@ -76,14 +80,64 @@ public class CreateBankAccountCommandHandler : IRequestHandler<CreateBankAccount
 
     #region Private helper methods
     private static BankAccount CreateBankAccount(CreateBankAccountCommand request) =>
-                BankAccount.Create(request.AccountNo, 
-                                    request.IBAN, 
-                                    request.Type,
-                                    request.BranchId, 
-                                    request.Balance,
-                                    request.AllowedBalanceToUse, 
-                                    request.MinimumAllowedBalance,
-                                    request.Debt, 
-                                    request.CurrencyId);
+        BankAccount.Create(request.AccountNo, 
+                    request.IBAN, 
+                    request.Type,
+                    request.BranchId, 
+                    request.Balance,
+                    request.AllowedBalanceToUse, 
+                    request.MinimumAllowedBalance,
+                    request.Debt, 
+                    request.CurrencyId);
+
+    /// <summary>
+    /// Retrieves customers and associates them with the bank account.
+    /// </summary>
+    private async Task<bool> AssociateCustomersWithAccountAsync(
+        BankAccount bankAccount,
+        string[] customerNos,
+        ApiResult<Unit> result,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(bankAccount);
+        ArgumentNullException.ThrowIfNull(customerNos);
+
+        if (customerNos.Length == 0)
+        {
+            _logger.LogWarning("Bank account creation: No customers provided for account {AccountNo}", bankAccount.AccountNo);
+            return true; // Account can be created without owners
+        }
+
+        foreach (var customerNo in customerNos)
+        {
+            var customer = await _uow.Customers.GetByCustomerNoAsync(customerNo);
+
+            if (customer is null)
+            {
+                _logger.LogError(
+                    "Bank account creation failed: Customer {CustomerNo} not found for account {AccountNo}",
+                    customerNo,
+                    bankAccount.AccountNo);
+
+                result.AddError(ErrorCode.NotFound, string.Format(
+                    CustomerErrorMessages.NotFound,
+                    "Customer No",
+                     customerNo));
+                return false;
+            }
+
+            // Create and add the customer-bank account relationship
+            var bankAccountOwner = CustomerBankAccount.Create(bankAccount.Id, customer.Id);
+            bankAccount.AddOwnerToBankAccount(bankAccountOwner);
+
+            _logger.LogDebug(
+                "Associated customer {CustomerNo} with bank account {AccountNo}",
+                customerNo,
+                bankAccount.AccountNo);
+        }
+
+        return true;
+    }
+
     #endregion
 }
