@@ -71,7 +71,6 @@ public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDeposi
                 "Failed to persist bank account creation for account number: {AccountNo}. " +
                 "Database transaction returned 0 rows affected",
                 accountNo);
-
             result.AddError(ErrorCode.UnknownError, BankAccountErrorMessages.Unknown);
         }
 

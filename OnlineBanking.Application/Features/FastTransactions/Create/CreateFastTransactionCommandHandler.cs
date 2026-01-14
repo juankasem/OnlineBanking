@@ -32,9 +32,9 @@ public class CreateFastTransactionCommandHandler(
             return result;
 
         var fastTransaction = FastTransaction.Create(bankAccount.Id, 
-                                                     request.RecipientIBAN, 
-                                                     request.RecipientName, 
-                                                     request.Amount);
+            request.RecipientIBAN, 
+            request.RecipientName, 
+            request.Amount);
 
         //Add fast transaction to sender's account
         _bankAccountService.CreateFastTransaction(bankAccount, fastTransaction);
@@ -52,8 +52,8 @@ public class CreateFastTransactionCommandHandler(
         }
         else
         {
-            result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.Unknown);
             _logger.LogError($"Creating fast transaction failed...Please try again.");
+            result.AddError(ErrorCode.UnknownError, FastTransactionErrorMessages.Unknown);
         }
 
         return result;

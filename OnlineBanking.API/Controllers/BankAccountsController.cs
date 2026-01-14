@@ -36,7 +36,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(PagedList<BankAccountDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ListAllBankAccounts([FromQuery] BankAccountParams bankAccountParams, 
-                                                         CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetAllBankAccountsRequest()
         {
@@ -52,8 +52,10 @@ public class BankAccountsController : BaseApiController
 
         if (bankAccounts.Any())
         {
-            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                         result.Payload.TotalCount, result.Payload.TotalPages);
+            Response.AddPaginationHeader(result.Payload.CurrentPage, 
+                result.Payload.PageSize,
+                result.Payload.TotalCount, 
+                result.Payload.TotalPages);
         }
 
         return Ok(bankAccounts);
@@ -72,9 +74,9 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountsByCustomerNo([FromRoute] string customerNo,
-                                                                 [FromQuery] BankAccountParams bankAccountParams,
-                                                                 [FromQuery] CashTransactionParams accountTransactionsParams,
-                                                                 CancellationToken cancellationToken = default)
+        [FromQuery] BankAccountParams bankAccountParams,
+        [FromQuery] CashTransactionParams accountTransactionsParams,
+        CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountsByCustomerNoRequest()
         {
@@ -87,12 +89,14 @@ public class BankAccountsController : BaseApiController
         if (result.IsError) 
             return HandleErrorResponse(result.Errors);
 
-        var bankAccounts = result.Payload.Data;
+        var bankAccounts = result.Payload?.Data ?? [];
 
         if (bankAccounts.Any())
         {
-            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                         result.Payload.TotalCount, result.Payload.TotalPages);
+            Response.AddPaginationHeader(result.Payload.CurrentPage, 
+                result.Payload.PageSize,
+                result.Payload.TotalCount, 
+                result.Payload.TotalPages);
         }
 
         return Ok(bankAccounts);
@@ -111,8 +115,8 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountByAccountNo([FromRoute(Name = "account-no")] string accountNo,
-                                                               [FromQuery] CashTransactionParams accountTransactionsParams,
-                                                               CancellationToken cancellationToken = default)
+        [FromQuery] CashTransactionParams accountTransactionsParams,
+        CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountByAccountNoRequest()
         {
@@ -135,8 +139,8 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetBankAccountByIBAN([FromRoute] string iban,
-                                                          [FromQuery] CashTransactionParams accountTransactionParams,
-                                                          CancellationToken cancellationToken = default)
+        [FromQuery] CashTransactionParams accountTransactionParams,
+        CancellationToken cancellationToken = default)
     {
         var query = new GetBankAccountWithTransactionsRequest()
         {
@@ -164,7 +168,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateBankAccount([FromBody] CreateBankAccountRequest request, 
-                                                       CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBankAccountCommand>(request);
 
@@ -185,8 +189,8 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateCashTransaction([FromRoute] string iban,
-                                                           [FromBody] CreateCashTransactionRequest request,
-                                                           CancellationToken cancellationToken = default)
+        [FromBody] CreateCashTransactionRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (iban != request.BaseCashTransaction.IBAN)
             return HandleErrorResponse([new Error(ErrorCode.BadRequest,
@@ -224,8 +228,8 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateFastTransaction([FromRoute] string iban,
-                                                           [FromBody] CreateFastTransactionRequest request,
-                                                           CancellationToken cancellationToken = default)
+        [FromBody] CreateFastTransactionRequest request,
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
@@ -246,7 +250,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ActivateBankAccount([FromQuery(Name = "id")] string bankAccountId,
-                                                         CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = new ActivateBankAccountCommand
         {
@@ -266,7 +270,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(typeof(BankAccountResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeactivateBankAccount([FromQuery(Name = "id")] string bankAccountId, 
-                                                           CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = new DeactivateBankAccountCommand()
         {
@@ -288,7 +292,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> AddOwnerToBankAccount([FromBody] AddOwnerToBankAccountRequest request,
-                                                            CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<AddOwnerToBankAccountCommand>(request);
 
@@ -309,7 +313,7 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ValidateGuid("bankAccountId")]
     public async Task<IActionResult> DeleteBankAccount([FromQuery(Name ="id")] string bankAccountId,
-                                                       CancellationToken cancellationToken = default)
+         CancellationToken cancellationToken = default)
     {
         var command = new DeleteBankAccountCommand()
         {
@@ -333,8 +337,8 @@ public class BankAccountsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteFastTransaction([FromRoute] string iban,
-                                                           [FromRoute] Guid id,
-                                                           CancellationToken cancellationToken = default)
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(iban))
             return BadRequest("IBAN is required");

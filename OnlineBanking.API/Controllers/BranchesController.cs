@@ -26,7 +26,7 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(typeof(PagedList<BranchResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ListAllBranches([FromQuery] BranchParams branchParams, 
-                                                    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var request = new GetAllBranchesRequest()
         {
@@ -42,8 +42,10 @@ public class BranchesController : BaseApiController
 
         if (branches.Any())
         {
-            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                         result.Payload.TotalCount, result.Payload.TotalPages);
+            Response.AddPaginationHeader(result.Payload.CurrentPage, 
+                result.Payload.PageSize,
+                result.Payload.TotalCount, 
+                result.Payload.TotalPages);
         }
 
         return Ok(branches);
@@ -60,7 +62,7 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetBranchById([FromRoute(Name = "id")] int branchId, 
-                                                CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetBranchByIdRequest()
         {
@@ -88,7 +90,7 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateBranch([FromBody] CreateBranchRequest request, 
-                                                 CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateBranchCommand>(request);
 
@@ -115,8 +117,8 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateBranch([FromRoute(Name = "id")] int branchId, 
-                                                  [FromBody] UpdateBranchRequest request, 
-                                                 CancellationToken cancellationToken = default)
+        [FromBody] UpdateBranchRequest request, 
+        CancellationToken cancellationToken = default)
     {
         if (branchId <= 0)
             return HandleErrorResponse([new Error(ErrorCode.BadRequest, "Branch ID must be greater than zero")]);
@@ -146,10 +148,11 @@ public class BranchesController : BaseApiController
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteBranch([FromRoute(Name = "id")] int branchId, 
-                                                CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         if (branchId <= 0)
-            return HandleErrorResponse([new Error(ErrorCode.BadRequest, "Branch ID must be greater than zero")]);
+            return HandleErrorResponse([new Error(ErrorCode.BadRequest, 
+                "Branch ID must be greater than zero")]);
 
         var command = new DeleteBranchCommand()
         {

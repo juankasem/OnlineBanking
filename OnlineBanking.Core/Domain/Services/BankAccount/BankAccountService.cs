@@ -72,7 +72,7 @@ public class BankAccountService(ILogger<BankAccountService> logger) : IBankAccou
 
         bankAccount.AddFastTransaction(fastTransaction);
 
-        bankAccount.AddDomainEvent(new FastTransactionCreatedEvent(fastTransaction.Id,
+        bankAccount.AddDomainEvent(new FastTransactionCreatedEvent(fastTransaction.Id, 
             fastTransaction.BankAccountId,
             fastTransaction.RecipientIBAN,
             fastTransaction.RecipientName,

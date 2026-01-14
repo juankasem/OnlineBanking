@@ -31,7 +31,7 @@ public class BaseApiController : ControllerBase
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>OK response with payload or error response</returns>
     protected async Task<IActionResult> HandleRequest<TResponse>(IRequest<ApiResult<TResponse>> request, 
-                                                      CancellationToken cancellationToken)
+        CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request, cancellationToken);
 

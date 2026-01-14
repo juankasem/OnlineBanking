@@ -4,18 +4,14 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 
 public class MakeFundsTransferCommandValidator : AbstractValidator<MakeFundsTransferCommand>
 {
-    private readonly IUnitOfWork _uow;
-
-    public MakeFundsTransferCommandValidator(IUnitOfWork uow)
+    public MakeFundsTransferCommandValidator()
     {
-        ArgumentNullException.ThrowIfNull(uow);
-        _uow = uow;
 
         // Validate base transaction
         RuleFor(c => c.BaseCashTransaction)
             .NotNull()
             .WithMessage("{PropertyName} is required")
-            .SetValidator(new BaseCashTransactionValidator(uow));
+            .SetValidator(new BaseCashTransactionValidator());
 
         RuleFor(b => b.From)
             .NotNull()

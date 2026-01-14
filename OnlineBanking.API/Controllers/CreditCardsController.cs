@@ -11,33 +11,53 @@ namespace OnlineBanking.API.Controllers;
 public class CreditCardsController : BaseApiController
 {
     // GET api/v1/credit-cards/all
-    [HttpGet(ApiRoutes.FastTransactions.GetByIBAN)]
+    [HttpGet(ApiRoutes.CreditCards.All)]
     [ProducesResponseType(typeof(PagedList<CreditCardDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<CreditCardDto>>> GetAllCreditCards([FromQuery] CreditCardParams creditCardParams,
-                                                                                CancellationToken cancellationToken = default)
+    public async Task<ActionResult<PagedList<CreditCardDto>>> GetAllCreditCards([FromQuery] CreditCardParams creditCardParams, 
+        CancellationToken cancellationToken = default)
     {
-        var query = new GetAllCreditCardsRequest() { CreditCardParams = creditCardParams };
+        var query = new GetAllCreditCardsRequest() 
+        { 
+            CreditCardParams = creditCardParams 
+        };
 
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            HandleErrorResponse(result.Errors);
 
-        return Ok(result.Payload);
+        var creditcards = result.Payload?.Data ?? [];
+
+        if (creditcards.Any())
+        {
+            Response.AddPaginationHeader(result.Payload.CurrentPage,
+                result.Payload.PageSize,
+                result.Payload.TotalCount,
+                result.Payload.TotalPages);
+        }
+
+        return Ok(creditcards);
     }
 
     // GET api/v1/credit-cards/TR12345678 
     [HttpGet(ApiRoutes.CreditCards.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<CreditCardDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<IReadOnlyList<CreditCardDto>>> GetCustomerCreditCards([FromRoute] string customerNo,
-                                                                                        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
-        var query = new GetCustomerCreditCardsRequest() { CustomerNo = customerNo };
+        var query = new GetCustomerCreditCardsRequest() 
+        { 
+            CustomerNo = customerNo 
+        };
 
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            HandleErrorResponse(result.Errors);
 
-        return Ok(result.Payload);
+        var creditCards = result.Payload ?? [];
+
+        return Ok(creditCards);
     }
 
     // GET api/v1/credit-cards/TR12345678 
@@ -45,13 +65,14 @@ public class CreditCardsController : BaseApiController
     [ValidateGuid]
     [ProducesResponseType(typeof(CreditCardDetailsResponse), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<CreditCardDetailsResponse>> GetCreditCardById([FromRoute] string id,
-                                                                                CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetCreditCardByIdRequest() { Id = Guid.Parse(id) };
 
-        var result = await _mediator.Send(query);
+        var result = await _mediator.Send(query, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            HandleErrorResponse(result.Errors);
 
         return Ok(result.Payload);
     }
@@ -60,11 +81,11 @@ public class CreditCardsController : BaseApiController
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> CreateCreditCard([FromBody] CreateCreditCardRequest request,
-                                                        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateCreditCardCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
@@ -75,13 +96,14 @@ public class CreditCardsController : BaseApiController
     [HttpPut(ApiRoutes.CreditCards.IdRoute)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> UpdateCreditCard([FromBody] UpdateCreditCardRequest request,
-                                                        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateCreditCardCommand>(request);
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
-        if (result.IsError) HandleErrorResponse(result.Errors);
+        if (result.IsError) 
+            HandleErrorResponse(result.Errors);
 
         return Ok();
     }
@@ -91,14 +113,14 @@ public class CreditCardsController : BaseApiController
     [HttpPut(ApiRoutes.CreditCards.Activate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> ActivateCreditCard([FromRoute] string creditCardNo,
-                                                        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = new ActivateCreditCardCommand() 
         { 
             CreditCardNo = creditCardNo 
         };
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 
@@ -110,14 +132,14 @@ public class CreditCardsController : BaseApiController
     [HttpPut(ApiRoutes.CreditCards.Deactivate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeactivateCreditCard([FromRoute] string creditCardNo,
-                                                        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var command = new DeactivateCreditCardCommand() 
         { 
             CreditCardNo = creditCardNo 
         };
 
-        var result = await _mediator.Send(command);
+        var result = await _mediator.Send(command, cancellationToken);
 
         if (result.IsError) HandleErrorResponse(result.Errors);
 

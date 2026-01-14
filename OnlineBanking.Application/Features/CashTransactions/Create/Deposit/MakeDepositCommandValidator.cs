@@ -16,7 +16,7 @@ public class MakeDepositCommandValidator : AbstractValidator<MakeDepositCommand>
         RuleFor(c => c.BaseCashTransaction)
         .NotNull()
         .WithMessage("{PropertyName} is required")
-        .SetValidator(new BaseCashTransactionValidator(uow));
+        .SetValidator(new BaseCashTransactionValidator());
 
         RuleFor(b => b.To)
         .NotNull()

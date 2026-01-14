@@ -21,7 +21,7 @@ public class CustomersController : BaseApiController
     [ProducesResponseType(typeof(PagedList<CustomerResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ListAllCustomers([FromQuery] CustomerParams customerParams, 
-                                                    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetAllCustomersRequest()
         {
@@ -36,8 +36,10 @@ public class CustomersController : BaseApiController
 
         if (customers.Any())
         {
-            Response.AddPaginationHeader(result.Payload.CurrentPage, result.Payload.PageSize,
-                                        result.Payload.TotalCount, result.Payload.TotalPages);
+            Response.AddPaginationHeader(result.Payload.CurrentPage, 
+                result.Payload.PageSize,
+                result.Payload.TotalCount, 
+                result.Payload.TotalPages);
         }
 
         return Ok(customers);
@@ -56,7 +58,7 @@ public class CustomersController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ValidateGuid("id")]
     public async Task<IActionResult> GetCustomerById([FromRoute(Name ="id")] string customerId, 
-                                                    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerByIdRequest()
         {
@@ -75,7 +77,7 @@ public class CustomersController : BaseApiController
     [HttpGet(ApiRoutes.Customers.BankAccounts)]
     [ProducesResponseType(typeof(List<BankAccountDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCustomerBankAccounts([FromRoute] string customerNo,
-                                                             CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerBankAccountsRequest() 
         { 
@@ -100,7 +102,7 @@ public class CustomersController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request,
-                                                    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = _mapper.Map<CreateCustomerCommand>(request);
 
@@ -123,7 +125,7 @@ public class CustomersController : BaseApiController
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> DeleteCustomer([FromRoute] string customerId,
-                                                    CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default)
     {
         var query = new DeleteCustomerCommand()
         {

@@ -225,8 +225,10 @@ public class BankAccount : AggregateRoot<Guid>
     /// <exception cref="InvalidOperationException">Thrown when currency mismatches or duplicate exists</exception>
     public void AddAccountTransaction(CashTransaction cashTransaction)
     {
-        if (cashTransaction is null) throw new ArgumentNullException(nameof(cashTransaction));
-        if (cashTransaction.Id == Guid.Empty) throw new ArgumentException("Transaction must have a valid Id.", nameof(cashTransaction));
+        ArgumentNullException.ThrowIfNull(cashTransaction);
+
+        if (cashTransaction.Id == Guid.Empty) 
+            throw new ArgumentException("Transaction must have a valid Id.", nameof(cashTransaction));
 
         // avoid adding the same transaction twice
         if (_accountTransactions.Any(at => at.TransactionId == cashTransaction.Id))
@@ -255,7 +257,6 @@ public class BankAccount : AggregateRoot<Guid>
             accountTransaction.Transaction = cashTransaction;
     }
 
-
     /// <summary>
     /// Removes a transaction by ID
     /// </summary>
@@ -263,7 +264,8 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var index = _accountTransactions.FindIndex(c => c.Transaction?.Id == id);
 
-        if (index >= 0) _accountTransactions.Remove(_accountTransactions[index]);
+        if (index >= 0) 
+            _accountTransactions.Remove(_accountTransactions[index]);
     }
 
     #endregion
@@ -282,7 +284,8 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var index = _fastTransactions.FindIndex(ct => ct.Id == id);
 
-        if (index >= 0) _fastTransactions[index] = ft;
+        if (index >= 0) 
+            _fastTransactions[index] = ft;
     }
 
     /// <summary>
@@ -312,7 +315,8 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var index = _creditCards.FindIndex(c => c.Id == id);
 
-        if (index >= 0) _creditCards[index] = creditCard;
+        if (index >= 0) 
+            _creditCards[index] = creditCard;
     }
 
     /// <summary>
@@ -322,7 +326,7 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var creditCard = _creditCards.FirstOrDefault(c => c.Id == creditCardId);
 
-        if (creditCard is not null) creditCard.Activate();
+        creditCard?.Activate();
     }
 
     /// <summary>
@@ -352,7 +356,8 @@ public class BankAccount : AggregateRoot<Guid>
     {
         var index = _debitCards.FindIndex(c => c.Id == id);
 
-        if (index >= 0) _debitCards[index] = debitCard;
+        if (index >= 0) 
+            _debitCards[index] = debitCard;
     }
 
     #endregion
@@ -384,8 +389,10 @@ public class BankAccount : AggregateRoot<Guid>
     /// <exception cref="ArgumentException">Thrown when amount is negative</exception>
     public void Deposit(Money amount)
     {
-        if (amount is null) throw new ArgumentNullException(nameof(amount));
-        if (amount.IsNegative()) throw new ArgumentException("Amount must be positive", nameof(amount));
+        ArgumentNullException.ThrowIfNull(amount);
+
+        if (amount.IsNegative()) 
+            throw new ArgumentException("Amount must be positive", nameof(amount));
 
         // if you switched to Money for Balance, use Money arithmetic. Example uses decimal for compatibility:
         Balance = decimal.Round(Balance + amount.Amount, 2);
@@ -401,8 +408,10 @@ public class BankAccount : AggregateRoot<Guid>
     /// <exception cref="InsufficientFundsException">Thrown when withdrawal would violate minimum balance</exception>
     public void Withdraw(Money amount)
     {
-        if (amount is null) throw new ArgumentNullException(nameof(amount));
-        if (amount.IsNegative()) throw new ArgumentException("Amount must be positive", nameof(amount));
+        if (amount is null) 
+            throw new ArgumentNullException(nameof(amount));
+        if (amount.IsNegative()) 
+            throw new ArgumentException("Amount must be positive", nameof(amount));
 
         var newBalance = decimal.Round(Balance - amount.Amount, 2);
 

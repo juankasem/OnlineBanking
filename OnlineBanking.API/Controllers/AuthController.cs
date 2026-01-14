@@ -12,13 +12,11 @@ namespace OnlineBanking.API.Controllers;
 /// </remarks>
 public class AuthController(ILogger<AuthController> logger,
                     UserManager<AppUser> userManager,
-                    SignInManager<AppUser> signInManager,
                     RoleManager<IdentityRole> roleManager,
                     ITokenService tokenService) : BaseApiController
 {
     private readonly ILogger<AuthController> _logger = logger;
     private readonly UserManager<AppUser> _userManager = userManager;
-    private readonly SignInManager<AppUser> _signInManager = signInManager;
     private readonly RoleManager<IdentityRole> _roleManager = roleManager;
     private readonly ITokenService _tokenService = tokenService;
 
@@ -134,7 +132,7 @@ public class AuthController(ILogger<AuthController> logger,
         var userResponse = _mapper.Map<AuthResponse>(user);
         userResponse.Token = token;
 
-        _logger.LogInformation("User {Username} logged in successfully", user.UserName);
+        _logger.LogInformation("User {Username} logged in successfully!", user.UserName);
         return Ok(userResponse);
     }
 
