@@ -32,7 +32,8 @@ public class CashTransactionsController : BaseApiController
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> ListAllCashTransactions([FromQuery] CashTransactionParams cashTransactionParams,
+    public async Task<IActionResult> ListAllCashTransactions(
+        [FromQuery] CashTransactionParams cashTransactionParams,
         CancellationToken cancellationToken = default)
     {
         var query = new GetAllCashTransactionsRequest()
@@ -62,7 +63,8 @@ public class CashTransactionsController : BaseApiController
     [HttpGet(ApiRoutes.CashTransactions.AccountNoOrIBAN)]
     [ProducesResponseType(typeof(PagedList<CashTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN([FromRoute(Name = "iban")] string accountNoOrIBAN,
+    public async Task<IActionResult> GetCashTransactionsByAccountNoOrIBAN(
+        [FromRoute(Name = "iban")] string accountNoOrIBAN,
         [FromQuery] CashTransactionParams cashTransactionParams,
         CancellationToken cancellationToken = default)
     {
@@ -107,7 +109,8 @@ public class CashTransactionsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> CreateCashTransaction([FromRoute] string iban,
+    public async Task<IActionResult> CreateCashTransaction(
+        [FromRoute] string iban,
         [FromBody] CreateCashTransactionRequest request, 
         CancellationToken cancellationToken = default)
     {
@@ -149,7 +152,8 @@ public class CashTransactionsController : BaseApiController
     [ValidateBankAccountOwner("iban")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateCashTransaction(UpdateCashTransactionRequest request, 
+    public async Task<IActionResult> UpdateCashTransaction(
+        UpdateCashTransactionRequest request, 
         CancellationToken cancellationToken = default)
     {
         var command = new UpdateCashTransactionCommand()
@@ -174,7 +178,8 @@ public class CashTransactionsController : BaseApiController
     [HttpDelete(ApiRoutes.CashTransactions.IdRoute)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ValidateGuid("id")]
-    public async Task<IActionResult> DeleteCashTransaction([FromQuery] string id, 
+    public async Task<IActionResult> DeleteCashTransaction(
+        [FromQuery] string id, 
         CancellationToken cancellationToken = default)
     {
         var command = new DeleteCashTransactionCommand()

@@ -1,11 +1,9 @@
-using AutoMapper;
-using OnlineBanking.Application.Features.Customers;
-using OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
 
 namespace OnlineBanking.Application.Features.BankAccounts.AddOwner;
 
-public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBankAccountCommand, ApiResult<Unit>>
+public class AddOwnerToBankAccountCommandHandler : 
+    IRequestHandler<AddOwnerToBankAccountCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -15,7 +13,9 @@ public class AddOwnerToBankAccountCommandHandler : IRequestHandler<AddOwnerToBan
         _uow = uow;
         _mapper = mapper;
     }
-    public async Task<ApiResult<Unit>> Handle(AddOwnerToBankAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        AddOwnerToBankAccountCommand request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
 

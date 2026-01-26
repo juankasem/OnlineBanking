@@ -26,9 +26,10 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType(typeof(PagedList<FastTransactionResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> ListFastTransactionsByIBAN([FromRoute] string iban,
-                                                                [FromQuery] FastTransactionParams fastTransactionsParams,
-                                                                CancellationToken cancellationToken = default)
+    public async Task<IActionResult> ListFastTransactionsByIBAN(
+        [FromRoute] string iban,
+        [FromQuery] FastTransactionParams fastTransactionsParams,
+        CancellationToken cancellationToken = default)
     {
         var query = new GetFastTransactionsByIBANRequest()
         {
@@ -45,10 +46,11 @@ public class FastTransactionsController : BaseApiController
 
         if (fastTransactions.Any())
         {
-            Response.AddPaginationHeader(result.Payload.CurrentPage,
-                                         result.Payload.PageSize,
-                                         result.Payload.TotalCount, 
-                                         result.Payload.TotalPages);
+            Response.AddPaginationHeader(
+                result.Payload.CurrentPage,
+                result.Payload.PageSize,
+                result.Payload.TotalCount, 
+                result.Payload.TotalPages);
         }
 
         return Ok(fastTransactions);
@@ -71,8 +73,9 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> CreateFastTransaction([FromBody] CreateFastTransactionRequest request, 
-                                                            CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreateFastTransaction(
+        [FromBody] CreateFastTransactionRequest request, 
+        CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateFastTransactionCommand>(request);
 
@@ -96,9 +99,10 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ValidateGuid("id")]
-    public async Task<IActionResult> UpdateFastTransaction([FromRoute] Guid id, 
-                                                           [FromBody] UpdateFastTransactionRequest request,
-                                                            CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UpdateFastTransaction(
+        [FromRoute] Guid id, 
+        [FromBody] UpdateFastTransactionRequest request,
+        CancellationToken cancellationToken = default)
     {
         if (id != request.Id)
             return HandleErrorResponse([new Error(ErrorCode.BadRequest, 
@@ -126,9 +130,10 @@ public class FastTransactionsController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ValidateGuid("id")]
-    public async Task<IActionResult> DeleteFastTransaction([FromRoute] string iban,
-                                                           [FromRoute] Guid id,
-                                                           CancellationToken cancellationToken = default)
+    public async Task<IActionResult> DeleteFastTransaction(
+        [FromRoute] string iban,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(iban))
             return BadRequest("IBAN is required");

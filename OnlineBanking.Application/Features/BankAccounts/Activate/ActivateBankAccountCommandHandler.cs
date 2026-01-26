@@ -1,8 +1,8 @@
-using AutoMapper;
 
 namespace OnlineBanking.Application.Features.BankAccounts.Activate;
 
-public class ActivateBankAccountCommandHandler : IRequestHandler<ActivateBankAccountCommand, ApiResult<Unit>>
+public class ActivateBankAccountCommandHandler : 
+    IRequestHandler<ActivateBankAccountCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -12,7 +12,9 @@ public class ActivateBankAccountCommandHandler : IRequestHandler<ActivateBankAcc
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<Unit>> Handle(ActivateBankAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        ActivateBankAccountCommand request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
 

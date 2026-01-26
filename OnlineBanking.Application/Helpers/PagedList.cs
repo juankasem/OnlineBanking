@@ -1,5 +1,4 @@
 
-
 namespace OnlineBanking.Application.Helpers;
 
 public class PagedList<T> : List<T>

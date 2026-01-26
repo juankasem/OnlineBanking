@@ -8,16 +8,19 @@ public class CreateBranchCommandHandler : IRequestHandler<CreateBranchCommand, A
     private readonly IMapper _mapper;
     private readonly ILogger<CreateBranchCommandHandler> _logger;
 
-    public CreateBranchCommandHandler(IUnitOfWork uow, 
-                                    IMapper mapper, 
-                                    ILogger<CreateBranchCommandHandler> logger)
+    public CreateBranchCommandHandler(
+        IUnitOfWork uow, 
+        IMapper mapper, 
+        ILogger<CreateBranchCommandHandler> logger)
     {
         _uow = uow;
         _mapper = mapper;
         _logger = logger;
     }
 
-    public async Task<ApiResult<Unit>> Handle(CreateBranchCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        CreateBranchCommand request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
         var address = _mapper.Map<Address>(request.Address);

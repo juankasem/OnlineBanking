@@ -19,7 +19,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeFundsTransferCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeFundsTransferCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        MakeFundsTransferCommand request, 
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();

@@ -12,7 +12,8 @@ public sealed class ValidateBankAccountOwnerAttribute : TypeFilterAttribute
     }
 }
 
-public class ValidateBankAccountOwnerFilter(string[] keys, IUnitOfWork uow, 
+public class ValidateBankAccountOwnerFilter(
+    string[] keys, IUnitOfWork uow, 
     IAppUserAccessor appUserAccessor) : IAsyncAuthorizationFilter
 {
     private readonly string[] _keys = keys ?? [];

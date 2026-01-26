@@ -5,7 +5,8 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Deposit;
 /// Handles deposit command requests.
 /// Validates deposit request, applies domain logic, and persists changes to the account.
 /// </summary>
-public class MakeDepositCommandHandler(IUnitOfWork uow,
+public class MakeDepositCommandHandler(
+    IUnitOfWork uow,
     IBankAccountService bankAccountService,
     IAppUserAccessor appUserAccessor,
     IBankAccountHelper bankAccountHelper,
@@ -18,7 +19,9 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeDepositCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeDepositCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        MakeDepositCommand request, 
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var result = new ApiResult<Unit>();
@@ -74,24 +77,29 @@ public class MakeDepositCommandHandler(IUnitOfWork uow,
     /// <summary>
     /// Validates the deposit request (amount, IBAN presence)
     /// </summary>
-    private static bool ValidateDepositRequest(MakeDepositCommand request, ApiResult<Unit> result)
+    private static bool ValidateDepositRequest(
+        MakeDepositCommand request, 
+        ApiResult<Unit> result)
     {
         if (request?.BaseCashTransaction == null)
         {
-            result.AddError(ErrorCode.BadRequest, "Invalid deposit request.");
+            result.AddError(ErrorCode.BadRequest, 
+                "Invalid deposit request.");
             return false;
         }
 
         if (request.BaseCashTransaction.Amount.Value <= 0)
         {
-            result.AddError(ErrorCode.BadRequest, "Deposit amount must be greater than zero.");
+            result.AddError(ErrorCode.BadRequest, 
+                "Deposit amount must be greater than zero.");
             return false;
         }
 
         var iban = request.BaseCashTransaction.IBAN;
         if (string.IsNullOrWhiteSpace(iban))
         {
-            result.AddError(ErrorCode.BadRequest, "IBAN is required.");
+            result.AddError(ErrorCode.BadRequest, 
+                "IBAN is required.");
             return false;
         }
 

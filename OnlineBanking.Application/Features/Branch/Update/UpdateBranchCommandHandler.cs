@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Features.Branch.Messages;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 
@@ -15,7 +14,9 @@ public class UpdateBranchCommandHandler : IRequestHandler<UpdateBranchCommand, A
         _mapper = mapper;
     }
 
-    public async Task<ApiResult<Unit>> Handle(UpdateBranchCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        UpdateBranchCommand request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<Unit>();
 

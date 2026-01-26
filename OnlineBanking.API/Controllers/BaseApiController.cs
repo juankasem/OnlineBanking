@@ -30,7 +30,8 @@ public class BaseApiController : ControllerBase
     /// <param name="request">The request to send through the mediator</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>OK response with payload or error response</returns>
-    protected async Task<IActionResult> HandleRequest<TResponse>(IRequest<ApiResult<TResponse>> request, 
+    protected async Task<IActionResult> HandleRequest<TResponse>(
+        IRequest<ApiResult<TResponse>> request, 
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request, cancellationToken);
@@ -113,7 +114,10 @@ public class BaseApiController : ControllerBase
     /// <summary>
     /// Creates an error response object with timestamp and error details.
     /// </summary>
-    private static ErrorResponse CreateErrorResponse(int statusCode, string statusPhrase, List<string> errorMessages)
+    private static ErrorResponse CreateErrorResponse(
+        int statusCode, 
+        string statusPhrase, 
+        List<string> errorMessages)
     {
         var errorResponse = new ErrorResponse
         {

@@ -3,7 +3,8 @@ using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.Application.Features.Branch.GetAll;
 
-public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesRequest, ApiResult<PagedList<BranchResponse>>>
+public class GetAllBranchesRequestHandler : 
+    IRequestHandler<GetAllBranchesRequest, ApiResult<PagedList<BranchResponse>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IMapper _mapper;
@@ -17,7 +18,9 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
         _branchMapper = branchMapper;
     }
 
-    public async Task<ApiResult<PagedList<BranchResponse>>> Handle(GetAllBranchesRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<PagedList<BranchResponse>>> Handle(
+        GetAllBranchesRequest request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<PagedList<BranchResponse>>();
         var branchParams = request.BranchParams;
@@ -26,8 +29,11 @@ public class GetAllBranchesRequestHandler : IRequestHandler<GetAllBranchesReques
 
         var mappedBranches = _mapper.Map<IReadOnlyList<BranchResponse>>(branches);
 
-        result.Payload = mappedBranches.ToPagedList(totalCount, branchParams.PageNumber, 
-                                                    branchParams.PageSize, cancellationToken);
+        result.Payload = mappedBranches.ToPagedList(
+            totalCount, 
+            branchParams.PageNumber, 
+            branchParams.PageSize, 
+            cancellationToken);
 
         return result;
     }

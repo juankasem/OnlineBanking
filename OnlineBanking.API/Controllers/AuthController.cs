@@ -334,7 +334,9 @@ public class AuthController(ILogger<AuthController> logger,
     /// <summary>
     /// Converts IdentityResult errors to an ErrorResponse.
     /// </summary>
-    private ErrorResponse HandleErrorResult(IdentityResult result, string logMessage = "")
+    private ErrorResponse HandleErrorResult(
+        IdentityResult result, 
+        string logMessage = "")
     {
         var errorResponse = new ErrorResponse();
 
@@ -350,4 +352,3 @@ public class AuthController(ILogger<AuthController> logger,
 
     #endregion
 }
-

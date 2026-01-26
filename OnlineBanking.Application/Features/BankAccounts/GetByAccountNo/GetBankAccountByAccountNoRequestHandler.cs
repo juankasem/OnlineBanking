@@ -1,6 +1,7 @@
 namespace OnlineBanking.Application.Features.BankAccounts.GetByAccountNo;
 
-public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAccountByAccountNoRequest, ApiResult<BankAccountResponse>>
+public class GetBankAccountByAccountNoRequestHandler : 
+    IRequestHandler<GetBankAccountByAccountNoRequest, ApiResult<BankAccountResponse>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IBankAccountMapper _bankAccountMapper;
@@ -11,7 +12,9 @@ public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAc
         _bankAccountMapper = bankAccountMapper;
     }
 
-    public async Task<ApiResult<BankAccountResponse>> Handle(GetBankAccountByAccountNoRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<BankAccountResponse>> Handle(
+        GetBankAccountByAccountNoRequest request, 
+        CancellationToken cancellationToken)
     {
         var result = new ApiResult<BankAccountResponse>();
 
@@ -26,8 +29,9 @@ public class GetBankAccountByAccountNoRequestHandler : IRequestHandler<GetBankAc
         }
 
         var bankAccountOwners = await _uow.Customers.GetByIBANAsync(bankAccount.IBAN);
-        var (cashTransactions, totalCount) = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(bankAccount.IBAN, request.AccountTransactionsParams);
-
+        var (cashTransactions, totalCount) = await _uow.CashTransactions.GetByAccountNoOrIBANAsync(
+            bankAccount.IBAN, 
+            request.AccountTransactionsParams);
 
         result.Payload = _bankAccountMapper.MapToResponseModel(bankAccount, bankAccountOwners, cashTransactions);
 

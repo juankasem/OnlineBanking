@@ -8,7 +8,9 @@ namespace OnlineBanking.Application.Features.BankAccounts.Create;
 /// <remarks>
 /// Initializes a new instance of the handler.
 /// </remarks>
-public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDepositCommandHandler> logger) : 
+public class CreateBankAccountCommandHandler(
+    IUnitOfWork uow, 
+    ILogger<MakeDepositCommandHandler> logger) : 
     IRequestHandler<CreateBankAccountCommand, ApiResult<Unit>>
 {
     private readonly IUnitOfWork _uow = uow;
@@ -17,7 +19,9 @@ public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDeposi
     /// <summary>
     /// Handles the bank account creation request.
     /// </summary>
-    public async Task<ApiResult<Unit>> Handle(CreateBankAccountCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        CreateBankAccountCommand request, 
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -25,7 +29,9 @@ public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDeposi
         var accountNo = request.AccountNo;
 
         _logger.LogInformation(
-                  "Processing bank account creation: AccountNo={AccountNo}, Type={Type}, CurrencyId={CurrencyId}",
+                  "Processing bank account creation: AccountNo={AccountNo}, " +
+                  "Type={Type}, " +
+                  "CurrencyId={CurrencyId}",
                   accountNo,
                   request.Type,
                   request.CurrencyId);
@@ -55,8 +61,13 @@ public class CreateBankAccountCommandHandler(IUnitOfWork uow, ILogger<MakeDeposi
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
             _logger.LogInformation(
-                "Bank account created successfully - Id: {BankAccountId}, AccountNo: {AccountNo}, " +
-                "IBAN: {IBAN}, Type: {Type}, Balance: {Balance}, Currency: {CurrencyId}, Branch: {BranchId}",
+                "Bank account created successfully - Id: {BankAccountId}, " +
+                "AccountNo: {AccountNo}, " +
+                "IBAN: {IBAN}," +
+                " Type: {Type}, " +
+                "Balance: {Balance}, " +
+                "Currency: {CurrencyId}, " +
+                "Branch: {BranchId}",
                 bankAccount.Id,
                 bankAccount.AccountNo,
                 bankAccount.IBAN,

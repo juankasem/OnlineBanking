@@ -408,8 +408,8 @@ public class BankAccount : AggregateRoot<Guid>
     /// <exception cref="InsufficientFundsException">Thrown when withdrawal would violate minimum balance</exception>
     public void Withdraw(Money amount)
     {
-        if (amount is null) 
-            throw new ArgumentNullException(nameof(amount));
+        ArgumentNullException.ThrowIfNull(amount);
+
         if (amount.IsNegative()) 
             throw new ArgumentException("Amount must be positive", nameof(amount));
 

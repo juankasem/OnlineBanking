@@ -1,4 +1,3 @@
-
 using OnlineBanking.Application.Models.Branch;
 using OnlineBanking.Application.Models.CreditCard;
 using OnlineBanking.Application.Models.Currency;
@@ -6,133 +5,292 @@ using OnlineBanking.Application.Models.Customer;
 using OnlineBanking.Application.Models.DebitCard;
 using OnlineBanking.Core.Domain.Aggregates.BranchAggregate;
 using OnlineBanking.Core.Domain.Aggregates.CustomerAggregate;
-using System.Collections.ObjectModel;
 
 namespace OnlineBanking.Application.Mappings.BankAccounts;
 
+/// <summary>
+/// Mapper for converting BankAccount domain entities to DTOs and response models.
+/// Handles mapping of account details, owners, transactions, and associated cards.
+/// </summary>
 public class BankAccountMapper : IBankAccountMapper
 {
+    private const string FullNameSeparator = " ";
+    private const string UnknownCustomer = "Unknown";
+
+    /// <summary>
+    /// Maps a bank account to a basic DTO model.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when bankAccount is null</exception>
     public BankAccountDto MapToDtoModel(BankAccount bankAccount)
     {
-        var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
+        ArgumentNullException.ThrowIfNull(bankAccount);
 
-        return new(bankAccount.AccountNo, bankAccount.IBAN, 
-            CreateFullName(bankAccount.BankAccountOwners.FirstOrDefault().Customer),
+        var currency = MapToCurrencyDto(bankAccount.Currency);
+
+        return new(
+            bankAccount.AccountNo, 
+            bankAccount.IBAN,
+            MapToAccountOwnersDto(bankAccount.BankAccountOwners.Select(b => b.Customer)
+            .ToList()
+            .AsReadOnly()),
             bankAccount.Type,
-            MapToAccountBranchDTO(bankAccount.Branch),
-            MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
-            bankAccount.MinimumAllowedBalance, bankAccount.Debt),
+            MapToBranchDto(bankAccount.Branch),
+            MapToBalanceDto(bankAccount),
             currency);
     }
 
-    public BankAccountResponse MapToResponseModel(BankAccount bankAccount,
-                                                 IReadOnlyList<Customer> bankAccountOwners,
-                                                 IReadOnlyList<CashTransaction> cashTransactions)
+    /// <summary>
+    /// Maps a bank account to a comprehensive response model with all related data.
+    /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when required parameters are null</exception>
+    public BankAccountResponse MapToResponseModel(
+        BankAccount bankAccount,
+        IReadOnlyList<Customer> bankAccountOwners,
+        IReadOnlyList<CashTransaction> cashTransactions)
     {
-        var currency = MapToAccountCurrencyDTO(bankAccount.Currency);
+        ArgumentNullException.ThrowIfNull(bankAccount);
+        ArgumentNullException.ThrowIfNull(bankAccountOwners);
+        ArgumentNullException.ThrowIfNull(cashTransactions);
 
-        return new(bankAccount.AccountNo, bankAccount.IBAN, bankAccount.Type,
-                                        MapToAccountBranchDTO(bankAccount.Branch),
-                                        MapToAccountBalanceDTO(bankAccount.Balance, bankAccount.AllowedBalanceToUse,
-                                                            bankAccount.MinimumAllowedBalance, bankAccount.Debt),
-                                        currency,
-                                        MapToAccountOwnersDTO(bankAccountOwners),
-                                        MapToAccountTransactionsDTO(cashTransactions, currency),
-                                        MapToAccountFastTransactionsDTO(bankAccount.FastTransactions, currency),
-                                        MapToAccountCreditCardsDTO(bankAccount.CreditCards, currency),
-                                        MapToAccountDebitCardsDTO(bankAccount.DebitCards, currency));
+        var currency = MapToCurrencyDto(bankAccount.Currency);
+
+        return new(
+            bankAccount.AccountNo, 
+            bankAccount.IBAN, 
+            bankAccount.Type,
+            MapToBranchDto(bankAccount.Branch),
+            MapToBalanceDto(bankAccount),
+            currency,
+            MapToAccountOwnersDto(bankAccountOwners),
+            MapToAccountTransactionsDto(cashTransactions, currency),
+            MapToFastTransactionsDto(bankAccount.FastTransactions, currency),
+            MapToCreditCardsDto(bankAccount.CreditCards),
+            MapToDebitCardsDto(bankAccount.DebitCards));
     }
 
     #region Private helper methods
-    private static CurrencyDto MapToAccountCurrencyDTO(Currency currency) =>
-        new(currency.Id, currency.Code, currency.Name, currency.Symbol);
 
-    private static BranchDto MapToAccountBranchDTO(Branch branch) =>
-        new(branch.Id, branch.Name);
-
-    private static AccountBalanceDto MapToAccountBalanceDTO(decimal balance, decimal allowedBalanceToUse,
-                                                    decimal minimumAllowedBalance, decimal debt) =>
-        new(balance, allowedBalanceToUse, minimumAllowedBalance, debt);
-
-    private ReadOnlyCollection<AccountOwnerDto> MapToAccountOwnersDTO(IReadOnlyList<Customer> customers)
+    /// <summary>
+    /// Maps currency entity to DTO.
+    /// </summary>
+    private static CurrencyDto MapToCurrencyDto(Currency currency)
     {
-        var bankAccountOwners = new List<AccountOwnerDto>();
+        ArgumentNullException.ThrowIfNull(currency);
 
-        if (customers == null || customers.Count == 0)
-            return bankAccountOwners.AsReadOnly();
+        return new(
+            currency.Id,
+            currency.Code,
+            currency.Name,
+            currency.Symbol
+        );
+    }
 
-        foreach (var customer in customers)
+    /// <summary>
+    /// Maps branch entity to DTO.
+    /// </summary>
+    private static BranchDto MapToBranchDto(Branch branch)
+    {
+        ArgumentNullException.ThrowIfNull(branch);
+
+        return new(branch.Id, branch.Name);
+    }
+
+    /// <summary>
+    /// Maps bank account balance information to DTO.
+    /// </summary>
+    private static AccountBalanceDto MapToBalanceDto(BankAccount bankAccount)
+    {
+        ArgumentNullException.ThrowIfNull(bankAccount);
+
+        return new(
+             bankAccount.Balance,
+             bankAccount.AllowedBalanceToUse,
+             bankAccount.MinimumAllowedBalance,
+             bankAccount.Debt);   
+    }
+
+    /// <summary>
+    /// Maps account owners to DTOs using LINQ for better readability.
+    /// </summary>
+    private static AccountOwnerDto[] MapToAccountOwnersDto(IReadOnlyList<Customer> customers)
+    {
+        ArgumentNullException.ThrowIfNull(customers);
+
+        if (customers.Count == 0)
         {
-            var bankAccountOwner = new AccountOwnerDto(customer.Id, customer.CustomerNo, CreateFullName(customer));
-
-            bankAccountOwners.Add(bankAccountOwner);
+            return [];
         }
 
-        return bankAccountOwners.AsReadOnly();
+        var ownersDto = customers
+            .Where(customer => customer is not null)
+            .Select(customer => new AccountOwnerDto(
+                customer.Id,
+                customer.CustomerNo,
+                CreateFullName(customer)))
+            .ToArray();
+
+        return ownersDto;
     }
 
-    private ReadOnlyCollection<AccountTransactionDto> MapToAccountTransactionsDTO(IReadOnlyList<CashTransaction> cashTransactions, CurrencyDto currency)
+    /// <summary>
+    /// Maps cash transactions to DTOs.
+    /// </summary>
+    private static AccountTransactionDto[] MapToAccountTransactionsDto(
+        IReadOnlyList<CashTransaction> cashTransactions, 
+        CurrencyDto currency)
     {
-        var accountTransactions = new List<AccountTransactionDto>();
+        ArgumentNullException.ThrowIfNull(cashTransactions);
+        ArgumentNullException.ThrowIfNull(currency);
 
-        if (cashTransactions == null || cashTransactions.Count == 0)
-            return accountTransactions.AsReadOnly();
-
-        foreach (var ct in cashTransactions)
+        if (cashTransactions.Count == 0)
         {
-            var accountTransaction = new AccountTransactionDto(Enum.GetName(ct.Type),
-                                                                Enum.GetName(ct.InitiatedBy),
-                                                                CreateMoney(ct.Amount, currency),
-                                                                CreateMoney(ct.Fees, currency),
-                                                                ct.Description,
-                                                                Enum.GetName(ct.PaymentType),
-                                                                ct.TransactionDate,
-                                                                Enum.GetName(ct.Status),
-                                                                ct.From, ct.To, ct.Sender, ct.Recipient);
-            accountTransactions.Add(accountTransaction);
+            return [];
         }
 
-        return accountTransactions.AsReadOnly();
+        var accountTransactions = cashTransactions
+                   .Where(ct => ct is not null)
+                   .Select(ct => new AccountTransactionDto(
+                       Enum.GetName(ct.Type),
+                       Enum.GetName(ct.InitiatedBy),
+                       CreateMoney(ct.Amount, currency),
+                       CreateMoney(ct.Fees, currency),
+                       ct.Description,
+                       Enum.GetName(ct.PaymentType),
+                       ct.TransactionDate,
+                       Enum.GetName(ct.Status),
+                       ct.From,
+                       ct.To,
+                       ct.Sender,
+                       ct.Recipient))
+                   .ToArray();
+
+        return accountTransactions;
     }
 
-
-    private ReadOnlyCollection<AccountFastTransactionDto> MapToAccountFastTransactionsDTO(IReadOnlyList<FastTransaction> fastTransactions, CurrencyDto currency)
+    /// <summary>
+    /// Maps fast transactions to DTOs.
+    /// </summary>
+    private static AccountFastTransactionDto[] MapToFastTransactionsDto(
+        IReadOnlyList<FastTransaction> fastTransactions, 
+        CurrencyDto currency)
     {
-        var accountFastTransactions = new List<AccountFastTransactionDto>();
+        ArgumentNullException.ThrowIfNull(fastTransactions);
+        ArgumentNullException.ThrowIfNull(currency);
 
-        if (fastTransactions == null || fastTransactions.Count == 0)
-            return accountFastTransactions.AsReadOnly();
-
-        foreach (var ft in fastTransactions)
+        if (fastTransactions.Count == 0)
         {
-            var accountFastTransaction = new AccountFastTransactionDto(ft.BankAccount.IBAN, ft.RecipientIBAN, ft.RecipientName,
-                                                                       ft.BankAccount.Branch.Name, CreateMoney(ft.Amount, currency));
-
-            accountFastTransactions.Add(accountFastTransaction);
+            return [];
         }
 
-        return accountFastTransactions.AsReadOnly();
+        var fastTransactionsDto = fastTransactions
+          .Where(ft => ft is not null)
+          .Select(ft => new AccountFastTransactionDto(
+              ft.BankAccount?.IBAN ?? string.Empty,
+              ft.RecipientIBAN,
+              ft.RecipientName,
+              ft.BankAccount?.Branch?.Name ?? string.Empty,
+              CreateMoney(ft.Amount, currency)))
+          .ToArray();
+
+        return fastTransactionsDto;
     }
 
-    private static ReadOnlyCollection<CreditCardDto> MapToAccountCreditCardsDTO(IReadOnlyList<CreditCard> creditCards, CurrencyDto currency)
+    /// <summary>
+    /// Maps credit cards to DTOs.
+    /// Extracts relevant credit card information for API response.
+    /// </summary>
+    private static CreditCardDto[] MapToCreditCardsDto(
+        IReadOnlyList<CreditCard> creditCards)
     {
-        var accountCreditCards = new List<CreditCardDto>();
+        ArgumentNullException.ThrowIfNull(creditCards);
 
-        return accountCreditCards.AsReadOnly();
+        if (creditCards.Count == 0)
+        {
+            return [];
+        }
+
+        var creditCardsDto = creditCards
+            .Where(cc => cc is not null)
+            .Select(cc => new CreditCardDto(
+                CreateFullName(cc.BankAccount.BankAccountOwners[0].Customer),
+                MaskCardNumber(cc.CreditCardNo),
+                cc.CustomerNo,
+                cc.ValidTo,
+                cc.SecurityCode))
+            .ToArray();
+
+        return creditCardsDto;
     }
 
-    private static ReadOnlyCollection<DebitCardDto> MapToAccountDebitCardsDTO(IReadOnlyList<DebitCard> debitCards, CurrencyDto currency)
+    /// <summary>
+    /// Maps debit cards to DTOs.
+    /// Extracts relevant debit card information for API response.
+    /// </summary>
+    private static DebitCardDto[] MapToDebitCardsDto(
+        IReadOnlyList<DebitCard> debitCards)
     {
-        var accountDebitCards = new List<DebitCardDto>();
+        ArgumentNullException.ThrowIfNull(debitCards);
 
-        return accountDebitCards.AsReadOnly();
+        if (debitCards.Count == 0)
+        {
+            return [];
+        }
+
+        var debitCardsDto = debitCards
+                 .Where(cc => cc is not null)
+                 .Select(cc => new DebitCardDto(
+                     CreateFullName(cc.BankAccount.BankAccountOwners[0].Customer),
+                     MaskCardNumber(cc.DebitCardNo),
+                     cc.CustomerNo,
+                     cc.ValidTo,
+                     cc.SecurityCode))
+                 .ToArray();
+
+        return debitCardsDto;
     }
 
-    private Money CreateMoney(decimal amount, CurrencyDto currency) =>
-        new(amount, currency);
+    /// <summary>
+    /// Creates a Money value object from amount and currency.
+    /// </summary>
+    private static Money CreateMoney(decimal amount, CurrencyDto currency)
+    {
+        ArgumentNullException.ThrowIfNull(currency);
 
-    private string CreateFullName(Customer customer) =>
-    customer.FirstName + " " + customer.LastName;
+        return new Money(amount, currency); 
+    }
 
+    /// <summary>
+    /// Creates a full name from customer's first and last name.
+    /// Returns "Unknown" if customer is null or both names are empty.
+    /// </summary>
+    private static string CreateFullName(Customer? customer)
+    {
+        if (customer is null)
+        {
+            return UnknownCustomer;
+        }
+
+        var firstName = customer.FirstName?.Trim() ?? string.Empty;
+        var lastName = customer.LastName?.Trim() ?? string.Empty;
+
+        return string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName)
+            ? UnknownCustomer
+            : $"{firstName}{FullNameSeparator}{lastName}".Trim();
+    }
+
+    /// <summary>
+    /// Masks sensitive card number data for security.
+    /// Shows only the last 4 digits: XXXX-XXXX-XXXX-1234
+    /// </summary>
+    private static string MaskCardNumber(string? cardNumber)
+    {
+        if (string.IsNullOrWhiteSpace(cardNumber) || cardNumber.Length < 4)
+        {
+            return "****-****-****-****";
+        }
+
+        var lastFourDigits = cardNumber[^4..];
+        return $"****-****-****-{lastFourDigits}";
+    }
     #endregion
 }

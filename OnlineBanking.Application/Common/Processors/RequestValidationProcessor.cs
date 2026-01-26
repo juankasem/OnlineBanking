@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using MediatR.Pipeline;
-
+﻿using MediatR.Pipeline;
 
 namespace OnlineBanking.Application.Common.Processors;
 
@@ -16,7 +14,6 @@ public class RequestValidationProcessor<TRequest> : IRequestPreProcessor<TReques
     public async Task Process(TRequest request, CancellationToken cancellationToken)
     {
         await _validator.ValidateAndThrowAsync(request, cancellationToken);
-
     }
 }
 

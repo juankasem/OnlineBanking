@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace OnlineBanking.Application.Extensions;
 
@@ -25,7 +24,12 @@ public static class PaginationExtensions
         return new(Enumerable.Empty<T>().ToList(), 0, 0, 0);
     }
 
-    public static PagedList<T> ToPagedList<T>(this IReadOnlyList<T> items, int count, int pageNumber, int pageSize, CancellationToken token = default)
+    public static PagedList<T> ToPagedList<T>(
+        this IReadOnlyList<T> items, 
+        int count, 
+        int pageNumber, 
+        int pageSize, 
+        CancellationToken token = default)
     {
         return new PagedList<T>(items, count, pageNumber, pageSize);
     }

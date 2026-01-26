@@ -1,10 +1,9 @@
 using OnlineBanking.Application.Extensions;
-using OnlineBanking.Application.Mappings.BankAccounts;
-using OnlineBanking.Application.Models.BankAccount;
 
 namespace OnlineBanking.Application.Features.BankAccounts.GetAll;
 
-public class GetAllBankAccountsRequestHandler : IRequestHandler<GetAllBankAccountsRequest, ApiResult<PagedList<BankAccountDto>>>
+public class GetAllBankAccountsRequestHandler : 
+    IRequestHandler<GetAllBankAccountsRequest, ApiResult<PagedList<BankAccountDto>>>
 {
     private readonly IUnitOfWork _uow;
     private readonly IBankAccountMapper _bankAccountMapper;
@@ -22,9 +21,14 @@ public class GetAllBankAccountsRequestHandler : IRequestHandler<GetAllBankAccoun
         var (bankAccounts, totalCount) = await _uow.BankAccounts.GetAllBankAccountsAsync(bankAccountParams);
 
         var mappedBankAccounts = bankAccounts.Select(bankAccount => _bankAccountMapper.MapToDtoModel(bankAccount))
-                                             .ToList().AsReadOnly();
+                                             .ToList()
+                                             .AsReadOnly();
 
-        result.Payload = mappedBankAccounts.ToPagedList(totalCount, bankAccountParams.PageNumber, bankAccountParams.PageSize);
+        result.Payload = mappedBankAccounts.ToPagedList(
+            totalCount, 
+            bankAccountParams.PageNumber, 
+            bankAccountParams.PageSize,
+            cancellationToken);
 
         return result;
     }

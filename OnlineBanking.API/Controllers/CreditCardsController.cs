@@ -13,7 +13,8 @@ public class CreditCardsController : BaseApiController
     // GET api/v1/credit-cards/all
     [HttpGet(ApiRoutes.CreditCards.All)]
     [ProducesResponseType(typeof(PagedList<CreditCardDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<PagedList<CreditCardDto>>> GetAllCreditCards([FromQuery] CreditCardParams creditCardParams, 
+    public async Task<ActionResult<PagedList<CreditCardDto>>> GetAllCreditCards(
+        [FromQuery] CreditCardParams creditCardParams, 
         CancellationToken cancellationToken = default)
     {
         var query = new GetAllCreditCardsRequest() 
@@ -42,7 +43,8 @@ public class CreditCardsController : BaseApiController
     // GET api/v1/credit-cards/TR12345678 
     [HttpGet(ApiRoutes.CreditCards.GetByIBAN)]
     [ProducesResponseType(typeof(IReadOnlyList<CreditCardDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<IReadOnlyList<CreditCardDto>>> GetCustomerCreditCards([FromRoute] string customerNo,
+    public async Task<ActionResult<IReadOnlyList<CreditCardDto>>> GetCustomerCreditCards(
+        [FromRoute] string customerNo,
         CancellationToken cancellationToken = default)
     {
         var query = new GetCustomerCreditCardsRequest() 
@@ -80,7 +82,8 @@ public class CreditCardsController : BaseApiController
     // POST api/v1/credit-cards
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> CreateCreditCard([FromBody] CreateCreditCardRequest request,
+    public async Task<IActionResult> CreateCreditCard(
+        [FromBody] CreateCreditCardRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<CreateCreditCardCommand>(request);
@@ -95,7 +98,8 @@ public class CreditCardsController : BaseApiController
     // PUT api/v1/credit-cards/TR12345678
     [HttpPut(ApiRoutes.CreditCards.IdRoute)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> UpdateCreditCard([FromBody] UpdateCreditCardRequest request,
+    public async Task<IActionResult> UpdateCreditCard(
+        [FromBody] UpdateCreditCardRequest request,
         CancellationToken cancellationToken = default)
     {
         var command = _mapper.Map<UpdateCreditCardCommand>(request);
@@ -112,7 +116,8 @@ public class CreditCardsController : BaseApiController
     // PUT api/v1/credit-cards/activate/TR12345678
     [HttpPut(ApiRoutes.CreditCards.Activate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> ActivateCreditCard([FromRoute] string creditCardNo,
+    public async Task<IActionResult> ActivateCreditCard(
+        [FromRoute] string creditCardNo,
         CancellationToken cancellationToken = default)
     {
         var command = new ActivateCreditCardCommand() 
@@ -131,7 +136,8 @@ public class CreditCardsController : BaseApiController
     // PUT api/v1/credit-cards/deactivate/TR12345678
     [HttpPut(ApiRoutes.CreditCards.Deactivate)]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> DeactivateCreditCard([FromRoute] string creditCardNo,
+    public async Task<IActionResult> DeactivateCreditCard(
+        [FromRoute] string creditCardNo,
         CancellationToken cancellationToken = default)
     {
         var command = new DeactivateCreditCardCommand() 

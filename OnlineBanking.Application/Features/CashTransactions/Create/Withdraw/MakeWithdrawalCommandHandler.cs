@@ -5,7 +5,8 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Withdraw;
 /// Handles the withdrawal command request
 /// Validates the withdrawal request, applies the domain logic, and persists changes
 /// </summary>
-public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
+public class MakeWithdrawalCommandHandler(
+    IUnitOfWork uow,
     IBankAccountService bankAccountService,
     IAppUserAccessor appUserAccessor,
     IBankAccountHelper bankAccountHelper,
@@ -18,7 +19,9 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<MakeWithdrawalCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(MakeWithdrawalCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        MakeWithdrawalCommand request, 
+        CancellationToken cancellationToken)
     {
         var iban = request.From;
         var result = new ApiResult<Unit>();
@@ -77,17 +80,21 @@ public class MakeWithdrawalCommandHandler(IUnitOfWork uow,
     /// <summary>
     /// Validates the withdrawal request (amount, IBAN presence)
     /// </summary>
-    private static bool ValidateWithdrawalRequest(MakeWithdrawalCommand request, ApiResult<Unit> result)
+    private static bool ValidateWithdrawalRequest(
+        MakeWithdrawalCommand request, 
+        ApiResult<Unit> result)
     {
         if (request?.BaseCashTransaction == null)
         {
-            result.AddError(ErrorCode.BadRequest, "Invalid withdrawal request.");
+            result.AddError(ErrorCode.BadRequest, 
+                "Invalid withdrawal request.");
             return false;
         }
 
         if (request.BaseCashTransaction.Amount.Value <= 0)
         {
-            result.AddError(ErrorCode.BadRequest, "Withdrawal amount must be greater than zero.");
+            result.AddError(ErrorCode.BadRequest, 
+                "Withdrawal amount must be greater than zero.");
             return false;
         }
 
