@@ -23,10 +23,14 @@ public class MakeWithdrawalCommandHandler(
         MakeWithdrawalCommand request, 
         CancellationToken cancellationToken)
     {
-        var iban = request.From;
-        var result = new ApiResult<Unit>();
+        ArgumentNullException.ThrowIfNull(request);
 
-        _logger.LogInformation("Start creating withdrawal from IBAN {iban}", iban);
+        var result = new ApiResult<Unit>();
+        var iban = request.From;
+
+        _logger.LogInformation(
+            "Start creating withdrawal from IBAN {iban}", 
+            iban);
 
         if (!ValidateWithdrawalRequest(request, result))
             return result;
@@ -45,10 +49,16 @@ public class MakeWithdrawalCommandHandler(
         // Prepare transaction
         var accountOwner = _appUserAccessor.GetDisplayName();
         var updatedBalance = bankAccount.Balance - amountToWithdraw;
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(
+            request, 
+            accountOwner, 
+            updatedBalance);
 
         // Apply domain logic
-        _bankAccountService.CreateCashTransaction(bankAccount, recipientAccount: null, cashTransaction);
+        _bankAccountService.CreateCashTransaction(
+            bankAccount, 
+            recipientAccount: null, 
+            cashTransaction);
 
         // Mark aggregate as modified so it will be saved
         _uow.BankAccounts.Update(bankAccount);
@@ -68,8 +78,12 @@ public class MakeWithdrawalCommandHandler(
         }
         else
         {
-            _logger.LogError("Withdrawal transaction from IBAN: {IBAN} failed...Please try again", iban);
-            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            _logger.LogError(
+                "Withdrawal transaction from IBAN: {IBAN} failed...Please try again", 
+                iban);
+            result.AddError(ErrorCode.UnknownError,
+                string.Format(CashTransactionErrorMessages.UnknownError,
+                nameof(CashTransactionType.Withdrawal).ToLower()));
         }
 
         return result;

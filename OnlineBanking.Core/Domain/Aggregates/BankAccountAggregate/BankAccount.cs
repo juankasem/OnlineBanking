@@ -5,7 +5,6 @@ using OnlineBanking.Core.Domain.Enums;
 using OnlineBanking.Core.Domain.Exceptions;
 using OnlineBanking.Core.Domain.Validators;
 using OnlineBanking.Core.Domain.ValueObjects;
-using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 
 namespace OnlineBanking.Core.Domain.Aggregates.BankAccountAggregate;
@@ -119,10 +118,19 @@ public class BankAccount : AggregateRoot<Guid>
 
     #region Constructor
 
-    private BankAccount(Guid id, string accountNo, string iBAN, BankAccountType type,
-                        int branchId, decimal balance, decimal allowedBalanceToUse,
-                        decimal minimumAllowedBalance, decimal debt,
-                        int currencyId, bool isActive = false, bool isDeleted = false)
+    private BankAccount(
+        Guid id, 
+        string accountNo, 
+        string iBAN, 
+        BankAccountType type,
+        int branchId, 
+        decimal balance, 
+        decimal allowedBalanceToUse,
+        decimal minimumAllowedBalance, 
+        decimal debt,
+        int currencyId, 
+        bool isActive = false, 
+        bool isDeleted = false)
     {
         Id = id;
         AccountNo = accountNo;
@@ -140,7 +148,6 @@ public class BankAccount : AggregateRoot<Guid>
 
     #endregion
 
-
     #region Factory Method
 
     /// <summary>
@@ -151,10 +158,19 @@ public class BankAccount : AggregateRoot<Guid>
     /// <param name="iban">IBAN</param>
     /// <returns><see cref="BankAccount"/></returns>
     /// <exception cref="BankAccountNotValidException"></exception>
-    public static BankAccount Create(string accountNo, string iban, BankAccountType type,
-                                    int branchId, decimal balance, decimal allowedBalanceToUse,
-                                    decimal minimumAllowedBalance, decimal debt, int currencyId,
-                                    bool isActive = true, bool isDeleted = false, Guid? id = null)
+    public static BankAccount Create(
+        string accountNo, 
+        string iban, 
+        BankAccountType type,
+        int branchId, 
+        decimal balance, 
+        decimal allowedBalanceToUse,
+        decimal minimumAllowedBalance, 
+        decimal debt, 
+        int currencyId,
+        bool isActive = true, 
+        bool isDeleted = false, 
+        Guid? id = null)
     {
         var validator = new BankAccountValidator();
 
@@ -178,7 +194,8 @@ public class BankAccount : AggregateRoot<Guid>
 
         if (validationResult.IsValid)
         {
-            bankAccount.AddDomainEvent(new BankAccountCreatedEvent(bankAccount.Id,
+            bankAccount.AddDomainEvent(new BankAccountCreatedEvent(
+                bankAccount.Id,
                 bankAccount.AccountNo,
                 bankAccount.IBAN,
                 bankAccount.Type,
@@ -210,8 +227,8 @@ public class BankAccount : AggregateRoot<Guid>
     /// <summary>
     /// Adds an owner to this bank account
     /// </summary>
-    public void AddOwnerToBankAccount(CustomerBankAccount customerBankAccount) =>
-                                    _bankAccountOwners.Add(customerBankAccount);
+    public void AddOwnerToBankAccount(
+        CustomerBankAccount customerBankAccount) => _bankAccountOwners.Add(customerBankAccount);
     #endregion
 
     #region Account Transactions
@@ -228,7 +245,8 @@ public class BankAccount : AggregateRoot<Guid>
         ArgumentNullException.ThrowIfNull(cashTransaction);
 
         if (cashTransaction.Id == Guid.Empty) 
-            throw new ArgumentException("Transaction must have a valid Id.", nameof(cashTransaction));
+            throw new ArgumentException("Transaction must have a valid Id.", 
+                nameof(cashTransaction));
 
         // avoid adding the same transaction twice
         if (_accountTransactions.Any(at => at.TransactionId == cashTransaction.Id))

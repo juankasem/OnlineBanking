@@ -47,7 +47,8 @@ public class CreateBankAccountCommandHandler(
         var bankAccount = CreateBankAccount(request);
 
         // Retrieve and associate customers
-        if (!await AssociateCustomersWithAccountAsync(bankAccount, 
+        if (!await AssociateCustomersWithAccountAsync(
+            bankAccount, 
             request.CustomerNos, 
             result, 
             cancellationToken))
@@ -114,7 +115,9 @@ public class CreateBankAccountCommandHandler(
 
         if (customerNos.Length == 0)
         {
-            _logger.LogWarning("Bank account creation: No customers provided for account {AccountNo}", bankAccount.AccountNo);
+            _logger.LogWarning(
+                "Bank account creation: No customers provided for account {AccountNo}", 
+                bankAccount.AccountNo);
             return true; // Account can be created without owners
         }
 

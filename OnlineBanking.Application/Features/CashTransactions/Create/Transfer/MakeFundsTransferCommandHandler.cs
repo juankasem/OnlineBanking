@@ -5,7 +5,8 @@ namespace OnlineBanking.Application.Features.CashTransactions.Create.Transfer;
 /// Handles fund transfer command requests.
 /// Validates transfer request, applies domain logic, and persists changes to both accounts.
 /// </summary>
-public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
+public class MakeFundsTransferCommandHandler(
+    IUnitOfWork uow,
     IBankAccountService bankAccountService,
     IAppUserAccessor appUserAccessor,
     IBankAccountHelper bankAccountHelper,
@@ -24,6 +25,7 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+
         var result = new ApiResult<Unit>();
         var senderIBAN = request.From;
         var recipientIBAN = request.To;
@@ -56,11 +58,22 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
 
         // Execute transfer
         var accountOwner = _appUserAccessor.GetDisplayName();
-        var transferDto = PrepareTransferDto(senderAccount, recipientAccount, amountToTransfer, fees);
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, accountOwner, transferDto);
+        var transferDto = PrepareTransferDto(
+            senderAccount, 
+            recipientAccount, 
+            amountToTransfer, 
+            fees);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(
+            request, 
+            accountOwner, 
+            transferDto);
 
         // Apply domain logic to both accounts
-        _bankAccountService.CreateCashTransaction(senderAccount, recipientAccount, cashTransaction, fees);
+        _bankAccountService.CreateCashTransaction(
+            senderAccount, 
+            recipientAccount, 
+            cashTransaction, 
+            fees);
 
         // Mark both aggregates as modified for EF Core
         _uow.BankAccounts.Update(senderAccount);
@@ -88,8 +101,9 @@ public class MakeFundsTransferCommandHandler(IUnitOfWork uow,
                 "Database transaction returned 0 rows affected",
                 senderIBAN,
                 recipientIBAN);
-
-            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            result.AddError(ErrorCode.UnknownError, 
+                string.Format(CashTransactionErrorMessages.UnknownError,
+                nameof(CashTransactionType.Transfer).ToLower()));
         }
 
         return result;

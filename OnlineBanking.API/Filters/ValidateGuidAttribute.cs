@@ -24,7 +24,6 @@ public class ValidateGuidAttribute(params string[] keys) : ActionFilterAttribute
         {
             apiError.StatusCode = 400;
             apiError.StatusPhrase = "Bad Request";
-            apiError.Timestamp = DateTime.Now;
             context.Result = new ObjectResult(apiError)
             {
                 StatusCode = StatusCodes.Status400BadRequest

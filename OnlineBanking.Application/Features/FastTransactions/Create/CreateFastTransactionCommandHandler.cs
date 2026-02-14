@@ -8,19 +8,25 @@ public class CreateFastTransactionCommandHandler(
     ILogger<CreateFastTransactionCommandHandler> logger) :
     IRequestHandler<CreateFastTransactionCommand, ApiResult<Unit>>
 {
-
     private readonly IUnitOfWork _uow = uow;
     private readonly IBankAccountService _bankAccountService = bankAccountService;
     private readonly IBankAccountHelper _bankAccountHelper = bankAccountHelper;
     private readonly ILogger<CreateFastTransactionCommandHandler> _logger = logger;
 
-    public async Task<ApiResult<Unit>> Handle(CreateFastTransactionCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResult<Unit>> Handle(
+        CreateFastTransactionCommand request, 
+        CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Start creating fast transaction for bank account IBAN {iban}", request.IBAN);
-        var result = new ApiResult<Unit>();
+        ArgumentNullException.ThrowIfNull(request);
 
+        var result = new ApiResult<Unit>();
         var senderIBAN = request.IBAN;
-        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(request.IBAN);
+
+        _logger.LogInformation(
+            "Start creating fast transaction for bank account IBAN {iban}",
+            senderIBAN);
+
+        var bankAccount = await _uow.BankAccounts.GetByIBANAsync(senderIBAN);
 
         if (!_bankAccountHelper.ValidateBankAccount(bankAccount, senderIBAN, result))
             return result;
@@ -31,7 +37,8 @@ public class CreateFastTransactionCommandHandler(
         if (!_bankAccountHelper.ValidateBankAccount(recipientBankAccount, recipientIBAN, result))
             return result;
 
-        var fastTransaction = FastTransaction.Create(bankAccount.Id, 
+        var fastTransaction = FastTransaction.Create(
+            bankAccount.Id, 
             request.RecipientIBAN, 
             request.RecipientName, 
             request.Amount);
@@ -41,14 +48,15 @@ public class CreateFastTransactionCommandHandler(
 
         if (await _uow.CompleteDbTransactionAsync() >= 1)
         {
-            _logger.LogInformation("Fast transaction of Id {fastTransactionId} of amount: "
-                         + "{amount}{currency} for bank account IBAN {recipientIBAN} with name: "
-                         + "{recipientName} is successfully created!",
-                         fastTransaction.Id,
-                         fastTransaction.Amount,
-                         fastTransaction.BankAccount.Currency.Symbol,
-                         fastTransaction.RecipientIBAN,
-                         fastTransaction.RecipientName);
+            _logger.LogInformation(
+                "Fast transaction of Id {FastTransactionId} of amount: "
+                + "{Amount}{Currency} for bank account IBAN {RecipientIBAN} with name: "
+                + "{RecipientName} is successfully created!",
+                fastTransaction.Id,
+                fastTransaction.Amount,
+                fastTransaction.BankAccount.Currency.Symbol,
+                fastTransaction.RecipientIBAN,
+                fastTransaction.RecipientName);
         }
         else
         {

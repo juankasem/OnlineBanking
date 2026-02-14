@@ -29,7 +29,9 @@ public class CashTransactionCreatedEventConsumer(
                 return;
             }
 
-            logger.LogInformation("Processing CashTransactionCreatedEvent: {@event}", cashTransactionCreatedEvent);
+            logger.LogInformation(
+                "Processing CashTransactionCreatedEvent: {@event}", 
+                cashTransactionCreatedEvent);
 
             // Simulate processing
             await Task.Delay(500, args.CancellationToken);
@@ -45,7 +47,9 @@ public class CashTransactionCreatedEventConsumer(
             }
             catch (Exception abandonEx)
             {
-                logger.LogError(abandonEx, "Failed to abandon message");
+                logger.LogError(
+                    abandonEx, 
+                    "Failed to abandon message");
             }
         }
     }

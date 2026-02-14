@@ -50,60 +50,61 @@ public class BaseApiController : ControllerBase
             return BadRequest(CreateErrorResponse(StatusCodes.Status400BadRequest, ErrorPhrase.BadRequest, []));
 
         // Determine response based on first error's code (priority-based)
-        var (statusCode, statusPhrase, errorMessages) = errors.FirstOrDefault()?.Code switch
-        {
-            ErrorCode.BadRequest =>
-              (
-                  StatusCodes.Status400BadRequest,
-                  ErrorPhrase.BadRequest,
-                  errors.Where(e => e.Code == ErrorCode.NotFound)
-                         .Select(e => e.Message)
-                         .ToList()
-              ),
-
-            ErrorCode.NotFound =>
+        var (statusCode, statusPhrase, errorMessages) = 
+            errors.FirstOrDefault()?.Code switch
+            {
+                ErrorCode.BadRequest or 
+                ErrorCode.ValidationError =>
+                (
+                    StatusCodes.Status400BadRequest,
+                    ErrorPhrase.BadRequest,
+                    errors.Where(e => e.Code == ErrorCode.BadRequest ||
+                                      e.Code == ErrorCode.ValidationError)
+                    .Select(e => e.Message)
+                    .ToList()
+                ),
+                ErrorCode.NotFound =>
                 (
                     StatusCodes.Status404NotFound,
                     ErrorPhrase.NotFound,
                     errors.Where(e => e.Code == ErrorCode.NotFound)
-                           .Select(e => e.Message)
-                           .ToList()
+                    .Select(e => e.Message)
+                    .ToList()
                 ),
-
-            ErrorCode.CreateCashTransactionNotAuthorized or ErrorCode.UnAuthorizedOperation =>
+                ErrorCode.CreateCashTransactionNotAuthorized or 
+                ErrorCode.UnAuthorizedOperation =>
                 (
                     StatusCodes.Status403Forbidden,
                     ErrorPhrase.Forbidden,
                     errors.Where(e => e.Code == ErrorCode.CreateCashTransactionNotAuthorized ||
                                       e.Code == ErrorCode.UnAuthorizedOperation)
-                           .Select(e => e.Message)
-                           .ToList()
+                    .Select(e => e.Message)
+                    .ToList()
                 ),
-
-            ErrorCode.InSufficintFunds =>
+                ErrorCode.InSufficintFunds =>
                 (
                     StatusCodes.Status400BadRequest,
                     ErrorPhrase.InsufficientFunds,
                     errors.Where(e => e.Code == ErrorCode.InSufficintFunds)
-                           .Select(e => e.Message)
-                           .ToList()
+                    .Select(e => e.Message)
+                    .ToList()
                 ),
-
-            ErrorCode.InternalServerError or ErrorCode.UnknownError =>
+                ErrorCode.InternalServerError or 
+                ErrorCode.UnknownError =>
                 (
                     StatusCodes.Status500InternalServerError,
                     ErrorPhrase.InternalServerError,
-                    errors.Where(e => e.Code == ErrorCode.InternalServerError ||
-                                     e.Code == ErrorCode.UnknownError)
-                           .Select(e => e.Message)
-                           .ToList()
+                    errors.Where(e => e.Code == ErrorCode.InternalServerError || 
+                                      e.Code == ErrorCode.UnknownError)
+                    .Select(e => e.Message)
+                    .ToList()
                 ),
-
-            _ =>
+                _ =>
                 (
                     StatusCodes.Status400BadRequest,
                     ErrorPhrase.BadRequest,
-                    errors.Select(e => e.Message).ToList()
+                    errors.Select(e => e.Message)
+                    .ToList()
                 )
         };
 

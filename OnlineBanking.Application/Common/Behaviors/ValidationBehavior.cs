@@ -31,9 +31,10 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
     /// <param name="next">The next pipeline handler delegate</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>Response with validation errors or result from next handler</returns>
-    public async Task<TResponse> Handle(TRequest request,
-                                        RequestHandlerDelegate<TResponse> next,
-                                        CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(next);
         ArgumentNullException.ThrowIfNull(request);

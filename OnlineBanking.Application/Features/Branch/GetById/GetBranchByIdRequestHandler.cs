@@ -3,17 +3,13 @@ using OnlineBanking.Application.Models.Branch.Responses;
 
 namespace OnlineBanking.Application.Features.Branch.GetById;
 
-public class GetBranchByIdRequestHandler : 
+public class GetBranchByIdRequestHandler(
+    IUnitOfWork uow, 
+    IMapper mapper) : 
     IRequestHandler<GetBranchByIdRequest, ApiResult<BranchResponse>>
 {
-    private readonly IUnitOfWork _uow;
-    private readonly IMapper _mapper;
-
-    public GetBranchByIdRequestHandler(IUnitOfWork uow, IMapper mapper)
-    {
-        _uow = uow;
-        _mapper = mapper;
-    }
+    private readonly IUnitOfWork _uow = uow;
+    private readonly IMapper _mapper = mapper;
 
     public async Task<ApiResult<BranchResponse>> Handle(
         GetBranchByIdRequest request, 

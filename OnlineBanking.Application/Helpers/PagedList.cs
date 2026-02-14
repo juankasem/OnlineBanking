@@ -3,7 +3,7 @@ namespace OnlineBanking.Application.Helpers;
 
 public class PagedList<T> : List<T>
 {
-    public PagedList(IReadOnlyList<T> items, int count, int pageNumber, int pageSize)
+    private PagedList(IReadOnlyList<T> items, int count, int pageNumber, int pageSize)
     {
         CurrentPage = pageNumber;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);

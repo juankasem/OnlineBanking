@@ -9,5 +9,5 @@ public class CashTransactionErrorMessages
     public const string InsufficientFunds = "Sorry! You don't have enough funds to complete transaction";
     public const string IBANMismatch = "IBAN mismatch between route and request body.";
     public const string UnsupportedTransactionType = "Unsupported transaction type: {0}";
-    public const string UnknownError = "Sorry! Unable to complete transaction";
+    public const string UnknownError = "An unexpected error occurred while processing the {0}. Please contact support if the problem persists.";
 }

@@ -18,10 +18,10 @@ public static class PaginationExtensions
                 .Take(pageSize)
                 .ToListAsync(token);
 
-            return new PagedList<T>(items, count, pageNumber, pageSize);
+            return PagedList<T>.Create(items, count, pageNumber, pageSize);
         }
 
-        return new(Enumerable.Empty<T>().ToList(), 0, 0, 0);
+        return PagedList<T>.Create(Enumerable.Empty<T>().ToList(), 0, 0, 0);
     }
 
     public static PagedList<T> ToPagedList<T>(
@@ -31,6 +31,6 @@ public static class PaginationExtensions
         int pageSize, 
         CancellationToken token = default)
     {
-        return new PagedList<T>(items, count, pageNumber, pageSize);
+        return PagedList<T>.Create(items, count, pageNumber, pageSize);
     }
 }

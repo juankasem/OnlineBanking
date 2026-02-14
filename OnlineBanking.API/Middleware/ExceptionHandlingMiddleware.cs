@@ -1,14 +1,17 @@
 
 namespace OnlineBanking.API.Middleware;
 
-
-public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger,
-                                          IHostEnvironment environment) : IExceptionHandler
+public sealed class GlobalExceptionHandler(
+    ILogger<GlobalExceptionHandler> logger,
+    IHostEnvironment environment) : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionHandler> _logger = logger;
     private readonly IHostEnvironment _environment = environment;
 
-    public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext context, 
+        Exception exception, 
+        CancellationToken cancellationToken)
     {
         // ensure correlation id present for tracing
         var correlationId = context.Request.Headers.ContainsKey("X-Correlation-ID")
@@ -23,7 +26,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         context.Response.ContentType = "application/json";
 
-        var errorResponse = new ErrorResponse
+        var errorResponse = new ErrorResponse()
         {
             Timestamp = DateTime.UtcNow
         };

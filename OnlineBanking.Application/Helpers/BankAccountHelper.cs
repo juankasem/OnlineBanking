@@ -18,12 +18,9 @@ public interface IBankAccountHelper
 /// Helper class for bank account validation operations.
 /// Provides centralized validation logic for account existence, status, and fund availability.
 /// </summary>
-public class BankAccountHelper : IBankAccountHelper
+public class BankAccountHelper(ILogger<BankAccountHelper> logger) : IBankAccountHelper
 {
-    private readonly ILogger<BankAccountHelper> _logger;
-
-    public BankAccountHelper(ILogger<BankAccountHelper> logger) =>
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    private readonly ILogger<BankAccountHelper> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
     /// Validates that a bank account exists, is active, and meets basic requirements.
@@ -57,10 +54,10 @@ public class BankAccountHelper : IBankAccountHelper
         if (!bankAccount.IsActive)
         {
             _logger.LogWarning(
-          "Bank account validation failed: Account is inactive for IBAN {IBAN}",
-          iban);
+                "Bank account validation failed: Account is inactive for IBAN {IBAN}", 
+                iban);
 
-            result.AddError(ErrorCode.BadRequest,
+            result.AddError(ErrorCode.BadRequest, 
                 string.Format(BankAccountErrorMessages.Inactive, iban));
             return false;
         }

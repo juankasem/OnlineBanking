@@ -24,17 +24,16 @@ public class Branch : AggregateRoot<int>
     public static Branch Create(string name)
     {
         var validator = new BranchValidator();
-
         var branch = new Branch(
             name
         );
-
         var validationResult = validator.Validate(branch);
 
         if (validationResult.IsValid)
         {
             // Add domain event
-            branch.AddDomainEvent(new BranchCreatedEvent(branch.Id,
+            branch.AddDomainEvent(
+                new BranchCreatedEvent(branch.Id,
                 branch.Name));
 
             return branch;
@@ -45,6 +44,6 @@ public class Branch : AggregateRoot<int>
     }
 
     public void AddBankAccount(BankAccount bankAccount) => _bankAccounts.Add(bankAccount);
-
+    public void SetName(string name) => Name = name;
     public void SetAddress(Address address) => Address = address;
 }

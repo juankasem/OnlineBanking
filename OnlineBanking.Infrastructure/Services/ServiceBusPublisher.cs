@@ -20,8 +20,10 @@ public interface IServiceBusPublisher
     Task PublishEventAsync(IDomainEvent domainEvent);
 }
 
-public class ServiceBusPublisher(ServiceBusClient serviceBusClient, 
-                                 IOptions<ServiceBusOptions> options) : IServiceBusPublisher
+public class ServiceBusPublisher(
+    ServiceBusClient serviceBusClient, 
+    IOptions<ServiceBusOptions> options) 
+    : IServiceBusPublisher
 {
     private readonly ServiceBusClient serviceBusClient = serviceBusClient;
     private readonly string _topicName = options?.Value?.TransactionsTopic ?? 
@@ -44,11 +46,12 @@ public class ServiceBusPublisher(ServiceBusClient serviceBusClient,
             {
                 { "EventType", domainEvent.EventType },
                 { "EventId", domainEvent.EventId.ToString() },
-                { "OccurredOn", domainEvent.OccurredOn.ToString("O") }            }
+                { "OccurredOn", domainEvent.OccurredOn.ToString("O") }            
+            }
         };
 
         // Create a sender for the topic & Publish the message to it
-        await using var topicSender = serviceBusClient.CreateSender(_topicName);
-        await topicSender.SendMessageAsync(message);
+        await using var sender = serviceBusClient.CreateSender(_topicName);
+        await sender.SendMessageAsync(message);
     }
 }

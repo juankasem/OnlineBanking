@@ -4,7 +4,7 @@ public class ApiResult<T>
 {
     public T Payload { get; set; }
     public bool IsError { get; set; }
-    public List<Error> Errors { get; } = new List<Error>();
+    public List<Error> Errors { get; } = [];
 
     /// <summary>
     /// Adds an error to the Error list and sets the IsError flag to true

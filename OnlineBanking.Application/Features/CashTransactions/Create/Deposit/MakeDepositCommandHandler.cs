@@ -24,10 +24,13 @@ public class MakeDepositCommandHandler(
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
+
         var result = new ApiResult<Unit>();
         var iban = request.To;
 
-        _logger.LogInformation("Starting deposit to IBAN: {IBAN}", iban);
+        _logger.LogInformation(
+            "Starting deposit to IBAN: {IBAN}", 
+            iban);
 
         if (!ValidateDepositRequest(request, result))
             return result;
@@ -41,10 +44,16 @@ public class MakeDepositCommandHandler(
         // Prepare deposit transaction
         var recipient = _appUserAccessor.GetDisplayName();
         var updatedBalance = bankAccount.Balance + amountToDeposit;
-        var cashTransaction = CashTransactionHelper.CreateCashTransaction(request, recipient, updatedBalance);
+        var cashTransaction = CashTransactionHelper.CreateCashTransaction(
+            request, 
+            recipient, 
+            updatedBalance);
 
         // Apply domain logic 
-        _bankAccountService.CreateCashTransaction(senderAccount: null, bankAccount, cashTransaction);
+        _bankAccountService.CreateCashTransaction(
+            senderAccount: null,
+            recipientAccount: bankAccount, 
+            cashTransaction);
 
         // Mark aggregate as modified so it will be saved
         _uow.BankAccounts.Update(bankAccount);
@@ -65,8 +74,12 @@ public class MakeDepositCommandHandler(
         }
         else
         {
-            _logger.LogError("Failed to persist deposit transaction for IBAN: {IBAN}", iban);
-            result.AddError(ErrorCode.UnknownError, CashTransactionErrorMessages.UnknownError);
+            _logger.LogError(
+                "Failed to persist deposit transaction for IBAN: {IBAN}", 
+                iban);
+            result.AddError(ErrorCode.UnknownError, 
+               string.Format(CashTransactionErrorMessages.UnknownError,
+               nameof(CashTransactionType.Deposit).ToLower()));
         }
 
         return result;
